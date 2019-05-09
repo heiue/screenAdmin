@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Screenwriter extends Model
 {
     protected $fillable = ['id','name','rating','residence'];
+    protected $table = 'card_screenwriters';
 
     public function getRatingAttribute($value)
     {

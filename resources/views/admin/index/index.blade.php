@@ -4,8 +4,8 @@
     <div class="layui-row layui-col-space15">
 
         <div class="layui-col-sm6 layui-col-md3">
-
-            <div class="layui-card">
+欢迎{{ $user->username }}
+            {{--<div class="layui-card">
 
                 <div class="layui-card-header">
 
@@ -29,11 +29,11 @@
 
                 </div>
 
-            </div>
+            </div>--}}
 
         </div>
 
-        <div class="layui-col-sm6 layui-col-md3">
+        {{--<div class="layui-col-sm6 layui-col-md3">
 
             <div class="layui-card">
 
@@ -581,7 +581,7 @@
 
             </div>
 
-        </div>
+        </div>--}}
 
     </div>
 @endsection

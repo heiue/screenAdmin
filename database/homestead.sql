@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-05-09 22:08:31
+Date: 2019-05-09 22:33:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1843,6 +1843,45 @@ INSERT INTO `card_card_industry` VALUES ('33', '0', '经纪人', '0', '0', '2019
 INSERT INTO `card_card_industry` VALUES ('34', '0', '影视音乐', '0', '0', '2019-03-12 10:36:36');
 INSERT INTO `card_card_industry` VALUES ('35', '0', '拍摄场地', '0', '0', '2019-03-12 10:36:58');
 INSERT INTO `card_card_industry` VALUES ('36', '0', '影视器材', '0', '0', '2019-03-12 10:36:58');
+
+-- ----------------------------
+-- Table structure for card_screenwriters
+-- ----------------------------
+DROP TABLE IF EXISTS `card_screenwriters`;
+CREATE TABLE `card_screenwriters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL COMMENT '编剧名字',
+  `rating` enum('1','2','3','4') DEFAULT NULL COMMENT '编剧评级',
+  `residence` varchar(255) DEFAULT NULL COMMENT '常住地',
+  `created_at` datetime DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='编剧表';
+
+-- ----------------------------
+-- Records of card_screenwriters
+-- ----------------------------
+INSERT INTO `card_screenwriters` VALUES ('1', '武怡瞳', '4', '石家庄', '2019-05-01 15:35:40', '2019-05-01 16:22:47');
+INSERT INTO `card_screenwriters` VALUES ('3', '魏一铮', '2', '北京', '2019-05-01 15:36:57', '2019-05-01 15:36:57');
+
+-- ----------------------------
+-- Table structure for card_scripts
+-- ----------------------------
+DROP TABLE IF EXISTS `card_scripts`;
+CREATE TABLE `card_scripts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `scriptTitle` varchar(50) DEFAULT NULL COMMENT '剧本名称',
+  `scriptType` enum('1','2','3','4','5') DEFAULT NULL COMMENT '剧本类型',
+  `scriptTheme` enum('1','2','3','4','5') DEFAULT NULL COMMENT '剧本题材',
+  `created_at` datetime DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='剧本表';
+
+-- ----------------------------
+-- Records of card_scripts
+-- ----------------------------
+INSERT INTO `card_scripts` VALUES ('3', '《双鱼村的半农时代》', '1', '3', '2019-05-06 22:47:55', '2019-05-06 22:47:55');
 
 -- ----------------------------
 -- Table structure for card_user
@@ -4189,45 +4228,6 @@ INSERT INTO `role_has_permissions` VALUES ('75', '1');
 INSERT INTO `role_has_permissions` VALUES ('75', '6');
 INSERT INTO `role_has_permissions` VALUES ('76', '1');
 INSERT INTO `role_has_permissions` VALUES ('76', '6');
-
--- ----------------------------
--- Table structure for screenwriters
--- ----------------------------
-DROP TABLE IF EXISTS `screenwriters`;
-CREATE TABLE `screenwriters` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL COMMENT '编剧名字',
-  `rating` enum('1','2','3','4') DEFAULT NULL COMMENT '编剧评级',
-  `residence` varchar(255) DEFAULT NULL COMMENT '常住地',
-  `created_at` datetime DEFAULT NULL COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='编剧表';
-
--- ----------------------------
--- Records of screenwriters
--- ----------------------------
-INSERT INTO `screenwriters` VALUES ('1', '武怡瞳', '4', '石家庄', '2019-05-01 15:35:40', '2019-05-01 16:22:47');
-INSERT INTO `screenwriters` VALUES ('3', '魏一铮', '2', '北京', '2019-05-01 15:36:57', '2019-05-01 15:36:57');
-
--- ----------------------------
--- Table structure for scripts
--- ----------------------------
-DROP TABLE IF EXISTS `scripts`;
-CREATE TABLE `scripts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `scriptTitle` varchar(50) DEFAULT NULL COMMENT '剧本名称',
-  `scriptType` enum('1','2','3','4','5') DEFAULT NULL COMMENT '剧本类型',
-  `scriptTheme` enum('1','2','3','4','5') DEFAULT NULL COMMENT '剧本题材',
-  `created_at` datetime DEFAULT NULL COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='剧本表';
-
--- ----------------------------
--- Records of scripts
--- ----------------------------
-INSERT INTO `scripts` VALUES ('3', '《双鱼村的半农时代》', '1', '3', '2019-05-06 22:47:55', '2019-05-06 22:47:55');
 
 -- ----------------------------
 -- Table structure for sites
