@@ -70,7 +70,7 @@ class ScriptController extends Controller
      * @remark 编辑剧本
      */
     public function edit($id) {
-        $screenwriter = Script::findOrFail($id);
+        $script = Script::findOrFail($id);
         return view('admin.script.edit',compact('script'));
     }
 

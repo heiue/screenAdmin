@@ -2,13 +2,13 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">剧本名字</label>
     <div class="layui-input-block">
-        <input type="text" name="scriptTitle" value="{{ $screenwriter->scriptTitle ?? old('title') }}" lay-verify="required" placeholder="请输入剧本名字" class="layui-input" >
+        <input type="text" name="scriptTitle" value="{{ $script->scriptTitle ?? old('title') }}" lay-verify="required" placeholder="请输入剧本名字" class="layui-input" >
     </div>
 </div>
 <div class="layui-form-item">
     <label for="" class="layui-form-label">剧本类型</label>
     <div class="layui-input-block">
-        {{--<input type="text" name="rating" value="{{ $screenwriter->rating ?? 0 }}" lay-verify="required|number" placeholder="请输入数字" class="layui-input" >--}}
+        {{--<input type="text" name="rating" value="{{ $script->rating ?? 0 }}" lay-verify="required|number" placeholder="请输入数字" class="layui-input" >--}}
         <select name="scriptType" lay-search  lay-filter="parent_id">
             <option value="0">请选择</option>
             <option value="1">小说</option>
@@ -33,7 +33,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">关键词</label>
     <div class="layui-input-block">
-        <input type="text" name="keyword" value="{{ $screenwriter->keyword ?? old('title') }}" lay-verify="required" placeholder="关键词" class="layui-input" >
+        <input type="text" name="keyword" value="{{ $script->keyword ?? old('title') }}" lay-verify="required" placeholder="关键词" class="layui-input" >
     </div>
 </div>
 

@@ -317,10 +317,18 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::group(['middleware' => 'permission:project.index'], function () {
         //项目展示页
         Route::get('project/index', 'ProjectController@index')->name('admin.project.index');
+        Route::get('project/data', 'ProjectController@data')->name('admin.project.data');
 
+        //项目添加
+        Route::get('project/create', 'ProjectController@create')->name('admin.project.create');
+        Route::post('project/save', 'ProjectController@save')->name('admin.project.save');
 
+        //编辑项目
+        Route::get('project/{id}/edit', 'ProjectController@edit')->name('admin.project.edit');
+        Route::put('project/{id}/update', 'ProjectController@update')->name('admin.project.update');
 
-
+        //删除项目
+        Route::delete('project/destroy', 'ProjectController@destroy')->name('admin.project.destroy');
 
 
 
