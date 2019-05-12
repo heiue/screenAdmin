@@ -14,5 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    return 123456;
+});
+
+Route::group(['namespace' => 'Api'], function () {
+
+    Route::match(['post'], '/postone', 'IndexController@index');
+
 });

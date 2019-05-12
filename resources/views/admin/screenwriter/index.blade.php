@@ -4,10 +4,10 @@
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group ">
-                @can('product.attrname.destroy')
+                @can('screen.writer.destroy')
                     <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>
                 @endcan
-                @can('product.attrname.create')
+                @can('screen.writer.create')
                     <a class="layui-btn layui-btn-sm" href="{{ route('admin.screen.writer.create') }}">添 加</a>
                 @endcan
             </div>
@@ -16,10 +16,10 @@
             <table id="dataTable" lay-filter="dataTable"></table>
             <script type="text/html" id="options">
                 <div class="layui-btn-group">
-                    @can('product.attrname.edit')
+                    @can('screen.writer.edit')
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
                     @endcan
-                    @can('product.attrname.destroy')
+                    @can('screen.writer.destroy')
                         <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
                     @endcan
                 </div>
@@ -29,7 +29,7 @@
 @endsection
 
 @section('script')
-    @can('product.attrname')
+    @can('screen.writer.index')
         <script>
             layui.use(['layer','table','form'],function () {
                 var layer = layui.layer;

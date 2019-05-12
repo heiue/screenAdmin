@@ -10,7 +10,7 @@ class IndexController extends Controller
 
     public function index()
     {
-        echo '前台';exit;
+//        echo '前台';exit;
         return view('home.layout');
     }
 

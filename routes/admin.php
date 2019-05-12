@@ -269,7 +269,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['auth
     });
 });
 
-//编剧
+//编剧管理
 Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => ['auth', 'permission:screenwriter.manage']],function () {
     //编剧
     Route::group(['middleware' => 'permission:screen.writer.index'],function () {
@@ -290,7 +290,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => ['auth'
     });
 });
 
-//剧本
+//剧本管理
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:script.manage']],function () {
     //剧本
     Route::group(['middleware' => 'permission:script.index'], function () {
@@ -308,5 +308,21 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
         //删除
         Route::delete('script/destroy', 'ScriptController@destroy')->name('admin.script.destroy');
+    });
+});
+
+//项目管理
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:project.manage']], function () {
+    //项目
+    Route::group(['middleware' => 'permission:project.index'], function () {
+        //项目展示页
+        Route::get('project/index', 'ProjectController@index')->name('admin.project.index');
+
+
+
+
+
+
+
     });
 });
