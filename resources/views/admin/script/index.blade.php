@@ -45,8 +45,8 @@
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}
                         ,{field: 'scriptTitle', title: '剧本名称'}
-                        ,{field: 'scriptType', title: '剧本类型'}
-                        ,{field: 'scriptTheme', title: '剧本题材'}
+                        ,{field: 'script_type_name', title: '剧本类型'}
+                        ,{field: 'script_theme_name', title: '剧本题材'}
                         ,{field: 'created_at', title: '创建时间'}
                         ,{field: 'updated_at', title: '更新时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
