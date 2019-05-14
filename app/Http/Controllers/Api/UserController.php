@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\CardCard;
 use App\Models\CardUser;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,11 +41,18 @@ class UserController extends Controller
             $returnData['msg'] = 'openid is empty';
             return response()->json($returnData);
         }
-        $userInfo = CardUser::where('openid', $openId)->get();
+        $userInfo = CardUser::where('openid', $openId)->first();
         $returnData['data']['userinfo'] = $userInfo;
         return response()->json($returnData);
     }
 
+    /**
+     * @author  WEIYIZHENG
+     * @param Request $request
+     * @param id
+     * @param formData  编辑的数据包
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateUserInfo(Request $request) {
         $returnData = [
             'error' => 0,
@@ -72,5 +80,29 @@ class UserController extends Controller
             $returnData['msg'] = 'update is error';
             return response()->json($returnData);
         }
+    }
+
+    /**
+     * @author WEIYIZHENG
+     * @param Request $request
+     * @param uid
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserCard(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $id = $request->get('uid', 0);
+        if (empty($id) || $id == 0) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'id is empty';
+            return response()->json($returnData);
+        }
+        $cardInfo = CardCard::where('uid', $id)->first();
+        $returnData['data']['cardInfo'] = $cardInfo;
+        return response()->json($returnData);
+
     }
 }

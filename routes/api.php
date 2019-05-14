@@ -28,6 +28,10 @@ Route::group(['namespace' => 'Api'], function () {
         Route::match(['get', 'post'], '/user/getuserinfo', 'UserController@getUserInfo');
         //编辑本人的信息
         Route::match(['post'], '/user/updateuser', 'UserController@updateUserInfo');
+        //获取个人名片信息
+        Route::match(['post'], '/user/getusercard', 'UserController@getUserCard');
+
+
     });
 
     //编剧列表
