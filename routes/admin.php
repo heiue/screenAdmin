@@ -331,6 +331,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::delete('project/destroy', 'ProjectController@destroy')->name('admin.project.destroy');
 
 
-
     });
 });
+//ceshi
