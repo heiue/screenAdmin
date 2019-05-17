@@ -15,4 +15,6 @@
 </div>
 @endsection
 
-
+@section('script')
+    @include('admin.product.attrvalue_js')
+@endsection
