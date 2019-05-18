@@ -5,13 +5,13 @@
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group ">
                 @can('member.member.set')
-                <button class="layui-btn layui-btn-sm layui-btn-danger" id="listSet">设置</button>
+                {{--<button class="layui-btn layui-btn-sm layui-btn-danger" id="listSet">设置</button>--}}
                 @endcan
                 @can('member.member.destroy')
-                    <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删除</button>
+                    {{--<button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删除</button>--}}
                 @endcan
                 @can('member.member.create')
-                    <a class="layui-btn layui-btn-sm" href="{{ route('admin.member.create') }}">添加</a>
+                    {{--<a class="layui-btn layui-btn-sm" href="{{ route('admin.member.create') }}">添加</a>--}}
                 @endcan
                 <button class="layui-btn layui-btn-sm" id="memberSearch">搜索</button>
             </div>
@@ -29,10 +29,10 @@
             <script type="text/html" id="options">
                 <div class="layui-btn-group">
                     @can('member.member.create')
-                        <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+                        {{--<a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>--}}
                     @endcan
                     @can('member.member.destroy')
-                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+                        {{--<a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>--}}
                     @endcan
                 </div>
             </script>

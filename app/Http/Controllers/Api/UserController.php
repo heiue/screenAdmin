@@ -27,10 +27,16 @@ class UserController extends BaseController
      */
     public function login(Request $request)
     {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
         $model = new UserModel;
         $user_id = $model->login($request->post());
         $token = $model->getToken();
-        return response()->json(compact('user_id', 'token'));
+        $returnData['data'] = compact('user_id', 'token');
+        return response()->json($returnData);
     }
 
     /**

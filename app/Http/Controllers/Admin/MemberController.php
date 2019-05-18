@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\MemberCreateRequest;
 use App\Http\Requests\MemberUpdateRequest;
+use App\Models\CardUser;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,7 @@ class MemberController extends Controller
     }
     public function data(Request $request)
     {
-        $model = Member::query();
+        $model = CardUser::query();
         if ($request->get('name')){
             $model = $model->where('name','like','%'.$request->get('name').'%');
         }
@@ -115,6 +116,6 @@ class MemberController extends Controller
      * 会员预约列表
      * */
     public function reservation() {
-
+        echo 11;
     }
 }
