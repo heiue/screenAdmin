@@ -22,10 +22,15 @@ Route::group(['namespace' => 'Api'], function () {
     //测试
     Route::match(['post'], '/postone', 'IndexController@index');
 
+    //小程序用户登陆验证和自动注册
+    Route::match(['post'], '/user/login', 'UserController@login');
+
+
+
     //个人信息路由组
     Route::group([], function () {
         //获取本人的信息
-        Route::match(['get', 'post'], '/user/getuserinfo', 'UserController@getUserInfo');
+        Route::match(['get'], '/user/getuserinfo', 'UserController@getUserInfo');
         //编辑本人的信息
         Route::match(['post'], '/user/updateuser', 'UserController@updateUserInfo');
         //获取个人名片信息

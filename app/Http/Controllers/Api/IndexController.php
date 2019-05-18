@@ -9,9 +9,8 @@
 namespace App\Http\Controllers\Api;
 
 
-use App\Http\Controllers\Controller;
 
-class IndexController extends Controller
+class IndexController extends BaseController
 {
     public function index() {
         echo json_encode(['error' => 0,'msg' => 'success', 'data' => ['a' => 1]]);exit;

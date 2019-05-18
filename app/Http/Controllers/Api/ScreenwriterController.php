@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\Api;
 
 
-use App\Http\Controllers\Controller;
 use App\Models\Screenwriter;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,7 @@ use Illuminate\Http\Request;
  * @package App\Http\Controllers\Api
  * @remark 编剧类接口
  */
-class ScreenwriterController extends Controller
+class ScreenwriterController extends BaseController
 {
     /**
      * @param Request $request

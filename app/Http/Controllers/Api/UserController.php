@@ -9,10 +9,9 @@
 namespace App\Http\Controllers\Api;
 
 
-use App\Http\Controllers\Controller;
 use App\Models\CardCard;
 use App\Models\CardUser;
-use App\Models\User;
+use App\Models\Api\CardUser as UserModel;//小程序用户模型
 use Illuminate\Http\Request;
 
 /**
@@ -20,8 +19,20 @@ use Illuminate\Http\Request;
  * @package App\Http\Controllers\Api
  * @remark 个人信息类
  */
-class UserController extends Controller
+class UserController extends BaseController
 {
+    /**
+     * 用户自动登录
+     * @return array
+     */
+    public function login(Request $request)
+    {
+        $model = new UserModel;
+        $user_id = $model->login($request->post());
+        $token = $model->getToken();
+        return response()->json(compact('user_id', 'token'));
+    }
+
     /**
      * @author WEIYIZHENG
      * @remark 获取本人的信息
@@ -35,13 +46,21 @@ class UserController extends Controller
             'msg' => 'success',
             'data' => []
         ];
-        $openId = $request->get('openid', '');//获取请求参数openid
-        if (empty($openId)) {
+        // 当前用户信息
+        if (!$token = $request->get('token')) {
+            throw response()->json(['code' => -1, 'msg' => '缺少必要的参数：token']);
+        }
+        if (!$userOpenId = UserModel::getUserOpenId($token)) {
+            throw response()->json(['code' => -1, 'msg' => '没有找到用户信息']);
+        }
+
+//        $openId = $request->get('openid', '');//获取请求参数openid
+        if (empty($userOpenId)) {
             $returnData['error'] = 101;
             $returnData['msg'] = 'openid is empty';
             return response()->json($returnData);
         }
-        $userInfo = CardUser::where('openid', $openId)->first();
+        $userInfo = CardUser::where('openid', $userOpenId)->first();
         $returnData['data']['userinfo'] = $userInfo;
         return response()->json($returnData);
     }

@@ -14,4 +14,5 @@ use Illuminate\Database\Eloquent\Model;
 class CardUser extends Model
 {
 //    protected $fillable = ['name'];
+
 }
