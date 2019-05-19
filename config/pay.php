@@ -29,7 +29,9 @@ return [
 
     'wechat' => [
         // 公众号 APPID
-        'app_id' => 'wxf9faaff76cf2a957',
+        'app_id' => 'wxb0d6bcaf8544993b',
+
+        'app_secret' => '7522575f7d8cd3b09107d0982f33b007',
 
         // 小程序 APPID
         'miniapp_id' => '',
@@ -41,7 +43,7 @@ return [
         'mch_id' => '1504031721',
 
         // 微信支付异步通知地址
-        'notify_url' => '/notify',
+        //'notify_url' => '/notify',
 
         // 微信支付签名秘钥
         'key' => '5851AAF7964626E14EB0180B727CC15B',

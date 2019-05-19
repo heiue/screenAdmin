@@ -20,10 +20,10 @@ class WxUser
      * @param $appId
      * @param $appSecret
      */
-    public function __construct($appId, $appSecret)
+    public function __construct()
     {
-        $this->appId = $appId;
-        $this->appSecret = $appSecret;
+        $this->appId = config('pay.wechat.app_id');
+        $this->appSecret = config('pay.wechat.app_secret');
     }
 
     /**

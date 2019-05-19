@@ -29,6 +29,13 @@ class CardUser extends Model
         'app_secret' => '7522575f7d8cd3b09107d0982f33b007',
     ];
 
+    public function __construct($app_id, $app_secret)
+    {
+        parent::__construct();
+        $this->wxapp['app_id'] = $app_id;
+        $this->wxapp['app_secret'] = $app_secret;
+    }
+
     /**
      * 获取用户信息
      * @param $token
@@ -74,13 +81,11 @@ class CardUser extends Model
      */
     private function wxlogin($code)
     {
-        // 获取当前小程序信息
-        $wxapp = $this->wxapp;
-        if (empty($wxapp['app_id']) || empty($wxapp['app_secret'])) {
+        // 微信登录 (获取session_key)
+        $WxUser = new WxUser();
+        if (empty($WxUser->app_id) || empty($WxUser->app_secret)) {
             throw response()->json(['msg' => '填写appid 和 appsecret']);
         }
-        // 微信登录 (获取session_key)
-        $WxUser = new WxUser($wxapp['app_id'], $wxapp['app_secret']);
         if (!$session = $WxUser->sessionKey($code)) {
             throw response()->json(['msg' => $WxUser->getError()]);
         }
