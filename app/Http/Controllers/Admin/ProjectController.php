@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
-use App\Models\Project;
+use App\Models\CardProject;
 use Illuminate\Http\Request;
 
 /**
@@ -35,7 +35,7 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function data(Request $request) {
-        $res = Project::paginate($request->get('limit',30))->toArray();
+        $res = CardProject::paginate($request->get('limit',30))->toArray();
         $data = [
             'code' => 0,
             'msg'   => '正在请求中...',
@@ -64,7 +64,7 @@ class ProjectController extends Controller
             'projectTitle' => 'required',
             'projectType' => 'required',
         ]);
-        if (Project::create($request->all())) {
+        if (CardProject::create($request->all())) {
             return redirect(route('admin.project.index'))->with(['status'=>'添加完成']);
         }
         return redirect(route('admin.project.create'))->with(['status'=>'系统错误']);
@@ -77,7 +77,7 @@ class ProjectController extends Controller
      * @return string
      */
     public function edit($id) {
-        $project = Project::findOrFail($id);
+        $project = CardProject::findOrFail($id);
         return view('admin.project.edit',compact('project'));
     }
 
@@ -92,7 +92,7 @@ class ProjectController extends Controller
             'projectTitle'  => 'required',
             'projectType'  => 'required',
         ]);
-        $pro = Project::findOrFail($id);
+        $pro = CardProject::findOrFail($id);
         if ($pro->update($request->only(null))){
             return redirect(route('admin.project.index'))->with(['status'=>'更新成功']);
         }
@@ -104,7 +104,7 @@ class ProjectController extends Controller
         if (empty($ids)){
             return response()->json(['code'=>1,'msg'=>'请选择删除项']);
         }
-        if (Project::destroy($ids)){
+        if (CardProject::destroy($ids)){
             return response()->json(['code'=>0,'msg'=>'删除成功']);
         }
         return response()->json(['code'=>1,'msg'=>'删除失败']);
