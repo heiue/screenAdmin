@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\library\wechat;
+namespace App\Http\Controllers\Common\Wechat;
 use Illuminate\Http\Request;
 
 
@@ -40,7 +40,7 @@ class WxPay
         // API参数
         $params = [
             'appid' => $this->config['app_id'],
-            'attach' => 'test',
+            'attach' => '充值会员',
             'body' => $order_no,
             'mch_id' => $this->config['mch_id'],
             'nonce_str' => $nonceStr,
@@ -51,6 +51,7 @@ class WxPay
             'total_fee' => $total_fee * 100, // 价格:单位分
             'trade_type' => 'JSAPI',
         ];
+        return $params;
         // 生成签名
         $params['sign'] = $this->makeSign($params);
         // 请求API
@@ -76,9 +77,9 @@ class WxPay
 
     /**
      * 支付成功异步通知
-     * @param \app\task\model\Order $OrderModel
+     * @param  $RechargeModel
      */
-    public function notify($OrderModel)
+    public function notify($RechargeModel)
     {
 //        $xml = <<<EOF
 //<xml><appid><![CDATA[wx62f4cad175ad0f90]]></appid>
@@ -109,7 +110,7 @@ class WxPay
         $this->doLogs($xml);
         $this->doLogs($data);
         // 订单信息
-        $order = $OrderModel->payDetail($data['out_trade_no']);
+        $order = $RechargeModel->payDetail($data['out_trade_no']);
         empty($order) && $this->returnCode(true, '订单不存在');
         // 小程序配置信息
         $wxConfig = WxappModel::getWxappCache($order['wxapp_id']);

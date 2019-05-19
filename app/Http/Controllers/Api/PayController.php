@@ -8,18 +8,71 @@
 
 namespace App\Http\Controllers\Api;
 
-
-use app\common\library\wechat\WxPay;
+use App\Http\Controllers\Common\Wechat\WxPay;
+use App\Models\CardRecharge;
+use Illuminate\Http\Request;
 
 class PayController extends BaseController
 {
+    public $recharge = [
+        '1' => ['price' => 9.9, 'time' => 30*24*60*60],
+        '2' => ['price' => 9.9, 'time' => 30*24*60*60],
+        '3' => ['price' => 9.9, 'time' => 30*24*60*60],
+        '4' => ['price' => 9.9, 'time' => 30*24*60*60],
+    ];
     /**
-     * 微信支付
+     * @author WEIYIZHENG
+     * @param $request -> token 用户登陆凭证 price 金额 rechargeType 充值档位
+     * @remark 微信支付
      */
-    public function pay() {
+    public function pay(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+
+        ];
+        if (empty($request->price)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'price is empty';
+            return response()->json($returnData);
+        }
+        if (empty($request->rechargeType)) {
+            $returnData['error'] = 102;
+            $returnData['msg'] = 'rechargeType is empty';
+            return response()->json($returnData);
+        }
+        if ($request->price != $this->recharge[$request->rechargeType]['price']) {
+            $returnData['error'] = 103;
+            $returnData['msg'] = 'The amount does not match and may be changed';
+            return response()->json($returnData);
+        }
+        $userApi = new UserController();
+        $userInfo = json_decode($userApi->getUserInfo($request)->getContent(),true);
+        if (empty($userInfo['data']) || $userInfo['error'] != 0) {
+            $returnData['error'] = 104;
+            $returnData['msg'] = 'userinfo is empty';
+            return response()->json($returnData);
+        }
+        $cardRecharge = new CardRecharge();
+        $cardRecharge->uid = $userInfo['data']['userinfo']['id'];
+        $cardRecharge->totalFee = $request->price;
+        $cardRecharge->totalFeeR = 0;
+        $cardRecharge->status = 0;
+        $cardRecharge->totalTime = $this->recharge[$request->rechargeType]['time'];
+        $cardRecharge->payType = 'wechat';
+        $cardRecharge->transactionId = '';
+        if ($cardRecharge->save()) {
+            $rechargeId = $cardRecharge['id'];
+        } else {
+            $returnData['error'] = 105;
+            $returnData['msg'] = 'insert recharge is error';
+            return response()->json($returnData);
+        }
         // 发起微信支付
         $WxPay = new WxPay();
-        $wxParams = $WxPay->unifiedorder('123123123', $this->user['open_id'], 99);
+        $wxParams = $WxPay->unifiedorder($rechargeId, $userInfo['data']['userinfo']['openid'], $request->price, $request);
+        return $wxParams;
     }
 
 
@@ -28,6 +81,6 @@ class PayController extends BaseController
      */
     public function notify() {
         $WxPay = new WxPay();
-        $WxPay->notify(new OrderModel);
+        $WxPay->notify(new CardRecharge());
     }
 }
