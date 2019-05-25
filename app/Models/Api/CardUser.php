@@ -25,15 +25,15 @@ class CardUser extends Model
         'update_time'
     ];
     protected $wxapp = [
-        'app_id' => 'wxb0d6bcaf8544993b',
-        'app_secret' => '7522575f7d8cd3b09107d0982f33b007',
+        'app_id' => '',
+        'app_secret' => '',
     ];
 
     public function __construct($app_id, $app_secret)
     {
         parent::__construct();
-        $this->wxapp['app_id'] = $app_id;
-        $this->wxapp['app_secret'] = $app_secret;
+        $this->wxapp['app_id'] = config('pay.wechat.app_id');
+        $this->wxapp['app_secret'] = config('pay.wechat.app_secret');
     }
 
     /**
@@ -61,7 +61,7 @@ class CardUser extends Model
         // 生成token (session3rd)
         $this->token = $this->token($session['openid']);
         // 记录缓存, 7天
-        Cache::put($this->token, $session, 86400 * 7);
+        Cache::put($this->token, $session, 1440 * 7);
         return $user_id;
     }
 

@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CardProject;
+use App\Models\CardProjectTrack;
 use Illuminate\Http\Request;
 
 /**
@@ -92,6 +93,9 @@ class ProjectController extends Controller
             'projectTitle'  => 'required',
             'projectType'  => 'required',
         ]);
+        if (empty($request->get('isPublic'))) {
+            $request->offsetSet('isPublic', 0);
+        };
         $pro = CardProject::findOrFail($id);
         if ($pro->update($request->only(null))){
             return redirect(route('admin.project.index'))->with(['status'=>'更新成功']);
@@ -108,5 +112,38 @@ class ProjectController extends Controller
             return response()->json(['code'=>0,'msg'=>'删除成功']);
         }
         return response()->json(['code'=>1,'msg'=>'删除失败']);
+    }
+
+
+    /**
+     * @remark 项目跟踪
+     */
+    public function track($id) {
+        $project = CardProject::findOrFail($id);
+        $track = CardProjectTrack::where(['projectId' => $id])->orderBy('created_at','desc')->get()->toArray();
+        return view('admin.project.track', compact('project', 'track'));
+    }
+    /**
+     * @remark 添加项目跟踪记录
+     */
+    public function track_add(Request $request) {
+//        dump($request->get('trackContent'));
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $proId = $request->get('proId');
+        $trackContent = $request->get('trackContent');
+        if (empty($trackContent)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'trackContent is empty';
+            return response()->json($returnData);
+        }
+        $track = new CardProjectTrack();
+        $track->projectId = $proId;
+        $track->trackContent = htmlspecialchars($trackContent);
+        $insertId = $track->save();
+        return back();
     }
 }

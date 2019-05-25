@@ -24,7 +24,13 @@
         <input type="text" name="residence" value="{{ $screenwriter->residence ?? '' }}" lay-verify="required" placeholder="请输入常住地" class="layui-input" >
     </div>
 </div>
-
+<div class="layui-form-item">
+    <label class="layui-form-label">设置</label>
+    <div class="layui-input-inline">
+        <input type="checkbox" name="isPublic" lay-skin="switch" value="1" lay-text="公开|不公开" @if($screenwriter->isPublic == 1) checked @endif>
+    </div>
+    <div class="layui-form-mid layui-word-aux">不公开其他用户将看不到该编剧的信息</div>
+</div>
 <div class="layui-form-item">
     <div class="layui-input-block">
         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Common\Wechat;
 
+use Illuminate\Support\Facades\Cache;
+
+
 /**
  * 微信小程序用户管理类
  * Class WxUser
@@ -39,7 +42,7 @@ class WxUser
          * 其中 session_key 是对用户数据进行加密签名的密钥。为了自身应用安全，session_key 不应该在网络上传输。
          */
         $url = 'https://api.weixin.qq.com/sns/jscode2session';
-        $result = json_decode($this->curl($url, [
+        $result = json_decode(curl($url, [
             'appid' => $this->appId,
             'secret' => $this->appSecret,
             'grant_type' => 'authorization_code',
@@ -58,25 +61,18 @@ class WxUser
     }
 
     /**
-     * curl请求指定url
-     * @param $url
-     * @param array $data
-     * @return mixed
+     * getAccessToken
      */
-    public function curl($url, $data = [])
-    {
-        // 处理get数据
-        if (!empty($data)) {
-            $url = $url . '?' . http_build_query($data);
+    public function getAccessToken() {
+        if ($accessToken = Cache::get('accessToken')) {
+            return $accessToken;
+        } else {
+            $api = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appId.'&secret='.$this->appSecret;
+            $accessToken = curl($api);
+            Cache::put('accessToken', $accessToken, 120);
+            return $accessToken;
         }
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);//这个是重点。
-        $result = curl_exec($curl);
-        curl_close($curl);
-        return $result;
+
     }
 
 }

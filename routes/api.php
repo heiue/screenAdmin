@@ -20,7 +20,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['namespace' => 'Api'], function () {
 
     //测试
-    Route::match(['post'], '/postone', 'IndexController@index');
+    Route::match(['get','post'], '/wechat/token', 'WechatController@token');
+    //模版消息测试
+    Route::match(['get','post'], '/wechat/send', 'WechatController@send');
+
+
+
+
+
+    //微信开发
+    Route::match(['get','post'], '/wechat', 'WechatController@token');
 
     //小程序用户登陆验证和自动注册
     Route::match(['post'], '/user/login', 'UserController@login');

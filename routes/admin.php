@@ -330,6 +330,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         //删除项目
         Route::delete('project/destroy', 'ProjectController@destroy')->name('admin.project.destroy');
 
+        //项目跟踪
+        Route::get('project/{id}/track', 'ProjectController@track')->name('admin.project.track');
+        Route::get('project/track_add', 'ProjectController@track_add')->name('admin.project.track_add');
 
     });
 });

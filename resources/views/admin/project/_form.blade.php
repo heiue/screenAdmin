@@ -23,6 +23,19 @@
         <textarea name="introduction" placeholder="请输入简介" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>
     </div>
 </div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">项目简介</label>
+    <div class="layui-input-block">
+        <textarea name="remark" placeholder="请输入备注" class="layui-textarea">{{$project->remark??old('remark')}}</textarea>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">设置</label>
+    <div class="layui-input-inline">
+        <input type="checkbox" name="isPublic" lay-skin="switch" value="1" lay-text="公开|不公开" @if(!isset($project) || $project->isPublic != 0) checked @endif>
+    </div>
+    <div class="layui-form-mid layui-word-aux">不公开其他用户将看不到该项目的信息</div>
+</div>
 
 <div class="layui-form-item">
     <div class="layui-input-block">
