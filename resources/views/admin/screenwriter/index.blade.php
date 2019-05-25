@@ -29,6 +29,9 @@
 @endsection
 
 @section('script')
+    <script type="text/html" id="switchTpl">
+        <input type="checkbox" name="isPublic" value="@{{d.isPublic}}" lay-skin="switch" lay-text="公开|不公开" proid="@{{ d.id }}" lay-filter="isPublicDemo" @{{ d.isPublic == 1 ? 'checked' : '' }}>
+    </script>
     @can('screen.writer.index')
         <script>
             layui.use(['layer','table','form'],function () {
@@ -47,6 +50,7 @@
                         ,{field: 'name', title: '编剧名'}
                         ,{field: 'rating', title: '编剧评级'}
                         ,{field: 'residence', title: '常住地'}
+                        ,{field:'isPublic', title:'设置', width:100, templet: '#switchTpl', unresize: true}
                         ,{field: 'created_at', title: '创建时间'}
                         ,{field: 'updated_at', title: '更新时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
@@ -96,6 +100,24 @@
                         layer.msg('请选择删除项')
                     }
                 })
+
+                //监听设置操作 公开不公开
+                form.on('switch(isPublicDemo)', function(obj){
+                    if (obj.value == 1) {
+                        $(this).val(0)
+                        var isPublic = 0;
+                    } else if (obj.value == 0) {
+                        $(this).val(1)
+                        var isPublic = 1;
+                    }
+                    var proid = $(this).attr('proid')
+                    $.post("{{ route('admin.screenwriter.updateIsPublic') }}",{_method:'post',ids:proid,isPublic:isPublic},function (result) {
+                        if (result.code==0){
+                            layer.tips('已更新', obj.othis);
+                        }
+                        layer.msg(result.msg,)
+                    });
+                });
             })
         </script>
     @endcan

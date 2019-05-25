@@ -287,6 +287,10 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => ['auth'
 
         //删除
         Route::delete('screenwriter/destroy', 'ScreenwriterController@destroy')->name('admin.screen.writer.destroy');
+
+        //修改是不是公开
+        Route::post('screenwriter/updateIsPublic', 'ScreenwriterController@updateIsPublic')->name('admin.screenwriter.updateIsPublic');
+
     });
 });
 
@@ -329,6 +333,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
         //删除项目
         Route::delete('project/destroy', 'ProjectController@destroy')->name('admin.project.destroy');
+        //修改是不是公开
+        Route::post('project/updateIsPublic', 'ProjectController@updateIsPublic')->name('admin.project.updateIsPublic');
 
         //项目跟踪
         Route::get('project/{id}/track', 'ProjectController@track')->name('admin.project.track');

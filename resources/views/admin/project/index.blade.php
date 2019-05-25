@@ -31,7 +31,7 @@
 
 @section('script')
     <script type="text/html" id="switchTpl">
-        <input type="checkbox" name="isPublic" value="@{{d.isPublic}}" lay-skin="switch" lay-text="公开|不公开" lay-filter="isPublicDemo" @{{ d.isPublic == 1 ? 'checked' : '' }}>
+        <input type="checkbox" name="isPublic" value="@{{d.isPublic}}" lay-skin="switch" lay-text="公开|不公开" proid="@{{ d.id }}" lay-filter="isPublicDemo" @{{ d.isPublic == 1 ? 'checked' : '' }}>
     </script>
     @can('script.index')
         <script>
@@ -51,7 +51,7 @@
                         ,{field: 'projectTitle', title: '项目名字'}
                         ,{field: 'project_type_name', title: '项目类型'}
                         ,{field: 'introduction', title: '项目简介'}
-                        // ,{field:'isPublic', title:'设置', width:100, templet: '#switchTpl', unresize: true}
+                        ,{field:'isPublic', title:'设置', width:100, templet: '#switchTpl', unresize: true}
                         ,{field: 'created_at', title: '创建时间'}
                         ,{field: 'updated_at', title: '更新时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
@@ -120,7 +120,20 @@
 
                 //监听设置操作 公开不公开
                 form.on('switch(isPublicDemo)', function(obj){
-                    layer.tips(obj.elem.checked, obj.othis);
+                    if (obj.value == 1) {
+                        $(this).val(0)
+                        var isPublic = 0;
+                    } else if (obj.value == 0) {
+                        $(this).val(1)
+                        var isPublic = 1;
+                    }
+                    var proid = $(this).attr('proid')
+                    $.post("{{ route('admin.project.updateIsPublic') }}",{_method:'post',ids:proid,isPublic:isPublic},function (result) {
+                        if (result.code==0){
+                            layer.tips('已更新', obj.othis);
+                        }
+                        layer.msg(result.msg,)
+                    });
                 });
 
             })

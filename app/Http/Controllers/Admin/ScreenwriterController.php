@@ -102,4 +102,25 @@ class ScreenwriterController extends Controller
         return response()->json(['code'=>1,'msg'=>'删除失败']);
     }
 
+    /**
+     * @remark 更新编剧公开不公开
+     *
+     */
+    public function updateIsPublic(Request $request) {
+        $ids = $request->get('ids', '0');
+        $isPublic = $request->get('isPublic', 0);
+        if (empty($ids)){
+            return response()->json(['code'=>1,'msg'=>'ids is empty']);
+        }
+        $screenWriter = Screenwriter::findOrFail($ids);
+        if (empty($screenWriter)) {
+            return response()->json(['code'=>1,'msg'=>'this screenWriter is empty']);
+        }
+        $screenWriter->isPublic = $isPublic;
+        if ($screenWriter->save()){
+            return response()->json(['code'=>0,'msg'=>'success']);
+        }
+        return response()->json(['code'=>1,'msg'=>'error']);
+    }
+
 }

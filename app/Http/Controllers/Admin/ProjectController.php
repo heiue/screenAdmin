@@ -103,6 +103,11 @@ class ProjectController extends Controller
         return redirect(route('admin.project.index'))->withErrors(['status'=>'系统错误']);
     }
 
+    /**
+     * @remark 项目删除
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Request $request) {
         $ids = $request->get('ids');
         if (empty($ids)){
@@ -114,6 +119,26 @@ class ProjectController extends Controller
         return response()->json(['code'=>1,'msg'=>'删除失败']);
     }
 
+    /**
+     * @remark 更新项目公开不公开
+     *
+     */
+    public function updateIsPublic(Request $request) {
+        $ids = $request->get('ids', '0');
+        $isPublic = $request->get('isPublic', 0);
+        if (empty($ids)){
+            return response()->json(['code'=>1,'msg'=>'ids is empty']);
+        }
+        $cardProject = CardProject::findOrFail($ids);
+        if (empty($cardProject)) {
+            return response()->json(['code'=>1,'msg'=>'this cardPorject is empty']);
+        }
+        $cardProject->isPublic = $isPublic;
+        if ($cardProject->save()){
+            return response()->json(['code'=>0,'msg'=>'success']);
+        }
+        return response()->json(['code'=>1,'msg'=>'error']);
+    }
 
     /**
      * @remark 项目跟踪
