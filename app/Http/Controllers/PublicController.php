@@ -16,7 +16,7 @@ class PublicController extends Controller
         //上传文件最大大小,单位M
         $maxSize = 10;
         //支持的上传图片类型
-        $allowed_extensions = ["png", "jpg", "gif"];
+        $allowed_extensions = ["png", "jpg", "gif", "jpeg"];
         //返回信息json
         $data = ['code'=>200, 'msg'=>'上传失败', 'data'=>''];
         $file = $request->file('file');
@@ -38,7 +38,7 @@ class PublicController extends Controller
             $data['msg'] = $file->getErrorMessage();
             return response()->json($data);
         }
-        $newFile = date('Y-m-d')."_".time()."_".uniqid().".".$file->getClientOriginalExtension();
+        $newFile = date('Y-m-d')."/".time()."_".uniqid().".".$file->getClientOriginalExtension();
 //        $disk = QiniuStorage::disk('qiniu');
         $disk = Storage::disk('public');
         $res = $disk->put($newFile,file_get_contents($file->getRealPath()));
@@ -47,6 +47,8 @@ class PublicController extends Controller
                 'code'  => 0,
                 'msg'   => '上传成功',
                 'data'  => $newFile,
+                'ext'   => $ext,
+                'size'  => $file->getClientSize()?$file->getClientSize():0,
                 'url'   => '/upload/'.$newFile
             ];
         }else{

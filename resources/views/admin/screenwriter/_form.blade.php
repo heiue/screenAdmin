@@ -11,10 +11,10 @@
         {{--<input type="text" name="rating" value="{{ $screenwriter->rating ?? 0 }}" lay-verify="required|number" placeholder="请输入数字" class="layui-input" >--}}
         <select name="rating" lay-search  lay-filter="parent_id">
             <option value="0">请选择</option>
-            <option value="1">金牌编剧</option>
-            <option value="2">著名编剧</option>
-            <option value="3">知名编剧</option>
-            <option value="4">新锐编剧</option>
+            <option value="1" @if(isset($screenwriter->rating) && $screenwriter->rating == 1) selected @endif>金牌编剧</option>
+            <option value="2" @if(isset($screenwriter->rating) && $screenwriter->rating == 2) selected @endif>著名编剧</option>
+            <option value="3" @if(isset($screenwriter->rating) && $screenwriter->rating == 3) selected @endif>知名编剧</option>
+            <option value="4" @if(isset($screenwriter->rating) && $screenwriter->rating == 4) selected @endif>新锐编剧</option>
         </select>
     </div>
 </div>

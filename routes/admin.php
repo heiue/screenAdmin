@@ -33,6 +33,9 @@ Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>'auth'],funct
     Route::get('/index2','IndexController@index2')->name('admin.index2');
     //图标
     Route::get('icons','IndexController@icons')->name('admin.icons');
+
+    //删除附件表中的数据
+    Route::post('/annex/destroy', 'AnnexController@destroy')->name('admin.annex');
 });
 
 //系统管理
@@ -334,7 +337,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         //删除项目
         Route::delete('project/destroy', 'ProjectController@destroy')->name('admin.project.destroy');
         //修改是不是公开
-        Route::post('project/updateIsPublic', 'ProjectController@updateIsPublic')->name('admin.project.updateIsPublic');
+        Route::post('project/updateIsPublic', 'ProjectController@updateIsPublic')->name('admin.project.updateIs');
 
         //项目跟踪
         Route::get('project/{id}/track', 'ProjectController@track')->name('admin.project.track');

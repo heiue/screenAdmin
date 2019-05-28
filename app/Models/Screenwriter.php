@@ -15,8 +15,9 @@ class Screenwriter extends Model
 {
     protected $fillable = ['id','name','rating','residence'];
     protected $table = 'card_screenwriters';
+    protected $appends = ['rating_name'];
 
-    public function getRatingAttribute($value)
+    public function getRatingNameAttribute($value)
     {
         $rating = [
             '1' => '金牌编剧',
@@ -24,6 +25,6 @@ class Screenwriter extends Model
             '3' => '知名编剧',
             '4' => '新锐编剧',
         ];
-        return $value ? $rating[$value] : '';
+        return $this->rating ? $rating[$this->rating] : '';
     }
 }

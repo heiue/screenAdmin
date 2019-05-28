@@ -48,7 +48,7 @@
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}
                         ,{field: 'name', title: '编剧名'}
-                        ,{field: 'rating', title: '编剧评级'}
+                        ,{field: 'rating_name', title: '编剧评级'}
                         ,{field: 'residence', title: '常住地'}
                         ,{field:'isPublic', title:'设置', width:100, templet: '#switchTpl', unresize: true}
                         ,{field: 'created_at', title: '创建时间'}

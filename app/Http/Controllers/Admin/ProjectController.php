@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\CardAnnex;
 use App\Models\CardProject;
 use App\Models\CardProjectTrack;
 use Illuminate\Http\Request;
@@ -65,7 +66,29 @@ class ProjectController extends Controller
             'projectTitle' => 'required',
             'projectType' => 'required',
         ]);
-        if (CardProject::create($request->all())) {
+        $insertId = CardProject::create($request->all())->id;
+        if ($insertId) {
+            $annex = new CardAnnex();
+            //判断图集 添加图片附件
+            $img = $request->get('img');
+            $size = $request->get('size', []);
+            $ext = $request->get('ext', []);
+            if (!empty($img)) {
+                $imgData = array();
+                foreach ($img as $key => $value) {
+                    $imgData[] = [
+                        'type' => 'img',
+                        'path' => $value,
+                        'size' => $size[$key]?$size[$key]:0,
+                        'format' => $ext[$key]?$ext[$key]:'',
+                        'aboutId' => $insertId,
+                        'aboutType' => 'project',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($imgData);
+            }
             return redirect(route('admin.project.index'))->with(['status'=>'添加完成']);
         }
         return redirect(route('admin.project.create'))->with(['status'=>'系统错误']);
@@ -79,6 +102,9 @@ class ProjectController extends Controller
      */
     public function edit($id) {
         $project = CardProject::findOrFail($id);
+        $imgData = CardAnnex::select('id','path')->where(['aboutId' => $project->id, 'type' => 'img', 'aboutType' => 'project'])->get();
+        $project->img = $imgData;
+        $project->imgCount = count($imgData);
         return view('admin.project.edit',compact('project'));
     }
 
@@ -97,6 +123,29 @@ class ProjectController extends Controller
             $request->offsetSet('isPublic', 0);
         };
         $pro = CardProject::findOrFail($id);
+        if (!empty($pro)) {
+            $annex = new CardAnnex();
+            //判断图集 添加图片附件
+            $img = $request->get('img');
+            $size = $request->get('size', []);
+            $ext = $request->get('ext', []);
+            if (!empty($img)) {
+                $imgData = array();
+                foreach ($img as $key => $value) {
+                    $imgData[] = [
+                        'type' => 'img',
+                        'path' => $value,
+                        'size' => $size[$key]?$size[$key]:0,
+                        'format' => $ext[$key]?$ext[$key]:'',
+                        'aboutId' => $id,
+                        'aboutType' => 'project',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($imgData);
+            }
+        }
         if ($pro->update($request->only(null))){
             return redirect(route('admin.project.index'))->with(['status'=>'更新成功']);
         }
@@ -120,20 +169,36 @@ class ProjectController extends Controller
     }
 
     /**
-     * @remark 更新项目公开不公开
+     * @remark 更新项目公开不公开  置不置顶  加不加精
      *
      */
     public function updateIsPublic(Request $request) {
         $ids = $request->get('ids', '0');
         $isPublic = $request->get('isPublic', 0);
+        $field = $request->get('field', '');
         if (empty($ids)){
             return response()->json(['code'=>1,'msg'=>'ids is empty']);
+        }
+        if (empty($field)) {
+            return response()->json(['code'=>1,'msg'=>'field is empty']);
         }
         $cardProject = CardProject::findOrFail($ids);
         if (empty($cardProject)) {
             return response()->json(['code'=>1,'msg'=>'this cardPorject is empty']);
         }
-        $cardProject->isPublic = $isPublic;
+        switch ($field) {
+            case 'public':
+                $cardProject->isPublic = $isPublic;
+                break;
+            case 'top':
+                $cardProject->isTop = $isPublic;
+                break;
+            case 'fine':
+                $cardProject->isFine = $isPublic;
+                break;
+            default:
+                return response()->json(['code'=>1,'msg'=>'Field is not specified']);
+        }
         if ($cardProject->save()){
             return response()->json(['code'=>0,'msg'=>'success']);
         }

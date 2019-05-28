@@ -30,6 +30,27 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">项目图集</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
+            <button type="button" class="layui-btn" id="begin_up">开始上传</button>
+            <span></span>
+            <div class="layui-upload-list" >
+                <ul id="layui-upload-box" class="layui-clear">
+                    @if(isset($project->img))
+                        @foreach($project->img as $value)
+                        <li><img src="{{ $value->path }}" /><p><button class="layui-btn layui-btn-xs layui-btn-fluid delete_project_img" type="button" imgId="{{$value->id}}"><i class="layui-icon"></i></button></p></li>
+                        @endforeach
+                    @endif
+                </ul>
+            </div>
+            <div class="upload_url_list" id="thumb">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
     <label class="layui-form-label">设置</label>
     <div class="layui-input-inline">
         <input type="checkbox" name="isPublic" lay-skin="switch" value="1" lay-text="公开|不公开" @if(!isset($project) || $project->isPublic != 0) checked @endif>

@@ -8,13 +8,12 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">剧本类型</label>
     <div class="layui-input-block">
-        {{--<input type="text" name="rating" value="{{ $script->rating ?? 0 }}" lay-verify="required|number" placeholder="请输入数字" class="layui-input" >--}}
         <select name="scriptType" lay-search  lay-filter="parent_id">
             <option value="0">请选择</option>
-            <option value="1">小说</option>
-            <option value="2">网剧</option>
-            <option value="3">综艺</option>
-            <option value="4">电视剧</option>
+            <option value="1" @if(isset($script->scriptType) && $script->scriptType == 1) selected @endif>小说</option>
+            <option value="2" @if(isset($script->scriptType) && $script->scriptType == 2) selected @endif>网剧</option>
+            <option value="3" @if(isset($script->scriptType) && $script->scriptType == 3) selected @endif>综艺</option>
+            <option value="4" @if(isset($script->scriptType) && $script->scriptType == 4) selected @endif>电视剧</option>
         </select>
     </div>
 </div>
@@ -23,10 +22,10 @@
     <div class="layui-input-block">
         <select name="scriptTheme" lay-search  lay-filter="parent_id">
             <option value="0">请选择</option>
-            <option value="1">都市</option>
-            <option value="2">剧情</option>
-            <option value="3">民国</option>
-            <option value="4">犯罪</option>
+            <option value="1" @if(isset($script->scriptTheme) && $script->scriptTheme == 1) selected @endif>都市</option>
+            <option value="2" @if(isset($script->scriptTheme) && $script->scriptTheme == 2) selected @endif>剧情</option>
+            <option value="3" @if(isset($script->scriptTheme) && $script->scriptTheme == 3) selected @endif>民国</option>
+            <option value="4" @if(isset($script->scriptTheme) && $script->scriptTheme == 4) selected @endif>犯罪</option>
         </select>
     </div>
 </div>

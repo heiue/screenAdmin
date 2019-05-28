@@ -12,3 +12,7 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    @include('admin.project._js')
+@endsection
