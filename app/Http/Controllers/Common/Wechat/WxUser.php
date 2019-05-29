@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Cache;
  */
 class WxUser
 {
-    private $appId;
-    private $appSecret;
+    public $appId;
+    public $appSecret;
 
     private $error;
 

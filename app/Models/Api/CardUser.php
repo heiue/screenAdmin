@@ -29,7 +29,7 @@ class CardUser extends Model
         'app_secret' => '',
     ];
 
-    public function __construct($app_id, $app_secret)
+    public function __construct()
     {
         parent::__construct();
         $this->wxapp['app_id'] = config('pay.wechat.app_id');
@@ -83,7 +83,7 @@ class CardUser extends Model
     {
         // 微信登录 (获取session_key)
         $WxUser = new WxUser();
-        if (empty($WxUser->app_id) || empty($WxUser->app_secret)) {
+        if (empty($WxUser->appId) || empty($WxUser->appSecret)) {
             throw response()->json(['msg' => '填写appid 和 appsecret']);
         }
         if (!$session = $WxUser->sessionKey($code)) {

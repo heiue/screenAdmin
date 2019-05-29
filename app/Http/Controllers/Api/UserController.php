@@ -33,7 +33,7 @@ class UserController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $model = new UserModel;
+        $model = new UserModel();
         $user_id = $model->login($request->post());
         $token = $model->getToken();
         $returnData['data'] = compact('user_id', 'token');
