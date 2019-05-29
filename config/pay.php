@@ -29,9 +29,9 @@ return [
 
     'wechat' => [
         // 公众号 APPID
-        'app_id' => 'wxb0d6bcaf8544993b',
+        'app_id' => 'wxf724f9d3bdbbb4b5',//正式的
 
-        'app_secret' => '7522575f7d8cd3b09107d0982f33b007',
+        'app_secret' => 'bdc2a06c3d660561d3136094ed4e2276',//正式的
 
         // 小程序 APPID
         'miniapp_id' => '',
@@ -40,13 +40,13 @@ return [
         'appid' => '',
 
         // 微信支付分配的微信商户号
-        'mch_id' => '1504031721',
+        'mch_id' => '1496688472',//正式的
 
         // 微信支付异步通知地址
         //'notify_url' => '/notify',
 
         // 微信支付签名秘钥
-        'key' => '5851AAF7964626E14EB0180B727CC15B',
+        'key' => 'Whm11111111112222222222333333333',//正式的
 
         // 客户端证书路径，退款、红包等需要用到。请填写绝对路径，linux 请确保权限问题。pem 格式。
         'cert_client' => '',
