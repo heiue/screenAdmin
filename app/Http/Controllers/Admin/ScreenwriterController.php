@@ -58,6 +58,7 @@ class ScreenwriterController extends Controller
             'name'  => 'required|string',
             'rating'  => 'required',
             'residence'  => 'required',
+            'avatar'    => 'required'
         ]);
 //        dump($request->all());exit;
         if (Screenwriter::create($request->all())){

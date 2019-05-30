@@ -32,7 +32,7 @@
             <div class="layui-collapse" lay-accordion>
                 @foreach($track as $key => $value)
                 <div class="layui-colla-item">
-                    <h2 class="layui-colla-title">{{ $value['created_at'] }}</h2>
+                    <h2 class="layui-colla-title">{{ $value['created_at'] }} <span class="layui-layout-right">跟进人：{{ $value['admin_name'] }}</span></h2>
                     <div class="layui-colla-content @if($key == 0) layui-show @endif">{{ $value['trackContent'] }}</div>
                 </div>
                 @endforeach

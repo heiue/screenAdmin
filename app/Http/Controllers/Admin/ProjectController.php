@@ -14,6 +14,7 @@ use App\Models\CardAnnex;
 use App\Models\CardProject;
 use App\Models\CardProjectTrack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ProjectController
@@ -217,6 +218,7 @@ class ProjectController extends Controller
      * @remark 添加项目跟踪记录
      */
     public function track_add(Request $request) {
+        $user = Auth::user();
 //        dump($request->get('trackContent'));
         $returnData = [
             'error' => 0,
@@ -233,6 +235,7 @@ class ProjectController extends Controller
         $track = new CardProjectTrack();
         $track->projectId = $proId;
         $track->trackContent = htmlspecialchars($trackContent);
+        $track->adminUid = $user->id;
         $insertId = $track->save();
         return back();
     }

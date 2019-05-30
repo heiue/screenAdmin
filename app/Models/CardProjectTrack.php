@@ -13,5 +13,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardProjectTrack extends Model
 {
+    protected $appends = ['admin_name'];
 
+    public function getAdminNameAttribute() {
+        if ($user = User::where(['id' => $this->adminUid])->first()) {
+            return $user['username'];
+        } else {
+            return '';
+        }
+    }
 }

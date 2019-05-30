@@ -61,6 +61,10 @@ Route::group(['namespace' => 'Api'], function () {
     //编剧列表
     Route::match(['get','post'], '/screenwriter/list', 'ScreenwriterController@list');
 
+    //项目列表
+    Route::match(['get', 'post'], '/project/list', 'ProjectController@list');
+    Route::match(['get', 'post'], '/project/detail', 'ProjectController@projectDetail');
+
 
 
 });
