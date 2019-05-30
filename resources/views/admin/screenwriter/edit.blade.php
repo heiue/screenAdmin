@@ -13,3 +13,7 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    @include('admin.screenwriter._js')
+@endsection

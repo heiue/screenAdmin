@@ -109,6 +109,7 @@ class ScreenwriterController extends Controller
     public function updateIsPublic(Request $request) {
         $ids = $request->get('ids', '0');
         $isPublic = $request->get('isPublic', 0);
+        $field = $request->get('field', '');
         if (empty($ids)){
             return response()->json(['code'=>1,'msg'=>'ids is empty']);
         }
@@ -116,7 +117,16 @@ class ScreenwriterController extends Controller
         if (empty($screenWriter)) {
             return response()->json(['code'=>1,'msg'=>'this screenWriter is empty']);
         }
-        $screenWriter->isPublic = $isPublic;
+        switch ($field) {
+            case 'public':
+                $screenWriter->isPublic = $isPublic;
+                break;
+            case 'hot':
+                $screenWriter->isHot = $isPublic;
+                break;
+            default:
+                return response()->json(['code'=>1,'msg'=>'Field is not specified']);
+        }
         if ($screenWriter->save()){
             return response()->json(['code'=>0,'msg'=>'success']);
         }

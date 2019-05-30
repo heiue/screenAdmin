@@ -29,6 +29,9 @@
 @endsection
 
 @section('script')
+    <script type="text/html" id="switchTpl_Hot">
+        <input type="checkbox" name="isTop" value="@{{d.isHot}}" lay-skin="switch" lay-text="ON|OFF"  proid="@{{ d.id }}" lay-filter="isHotDemo" @{{ d.isHot == 1 ? 'checked' : '' }}>
+    </script>
     <script type="text/html" id="switchTpl">
         <input type="checkbox" name="isPublic" value="@{{d.isPublic}}" lay-skin="switch" lay-text="公开|不公开" proid="@{{ d.id }}" lay-filter="isPublicDemo" @{{ d.isPublic == 1 ? 'checked' : '' }}>
     </script>
@@ -51,6 +54,7 @@
                         ,{field: 'rating_name', title: '编剧评级'}
                         ,{field: 'residence', title: '常住地'}
                         ,{field:'isPublic', title:'设置', width:100, templet: '#switchTpl', unresize: true}
+                        ,{field:'isTop', title:'热门', width:100, templet: '#switchTpl_Hot', unresize: true}
                         ,{field: 'created_at', title: '创建时间'}
                         ,{field: 'updated_at', title: '更新时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
@@ -111,7 +115,25 @@
                         var isPublic = 1;
                     }
                     var proid = $(this).attr('proid')
-                    $.post("{{ route('admin.screenwriter.updateIsPublic') }}",{_method:'post',ids:proid,isPublic:isPublic},function (result) {
+                    $.post("{{ route('admin.screenwriter.updateIsPublic') }}",{_method:'post',ids:proid,isPublic:isPublic,field:"public"},function (result) {
+                        if (result.code==0){
+                            layer.tips('已更新', obj.othis);
+                        }
+                        layer.msg(result.msg,)
+                    });
+                });
+
+                //监听置顶
+                form.on('switch(isHotDemo)', function(obj){
+                    if (obj.value == 1) {
+                        $(this).val(0)
+                        var isHot = 0;
+                    } else if (obj.value == 0) {
+                        $(this).val(1)
+                        var isHot = 1;
+                    }
+                    var proid = $(this).attr('proid')
+                    $.post("{{ route('admin.screenwriter.updateIsPublic') }}",{_method:'post',ids:proid,isPublic:isHot, field:"hot"},function (result) {
                         if (result.code==0){
                             layer.tips('已更新', obj.othis);
                         }

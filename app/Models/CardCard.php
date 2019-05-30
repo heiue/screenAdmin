@@ -13,5 +13,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardCard extends Model
 {
-
+    protected $fillable = ['uid','style_group_id'];
 }

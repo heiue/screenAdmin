@@ -24,10 +24,27 @@
         <input type="text" name="residence" value="{{ $screenwriter->residence ?? '' }}" lay-verify="required" placeholder="请输入常住地" class="layui-input" >
     </div>
 </div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">头像</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
+            <div class="layui-upload-list" >
+                <ul id="layui-upload-box" class="layui-clear">
+                    @if(isset($screenwriter->avatar))
+                        <li><img src="{{ $screenwriter->avatar }}" /></li>
+                    @endif
+                </ul>
+                <input type="hidden" name="avatar" id="thumb" value="{{ $screenwriter->avatar??'' }}">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="layui-form-item">
     <label class="layui-form-label">设置</label>
     <div class="layui-input-inline">
-        <input type="checkbox" name="isPublic" lay-skin="switch" value="1" lay-text="公开|不公开" @if($screenwriter->isPublic == 1) checked @endif>
+        <input type="checkbox" name="isPublic" lay-skin="switch" value="1" lay-text="公开|不公开" @if(!isset($screenwriter) || $screenwriter->isPublic != 0) checked @endif>
     </div>
     <div class="layui-form-mid layui-word-aux">不公开其他用户将看不到该编剧的信息</div>
 </div>

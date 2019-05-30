@@ -125,7 +125,7 @@ class UserController extends BaseController
         $id = $request->get('uid', 0);
         if (empty($id) || $id == 0) {
             $returnData['error'] = 101;
-            $returnData['msg'] = 'id is empty';
+            $returnData['msg'] = 'uid is empty';
             return response()->json($returnData);
         }
         $cardInfo = CardCard::where('uid', $id)->first();
@@ -147,12 +147,8 @@ class UserController extends BaseController
             'msg' => 'Successful editing',
             'data' => []
         ];
-        $id = $request->get('cardid', 0);
-        if (empty($id) || !is_numeric($id) || strpos($id, '.')) {
-            $returnData['error'] = 102;
-            $returnData['msg'] = 'id is empty';
-            return response()->json($returnData);
-        }
+        $cardid = $request->get('cardid', 0);
+        $uid = $request->get('uid');
         $formData = $request->get('formData', []);
         if (empty($formData)) {
             $returnData['error'] = 103;
@@ -161,15 +157,75 @@ class UserController extends BaseController
         }
 //        $cUser = CardUser::findOrFail($id);
 //        if ($cUser->update($formData)) {
-        if (CardCard::where('id', $id)->update($formData)) {
-            return response()->json($returnData);
+        if (!empty($cardid)) {
+            if (CardCard::where('id', $cardid)->update($formData)) {
+                return response()->json($returnData);
+            } else {
+                $returnData['error'] = 104;
+                $returnData['msg'] = 'update is error';
+                return response()->json($returnData);
+            }
+        } elseif (!empty($uid)) {
+            $formData['uid'] = $uid;
+            $formData['style_group_id'] = $uid;
+            if ($card = CardCard::create($formData)) {
+                $returnData['insertId'] = $card->id;
+                $returnData['msg'] = 'Successful inserting';
+                return response()->json($returnData);
+            } else {
+                $returnData['error'] = 104;
+                $returnData['msg'] = 'insert is error';
+                return response()->json($returnData);
+            }
         } else {
-            $returnData['error'] = 104;
-            $returnData['msg'] = 'update is error';
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'id/uid is empty';
             return response()->json($returnData);
         }
+
     }
 
+
+    /**
+     * @author WEIYIZHENG
+     * @remark 添加收藏
+     * $param $rid int 人脉或者项目的ID
+     * @param $rType int 类型 1 是人脉 2 是项目
+     */
+    public function saveCollection(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $uid = $request->get('uid');
+        $rid = $request->get('rid');
+        $rType = $request->get('rType');
+        if (empty($uid)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
+        if (empty($rid)) {
+            $returnData['error'] = 102;
+            $returnData['msg'] = 'rid is empty';
+            return response()->json($returnData);
+        }
+        if (empty($rType)) {
+            $returnData['error'] = 103;
+            $returnData['msg'] = 'rType is empty';
+            return response()->json($returnData);
+        }
+        $collection = new CardCollection();
+        $collection->rid = $rid;
+        $collection->uid = $uid;
+        $collection->rType = $rType;
+        if ($insertId = $collection->save()) {
+            $returnData['id'] = $collection->id;
+            return response()->json($returnData);
+        }
+
+    }
     /**
      * @author WEIYIZHENG
      * @remark 人脉收藏列表接口

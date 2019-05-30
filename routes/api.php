@@ -46,15 +46,15 @@ Route::group(['namespace' => 'Api'], function () {
         //编辑本人的信息
         Route::match(['post'], '/user/updateuser', 'UserController@updateUserInfo');
         //获取个人名片信息
-        Route::match(['get'], '/user/getusercard', 'UserController@getUserCard');
+        Route::match(['get', 'post'], '/user/getusercard', 'UserController@getUserCard');
         //编辑个人名片信息
         Route::match(['post'], '/user/updateusercard', 'UserController@updateUserCard');
 
 
         /*收藏*/
-        Route::match(['get'], '/collection/peolist', '/UserController@getPeoList');//人脉收藏
-        Route::match(['get'], '/collection/prolist', '/UserController@getProList');//项目收藏
-        Route::match(['post'], '/collection/create', '/UserController@addCollection');//添加收藏
+        Route::match(['get'], '/collection/peolist', 'UserController@getPeoList');//人脉收藏
+        Route::match(['get'], '/collection/prolist', 'UserController@getProList');//项目收藏
+        Route::match(['post'], '/collection/save', 'UserController@saveCollection');//添加收藏
 
     });
 
