@@ -35,11 +35,11 @@ class ProjectController extends BaseController
         if (!empty($typeId)) {
             $where['type'] = $typeId;
         }
-        $screenwriterData = CardProject::select('projectTitle','isPublic', 'isTop', 'isFine', 'projectType', 'created_at')->where($where)->orderBy('isTop','desc')->paginate($request->get('limit',10))->toArray();
+        $projectData = CardProject::select('id', 'projectTitle','isPublic', 'isTop', 'isFine', 'projectType', 'created_at')->where($where)->orderBy('isTop','desc')->paginate($request->get('limit',10))->toArray();
 
-        $returnData['data'] = $screenwriterData;
+        $returnData['data'] = $projectData;
 
-        return response()->json($screenwriterData);
+        return response()->json($returnData);
     }
 
 

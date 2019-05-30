@@ -63,8 +63,11 @@ Route::group(['namespace' => 'Api'], function () {
 
     //项目列表
     Route::match(['get', 'post'], '/project/list', 'ProjectController@list');
+    //项目详情
     Route::match(['get', 'post'], '/project/detail', 'ProjectController@projectDetail');
 
 
+    //人脉圈列表
+    Route::match(['get'], '/card/list', 'CardController@list');
 
 });

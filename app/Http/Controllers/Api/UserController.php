@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\CardCard;
 use App\Models\CardCollection;
+use App\Models\CardInfo;
 use App\Models\CardUser;
 use App\Models\Api\CardUser as UserModel;//小程序用户模型
 use Illuminate\Http\Request;
@@ -142,23 +143,43 @@ class UserController extends BaseController
      * @return $returnData json
      */
     public function updateUserCard(Request $request) {
+        /*{
+        "cardid":"",
+        "uid":"",
+	"card":{
+		"name":"名字",
+		"company":"公司",
+		"position":"行业"
+	},
+	"info":{
+		"mobile":"手机",
+		"wechat":"微信",
+		"email":"",
+		"address":"",
+		"intro":"简介"
+	}
+
+}*/
         $returnData = [
             'error' => 0,
             'msg' => 'Successful editing',
             'data' => []
         ];
-        $cardid = $request->get('cardid', 0);
-        $uid = $request->get('uid');
-        $formData = $request->get('formData', []);
-        if (empty($formData)) {
+        $cardData = $request->get('cardData', []);
+        $cardid = $cardData['cardid'];
+        $uid = $cardData['uid'];
+        $cardData = $cardData['card'];
+        $infoData = $cardData['info'];
+        if (empty($cardData) || empty($infoData)) {
             $returnData['error'] = 103;
-            $returnData['msg'] = 'formData is empty';
+            $returnData['msg'] = 'card or info is empty';
             return response()->json($returnData);
         }
 //        $cUser = CardUser::findOrFail($id);
 //        if ($cUser->update($formData)) {
         if (!empty($cardid)) {
-            if (CardCard::where('id', $cardid)->update($formData)) {
+            if (CardCard::where('id', $cardid)->update($cardData)) {
+                CardInfo::where('card_id', $cardid)->update($infoData);
                 return response()->json($returnData);
             } else {
                 $returnData['error'] = 104;
@@ -167,8 +188,11 @@ class UserController extends BaseController
             }
         } elseif (!empty($uid)) {
             $formData['uid'] = $uid;
-            $formData['style_group_id'] = $uid;
-            if ($card = CardCard::create($formData)) {
+//            $formData['style_group_id'] = $uid;
+            if ($card = CardCard::create($cardData)) {
+                $infoData['card_id'] = $card->id;
+                $infoData['uid'] = $uid;
+                CardInfo::create($infoData);
                 $returnData['insertId'] = $card->id;
                 $returnData['msg'] = 'Successful inserting';
                 return response()->json($returnData);
