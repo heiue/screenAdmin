@@ -60,14 +60,26 @@ Route::group(['namespace' => 'Api'], function () {
 
     //编剧列表
     Route::match(['get','post'], '/screenwriter/list', 'ScreenwriterController@list');
+    //编剧详情
+    Route::match(['get', 'post'], '/screenwriter/detail', 'ScreenwriterController@detail');
 
+
+    //项目分类列表
+    Route::match(['get'], '/project/class', 'ProjectController@classList');
     //项目列表
     Route::match(['get', 'post'], '/project/list', 'ProjectController@list');
     //项目详情
     Route::match(['get', 'post'], '/project/detail', 'ProjectController@projectDetail');
 
 
+    //人脉圈分类
+    Route::match(['get'], '/card/class', 'CardController@classList');
     //人脉圈列表
     Route::match(['get'], '/card/list', 'CardController@list');
+    //人脉圈详情
+    Route::match(['get'], '/card/detail', 'CardController@detail');
+
+    //帮推
+    Route::match(['get'], '/card/help', 'CardController@helpPush');
 
 });

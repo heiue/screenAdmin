@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 class ScreenwriterController extends BaseController
 {
     /**
+     * @remark 编剧列表
      * @param Request $request
      * @param page 页码
      * @param limit 条数
@@ -50,5 +51,25 @@ class ScreenwriterController extends BaseController
         $returnData['data'] = $screenwriterData;
 
         return response()->json($screenwriterData);
+    }
+
+    /**
+     * @remark 编剧详情
+     */
+    public function detail(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $id = $request->get('sid'); //todo 编剧ID
+        if (empty($id)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'screenwriter id is empty';
+            return response()->json($returnData);
+        }
+        $screenwriter = Screenwriter::findOrFail($id);
+        $returnData['data'] = $screenwriter;
+        return response()->json($returnData);
     }
 }

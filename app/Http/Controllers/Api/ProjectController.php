@@ -15,7 +15,25 @@ use Illuminate\Http\Request;
 
 class ProjectController extends BaseController
 {
-    protected $typeData = [];
+    protected static $typeData = [
+        '1' => '小说',
+        '2' => '网剧',
+        '3' => '综艺',
+        '4' => '电视剧',
+    ];
+
+    /**
+     * @remark 项目分类列表
+     */
+    public function classList() {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $returnData['data'] = self::$typeData;
+        return response()->json($returnData);
+    }
     /**
      * @remark 项目接口列表
      * @param Request $request
@@ -39,7 +57,7 @@ class ProjectController extends BaseController
 
         $returnData['data'] = $projectData;
 
-        return response()->json($returnData);
+        return response()->json($projectData);
     }
 
 

@@ -129,7 +129,7 @@ class UserController extends BaseController
             $returnData['msg'] = 'uid is empty';
             return response()->json($returnData);
         }
-        $cardInfo = CardCard::where('uid', $id)->first();
+        $cardInfo = CardCard::with('cardInfo')->where('uid', $id)->first();
         $returnData['data']['cardInfo'] = $cardInfo;
         return response()->json($returnData);
 
@@ -149,7 +149,9 @@ class UserController extends BaseController
 	"card":{
 		"name":"名字",
 		"company":"公司",
-		"position":"行业"
+		"position":"行业",
+        "industry_id":"3",
+        "pic":"url"
 	},
 	"info":{
 		"mobile":"手机",
@@ -157,7 +159,11 @@ class UserController extends BaseController
 		"email":"",
 		"address":"",
 		"intro":"简介"
-	}
+	},
+        "images":{
+            0:"url",
+            1:"url"
+        }
 
 }*/
         $returnData = [
@@ -165,11 +171,11 @@ class UserController extends BaseController
             'msg' => 'Successful editing',
             'data' => []
         ];
-        $cardData = $request->get('cardData', []);
-        $cardid = $cardData['cardid'];
-        $uid = $cardData['uid'];
-        $cardData = $cardData['card'];
-        $infoData = $cardData['info'];
+        $cardDataR = $request->get('cardData', []);
+        $cardid = $cardDataR['cardid'];
+        $uid = $cardDataR['uid'];
+        $cardData = $cardDataR['card'];
+        $infoData = $cardDataR['info'];
         if (empty($cardData) || empty($infoData)) {
             $returnData['error'] = 103;
             $returnData['msg'] = 'card or info is empty';
@@ -187,7 +193,7 @@ class UserController extends BaseController
                 return response()->json($returnData);
             }
         } elseif (!empty($uid)) {
-            $formData['uid'] = $uid;
+            $cardData['uid'] = $uid;
 //            $formData['style_group_id'] = $uid;
             if ($card = CardCard::create($cardData)) {
                 $infoData['card_id'] = $card->id;

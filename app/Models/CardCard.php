@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardCard extends Model
 {
-    protected $fillable = ['uid','style_group_id','name','company','position'];
+    protected $fillable = ['uid','style_group_id','name','company','position','pic', 'industry_id'];
 
     public function cardInfo() {
         return $this->hasOne('App\Models\CardInfo', 'card_id');
