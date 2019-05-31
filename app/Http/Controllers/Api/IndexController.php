@@ -34,10 +34,10 @@ class IndexController extends BaseController
             return response()->json($returnData);
         }
         //搜索项目
-        $project = CardProject::where('name', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
+        $project = CardProject::where('projectTitle', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
 
         //搜索人脉
-        $card = CardCard::where('', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
+        $card = CardCard::where('name', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
 
         $returnData['data']['project'] = $project;
         $returnData['data']['card'] = $card;

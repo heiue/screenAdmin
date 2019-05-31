@@ -17,6 +17,9 @@ class CardProject extends Model
     protected $fillable = ['projectTitle', 'projectType', 'introduction', 'isPublic', 'remark'];
     protected $appends = ['project_type_name'];
 
+    public function cardAnnexImg() {
+        return $this->hasMany('App\Models\CardAnnex', 'aboutId');
+    }
 
     public function getProjectTypeNameAttribute() {
         $projectType = [

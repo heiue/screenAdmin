@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 class ProjectController extends BaseController
 {
     protected static $typeData = [
+        '0' => '全部',
         '1' => '小说',
         '2' => '网剧',
         '3' => '综艺',
@@ -53,7 +54,9 @@ class ProjectController extends BaseController
         if (!empty($typeId)) {
             $where['type'] = $typeId;
         }
-        $projectData = CardProject::select('id', 'projectTitle','isPublic', 'isTop', 'isFine', 'projectType', 'created_at')->where($where)->orderBy('isTop','desc')->paginate($request->get('limit',10))->toArray();
+        $projectData = CardProject::with(['cardAnnexImg' => function($query){
+            $query->select('aboutId', 'path')->where(['aboutType' => 'project', 'type' => 'img']);
+        }])->select('id', 'projectTitle','isPublic', 'isTop', 'isFine', 'projectType', 'created_at')->where($where)->orderBy('isTop','desc')->paginate($request->get('limit',10))->toArray();
 
         $returnData['data'] = $projectData;
 

@@ -90,6 +90,26 @@ class ProjectController extends Controller
                 }
                 $annex->addAll($imgData);
             }
+            $file = $request->get('file');
+            $fsize = $request->get('fsize', []);
+            $fext = $request->get('fext', []);
+            if (!empty($file)) {
+                $fileData = array();
+                foreach ($file as $key => $value) {
+                    $fileData[] = [
+                        'type' => 'file',
+                        'path' => $value,
+                        'size' => $fsize[$key]?$fsize[$key]:0,
+                        'format' => $fext[$key]?$fext[$key]:'',
+                        'aboutId' => $insertId,
+                        'aboutType' => 'project',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($fileData);
+            }
+
             return redirect(route('admin.project.index'))->with(['status'=>'添加完成']);
         }
         return redirect(route('admin.project.create'))->with(['status'=>'系统错误']);
@@ -104,8 +124,11 @@ class ProjectController extends Controller
     public function edit($id) {
         $project = CardProject::findOrFail($id);
         $imgData = CardAnnex::select('id','path')->where(['aboutId' => $project->id, 'type' => 'img', 'aboutType' => 'project'])->get();
+        $fileData = CardAnnex::select('id','path','size')->where(['aboutId' => $project->id, 'type' => 'file', 'aboutType' => 'project'])->get();
         $project->img = $imgData;
         $project->imgCount = count($imgData);
+        $project->file = $fileData;
+        $project->fileCount = count($fileData);
         return view('admin.project.edit',compact('project'));
     }
 
@@ -145,6 +168,25 @@ class ProjectController extends Controller
                     ];
                 }
                 $annex->addAll($imgData);
+            }
+            $file = $request->get('file');
+            $fsize = $request->get('fsize', []);
+            $fext = $request->get('fext', []);
+            if (!empty($file)) {
+                $fileData = array();
+                foreach ($file as $key => $value) {
+                    $fileData[] = [
+                        'type' => 'file',
+                        'path' => $value,
+                        'size' => $fsize[$key]?$fsize[$key]:0,
+                        'format' => $fext[$key]?$fext[$key]:'',
+                        'aboutId' => $id,
+                        'aboutType' => 'project',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($fileData);
             }
         }
         if ($pro->update($request->only(null))){

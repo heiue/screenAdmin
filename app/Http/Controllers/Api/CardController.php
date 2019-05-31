@@ -47,7 +47,9 @@ class CardController extends BaseController
         if (!empty($industryId)) {
             $where['industry_id'] = $industryId;
         }
-        $cardData = CardCard::with(['cardInfo','cardUser'])->orderBy('id', 'desc')->where($where)->paginate($request->get('limit',10))->toArray();
+        $cardData = CardCard::with(['cardInfo','cardUser' => function($query){
+            $query->select('id','is_vip');
+        }])->orderBy('id', 'desc')->where($where)->paginate($request->get('limit',10))->toArray();
 
         $returnData['data'] = $cardData;
 
