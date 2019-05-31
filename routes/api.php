@@ -86,4 +86,7 @@ Route::group(['namespace' => 'Api'], function () {
     //帮推
     Route::match(['get'], '/card/help', 'CardController@helpPush');
 
+    //搜索接口
+    Route::match(['get'], '/search', 'IndexController@search');
+
 });
