@@ -90,7 +90,7 @@ class ProjectController extends Controller
                 }
                 $annex->addAll($imgData);
             }
-            $file = $request->get('file');
+            $file = $request->get('files');
             $fsize = $request->get('fsize', []);
             $fext = $request->get('fext', []);
             if (!empty($file)) {
@@ -169,7 +169,7 @@ class ProjectController extends Controller
                 }
                 $annex->addAll($imgData);
             }
-            $file = $request->get('file');
+            $file = $request->get('files');
             $fsize = $request->get('fsize', []);
             $fext = $request->get('fext', []);
             if (!empty($file)) {

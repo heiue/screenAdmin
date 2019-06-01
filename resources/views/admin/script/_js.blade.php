@@ -40,33 +40,6 @@
     layui.use(['upload'],function () {
         var upload = layui.upload
 
-        //普通图片上传
-        var uploadInst = upload.render({
-            elem: '#uploadPic'
-            ,url: '{{ route("uploadImg") }}'
-            ,multiple: false
-            ,data:{"_token":"{{ csrf_token() }}"}
-            ,before: function(obj){
-                //预读本地文件示例，不支持ie8
-                /*obj.preview(function(index, file, result){
-                 $('#layui-upload-box').append('<li><img src="'+result+'" /><p>待上传</p></li>')
-                 });*/
-                obj.preview(function(index, file, result){
-                    $('#layui-upload-box').html('<li><img src="'+result+'" /><p>上传中</p></li>')
-                });
-
-            }
-            ,done: function(res){
-                //如果上传失败
-                if(res.code == 0){
-                    $("#thumb").val(res.url);
-                    $('#layui-upload-box li p').text('上传成功');
-                    return layer.msg(res.msg);
-                }
-                return layer.msg(res.msg);
-            }
-        });
-
         //多文件列表示例
         var demoListView = $('#demoList')
             ,uploadListIns = upload.render({
@@ -112,7 +85,7 @@
                 if(res.code == 0){ //上传成功
                     var tr = demoListView.find('tr#upload-'+ index)
                         ,tds = tr.children();
-                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span><input type=hidden name="files[]" value="'+res.url+'" /><input type="hidden" name="fsize[]" value="'+res.size+'"><input type="hidden" name="fext[]" value="'+res.ext+'">');
+                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span><input type=hidden name="file[]" value="'+res.url+'" /><input type="hidden" name="fsize[]" value="'+res.size+'"><input type="hidden" name="fext[]" value="'+res.ext+'">');
                     tds.eq(3).html(''); //清空操作
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
                 }

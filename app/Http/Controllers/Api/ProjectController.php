@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Models\CardAnnex;
+use App\Models\CardCollection;
 use App\Models\CardProject;
 use Illuminate\Http\Request;
 
@@ -49,10 +50,10 @@ class ProjectController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $where = [];
+        $where = ['isPublic' => 1];
         $typeId = $request->get('type');
         if (!empty($typeId)) {
-            $where['type'] = $typeId;
+            $where['projectType'] = $typeId;
         }
         $projectData = CardProject::with(['cardAnnexImg' => function($query){
             $query->select('aboutId', 'path')->where(['aboutType' => 'project', 'type' => 'img']);
@@ -74,7 +75,13 @@ class ProjectController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
+        $uid = $request->get('uid');
         $projectId = $request->get('projectId');
+        if (empty($uid)) {
+            $returnData['error'] = 102;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
         if (empty($projectId)) {
             $returnData['error'] = 101;
             $returnData['msg'] = 'projectId is empty';
@@ -84,6 +91,15 @@ class ProjectController extends BaseController
         if ($project) {
             $img = CardAnnex::select('path')->where(['aboutId' => $projectId,'aboutType' => 'project', 'type' => 'img'])->get()->toArray();
             $project['img'] = $img;
+        }
+        // todo 是否收藏过
+        $where['rid'] = $projectId;
+        $where['uid'] = $uid;
+        $where['rType'] = 2;
+        if (CardCollection::where($where)->get()) {
+            $project['isCollection'] = 1;
+        } else {
+            $project['isCollection'] = 0;
         }
         $returnData['data'] = $project;
         return response()->json($returnData);

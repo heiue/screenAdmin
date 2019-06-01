@@ -134,7 +134,7 @@
                 if(res.code == 0){ //上传成功
                     var tr = demoListView.find('tr#upload-'+ index)
                         ,tds = tr.children();
-                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span><input type=hidden name="file[]" value="'+res.url+'" /><input type="hidden" name="fsize[]" value="'+res.size+'"><input type="hidden" name="fext[]" value="'+res.ext+'">');
+                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span><input type=hidden name="files[]" value="'+res.url+'" /><input type="hidden" name="fsize[]" value="'+res.size+'"><input type="hidden" name="fext[]" value="'+res.ext+'">');
                     tds.eq(3).html(''); //清空操作
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
                 }

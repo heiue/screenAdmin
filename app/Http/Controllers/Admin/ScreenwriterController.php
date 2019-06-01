@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\CardAnnex;
 use App\Models\Screenwriter;
 use Illuminate\Http\Request;
 
@@ -61,7 +62,27 @@ class ScreenwriterController extends Controller
             'avatar'    => 'required'
         ]);
 //        dump($request->all());exit;
-        if (Screenwriter::create($request->all())){
+        if ($insertId = Screenwriter::create($request->all())->id){
+            $annex = new CardAnnex();
+            $file = $request->get('files');
+            $fsize = $request->get('fsize', []);
+            $fext = $request->get('fext', []);
+            if (!empty($file)) {
+                $fileData = array();
+                foreach ($file as $key => $value) {
+                    $fileData[] = [
+                        'type' => 'file',
+                        'path' => $value,
+                        'size' => $fsize[$key]?$fsize[$key]:0,
+                        'format' => $fext[$key]?$fext[$key]:'',
+                        'aboutId' => $insertId,
+                        'aboutType' => 'screenwriter',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($fileData);
+            }
             return redirect(route('admin.screen.writer'))->with(['status'=>'添加完成']);
         }
         return redirect(route('admin.screenwriter.create'))->with(['status'=>'系统错误']);
@@ -70,6 +91,9 @@ class ScreenwriterController extends Controller
     //编辑编剧
     public function edit($id) {
         $screenwriter = Screenwriter::findOrFail($id);
+        $fileData = CardAnnex::select('id','path','size')->where(['aboutId' => $screenwriter->id, 'type' => 'file', 'aboutType' => 'screenwriter'])->get();
+        $screenwriter->file = $fileData;
+        $screenwriter->fileCount = count($fileData);
         return view('admin.screenwriter.edit',compact('screenwriter'));
     }
     //保存编辑的编剧
@@ -81,6 +105,26 @@ class ScreenwriterController extends Controller
         ]);
         $scr = Screenwriter::findOrFail($id);
         if ($scr->update($request->only(null))){
+            $annex = new CardAnnex();
+            $file = $request->get('files');
+            $fsize = $request->get('fsize', []);
+            $fext = $request->get('fext', []);
+            if (!empty($file)) {
+                $fileData = array();
+                foreach ($file as $key => $value) {
+                    $fileData[] = [
+                        'type' => 'file',
+                        'path' => $value,
+                        'size' => $fsize[$key]?$fsize[$key]:0,
+                        'format' => $fext[$key]?$fext[$key]:'',
+                        'aboutId' => $id,
+                        'aboutType' => 'screenwriter',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($fileData);
+            }
             return redirect(route('admin.screen.writer'))->with(['status'=>'更新成功']);
         }
         return redirect(route('admin.screen.writer'))->withErrors(['status'=>'系统错误']);

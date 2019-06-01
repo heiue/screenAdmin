@@ -42,6 +42,32 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">编剧文件</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+            <div class="layui-upload-list">
+                <table class="layui-table">
+                    <thead>
+                    <tr><th>文件名</th>
+                        <th>大小</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr></thead>
+                    <tbody id="demoList">
+                    @if(isset($screenwriter->file))
+                        @foreach($screenwriter->file as $key => $value)
+                            <tr id="upload-1559319948825-{{$key}}"><td>{{ $value->path }}</td><td>{{ intval($value->size)/1000 }}</td><td>已经上传</td><td>{{--<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>--}}</td></tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
     <label class="layui-form-label">设置</label>
     <div class="layui-input-inline">
         <input type="checkbox" name="isPublic" lay-skin="switch" value="1" lay-text="公开|不公开" @if(!isset($screenwriter) || $screenwriter->isPublic != 0) checked @endif>

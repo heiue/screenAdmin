@@ -33,7 +33,7 @@ class ScreenwriterController extends BaseController
             'data' => []
         ];
         $position = $request->get('position', 0);
-        $where = [];
+        $where = ['isPublic' => 1];
         switch ($position) {
             case 0:
 
