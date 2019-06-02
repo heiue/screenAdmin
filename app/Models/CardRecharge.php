@@ -24,6 +24,16 @@ class CardRecharge extends Model
      * @remark 更新充值状态
      */
     public function updatePayStatus($xml, $transactionId) {
+        // todo 加时长
+        $cardUser = CardUser::findOrFail($this->uid);
+        $cardUser->is_vip = 'true';
+        if (strtotime($cardUser['vip_end']) <= time()) {
+            $cardUser->vip_end = date('Y-m-d H:i:s', time()+$this->totalTime);
+        } else {
+            $cardUser->vip_end = date('Y-m-d H:i:s', $cardUser['vip_end']+$this->totalTime);
+        }
+        $cardUser->save();
+
         $this->status = 1;
         $this->wxPayResultJson = $xml;
         $this->transactionId = $transactionId;

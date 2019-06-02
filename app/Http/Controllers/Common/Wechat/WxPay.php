@@ -126,7 +126,7 @@ class WxPay
         if (($sign === $dataSign)
             && ($data['return_code'] == 'SUCCESS')
             && ($data['result_code'] == 'SUCCESS')) {
-            // 更新订单状态
+            // todo 更新订单状态 and 给用户加时长
             $recharge->updatePayStatus($xml, $data['transaction_id']);
             // 发送短信通知
 //            $this->sendSms($recharge['wxapp_id'], $recharge['order_no']);

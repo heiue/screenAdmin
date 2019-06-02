@@ -16,9 +16,9 @@ class PayController extends BaseController
 {
     public $recharge = [
         '1' => ['price' => 9.9, 'time' => 30*24*60*60],
-        '2' => ['price' => 9.9, 'time' => 30*24*60*60],
-        '3' => ['price' => 9.9, 'time' => 30*24*60*60],
-        '4' => ['price' => 9.9, 'time' => 30*24*60*60],
+        '2' => ['price' => 29, 'time' => 3*30*24*60*60],
+        '3' => ['price' => 59, 'time' => 6*30*24*60*60],
+        '4' => ['price' => 118, 'time' => 12*30*24*60*60],
     ];
     /**
      * @author WEIYIZHENG
@@ -80,10 +80,10 @@ class PayController extends BaseController
      * 微信回调
      */
     public function notify() {
-//        $cardRecharge = new CardRecharge();
-//        $recharge = $cardRecharge->payDetail(13);
-//        $recharge->updatePayStatus('adf123123asdf','123124123');
-//        return response()->json($recharge);
+        $cardRecharge = new CardRecharge();
+        $recharge = $cardRecharge->payDetail(13);
+        $recharge->updatePayStatus('adf123123asdf','123124123');
+        return response()->json($recharge);
         $WxPay = new WxPay();
         $WxPay->notify(new CardRecharge());
     }
