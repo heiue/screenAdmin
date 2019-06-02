@@ -56,7 +56,7 @@ class PayController extends BaseController
         }
         $cardRecharge = new CardRecharge();
         $cardRecharge->uid = $userInfo['data']['userinfo']['id'];
-        $cardRecharge->totalFee = $request->price;
+        $cardRecharge->totalFee = $request->price*100;
         $cardRecharge->totalFeeR = 0;
         $cardRecharge->status = 0;
         $cardRecharge->totalTime = $this->recharge[$request->rechargeType]['time'];
@@ -80,6 +80,10 @@ class PayController extends BaseController
      * 微信回调
      */
     public function notify() {
+//        $cardRecharge = new CardRecharge();
+//        $recharge = $cardRecharge->payDetail(13);
+//        $recharge->updatePayStatus('adf123123asdf','123124123');
+//        return response()->json($recharge);
         $WxPay = new WxPay();
         $WxPay->notify(new CardRecharge());
     }

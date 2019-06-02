@@ -29,7 +29,6 @@ class WxPay
      * @param $openid
      * @param $total_fee
      * @return array
-     * @throws BaseException
      */
     public function unifiedorder($order_no, $openid, $total_fee, Request $request)
     {
@@ -48,10 +47,11 @@ class WxPay
             'openid' => $openid,
             'out_trade_no' => $order_no,
             'spbill_create_ip' => $request->ip(),
-            'total_fee' => $total_fee * 100, // 价格:单位分
+//            'total_fee' => $total_fee * 100, // 价格:单位分
+            'total_fee' => 1, // 价格:单位分
             'trade_type' => 'JSAPI',
         ];
-        return $params;
+//        return $params;
         // 生成签名
         $params['sign'] = $this->makeSign($params);
         // 请求API
@@ -109,13 +109,13 @@ class WxPay
         // 记录日志
         $this->doLogs($xml);
         $this->doLogs($data);
-        // 订单信息
-        $order = $RechargeModel->payDetail($data['out_trade_no']);
-        empty($order) && $this->returnCode(true, '订单不存在');
+        // 充值信息
+        $recharge = $RechargeModel->payDetail($data['out_trade_no']);
+        empty($recharge) && $this->returnCode(true, '订单不存在');
         // 小程序配置信息
-        $wxConfig = WxappModel::getWxappCache($order['wxapp_id']);
+//        $wxConfig = WxappModel::getWxappCache($order['wxapp_id']);
         // 设置支付秘钥
-        $this->config['apikey'] = $wxConfig['apikey'];
+//        $this->config['key'] = $wxConfig['apikey'];
         // 保存微信服务器返回的签名sign
         $dataSign = $data['sign'];
         // sign不参与签名算法
@@ -127,9 +127,9 @@ class WxPay
             && ($data['return_code'] == 'SUCCESS')
             && ($data['result_code'] == 'SUCCESS')) {
             // 更新订单状态
-            $order->updatePayStatus($data['transaction_id']);
+            $recharge->updatePayStatus($xml, $data['transaction_id']);
             // 发送短信通知
-            $this->sendSms($order['wxapp_id'], $order['order_no']);
+//            $this->sendSms($recharge['wxapp_id'], $recharge['order_no']);
             // 返回状态
             $this->returnCode(true, 'OK');
         }
@@ -142,14 +142,13 @@ class WxPay
      * @param $wxapp_id
      * @param $order_no
      * @return mixed
-     * @throws \think\Exception
      */
     private function sendSms($wxapp_id, $order_no)
     {
         // 短信配置信息
-        $config = SettingModel::getItem('sms', $wxapp_id);
-        $SmsDriver = new SmsDriver($config);
-        return $SmsDriver->sendSms('order_pay', compact('order_no'));
+//        $config = SettingModel::getItem('sms', $wxapp_id);
+//        $SmsDriver = new SmsDriver($config);
+//        return $SmsDriver->sendSms('order_pay', compact('order_no'));
     }
 
     /**
@@ -173,7 +172,7 @@ class WxPay
      */
     private function doLogs($values)
     {
-        return write_log($values, __DIR__);
+//        return write_log($values, __DIR__);
     }
 
     /**
@@ -199,7 +198,7 @@ class WxPay
         $string = $this->toUrlParams($data);
 
         //签名步骤二：在string后加入KEY
-        $string = $string . '&key=' . $this->config['apikey'];
+        $string = $string . '&key=' . $this->config['key'];
 
         //签名步骤三：MD5加密
         $string = md5($string);
@@ -261,7 +260,7 @@ class WxPay
         ksort($values);
         $string = $this->toUrlParams($values);
         //签名步骤二：在string后加入KEY
-        $string = $string . '&key=' . $this->config['apikey'];
+        $string = $string . '&key=' . $this->config['key'];
         //签名步骤三：MD5加密
         $string = md5($string);
         //签名步骤四：所有字符转为大写

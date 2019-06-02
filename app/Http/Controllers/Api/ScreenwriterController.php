@@ -46,7 +46,7 @@ class ScreenwriterController extends BaseController
                 $where = ['isHot' => 1];
                 break;
         }
-        $screenwriterData = Screenwriter::select('name', 'rating', 'residence','isPublic','avatar')->where($where)->paginate($request->get('limit',5))->toArray();
+        $screenwriterData = Screenwriter::select('id', 'name', 'rating', 'residence','isPublic','avatar')->where($where)->paginate($request->get('limit',5))->toArray();
 
         $returnData['data'] = $screenwriterData;
 
