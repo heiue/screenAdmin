@@ -51,7 +51,7 @@ class CardController extends BaseController
             $query->select('id','is_vip');
         }])->orderBy('id', 'desc')->where($where)->paginate($request->get('limit',10))->toArray();
 
-        $returnData['data'] = $cardData;
+        $returnData['data'] = $cardData['data'];
 
         return response()->json($returnData);
     }

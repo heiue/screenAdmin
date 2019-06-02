@@ -69,7 +69,7 @@ class UserController extends BaseController
             return response()->json($returnData);
         }
         $userInfo = CardUser::where('openid', $userOpenId)->first();
-        if (strtotime($userOpenId['vip_end'] <= time())) {
+        if (strtotime($userInfo['vip_end']) <= time()) {
             $userInfo->is_vip = 'false';
             $userInfo->save();
         }

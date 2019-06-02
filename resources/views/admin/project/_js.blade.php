@@ -1,5 +1,5 @@
 <style>
-    #layui-upload-box li{
+    .layui-upload-box li{
         width: 120px;
         height: 100px;
         float: left;
@@ -8,10 +8,10 @@
         margin-right: 10px;
         border:1px solid #ddd;
     }
-    #layui-upload-box li img{
+    .layui-upload-box li img{
         width: 100%;
     }
-    #layui-upload-box li p{
+    .layui-upload-box li p{
         width: 100%;
         height: 22px;
         font-size: 12px;
@@ -24,7 +24,7 @@
         background-color: #333;
         opacity: 0.6;
     }
-    #layui-upload-box li i{
+    .layui-upload-box li i{
         display: block;
         width: 20px;
         height:20px;
@@ -41,6 +41,29 @@
         var upload = layui.upload
 
         //普通图片上传
+        var uploadCover = upload.render({
+            elem: '#uploadCoverPic'
+            ,url: '{{ route("uploadImg") }}'
+            ,multiple: false
+            ,data:{"_token":"{{ csrf_token() }}"}
+            ,before: function(obj){
+                obj.preview(function(index, file, result){
+                    $('#layui-upload-box-cover').html('<li><img src="'+result+'" /><p>上传中</p></li>')
+                });
+
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code == 0){
+                    $("#thumb-cover").val(res.url);
+                    $('#layui-upload-box-cover li p').text('上传成功');
+                    return layer.msg(res.msg);
+                }
+                return layer.msg(res.msg);
+            }
+        });
+
+        //多图片上传
         var uploadInst = upload.render({
             elem: '#uploadPic'
             ,url: '{{ route("uploadImg") }}'

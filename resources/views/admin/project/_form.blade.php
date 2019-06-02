@@ -6,6 +6,22 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">封面</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="uploadCoverPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
+            <div class="layui-upload-list" >
+                <ul id="layui-upload-box-cover" class="layui-clear layui-upload-box">
+                    @if(isset($project->cover))
+                        <li><img src="{{ $project->cover }}" /></li>
+                    @endif
+                </ul>
+                <input type="hidden" name="cover" id="thumb-cover" value="{{ $project->cover??'' }}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
     <label for="" class="layui-form-label">项目类型</label>
     <div class="layui-input-block">
         <select name="projectType" lay-search  lay-filter="parent_id">
@@ -37,7 +53,7 @@
             <button type="button" class="layui-btn" id="begin_up">开始上传</button>
             <span></span>
             <div class="layui-upload-list" >
-                <ul id="layui-upload-box" class="layui-clear">
+                <ul id="layui-upload-box" class="layui-clear layui-upload-box">
                     @if(isset($project->img))
                         @foreach($project->img as $value)
                         <li><img src="{{ $value->path }}" /><p><button class="layui-btn layui-btn-xs layui-btn-fluid delete_project_img" type="button" imgId="{{$value->id}}"><i class="layui-icon"></i></button></p></li>

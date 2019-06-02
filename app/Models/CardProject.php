@@ -14,11 +14,29 @@ use Illuminate\Database\Eloquent\Model;
 class CardProject extends Model
 {
     protected $table = 'card_projects';
-    protected $fillable = ['projectTitle', 'projectType', 'introduction', 'isPublic', 'remark'];
-    protected $appends = ['project_type_name'];
+    protected $fillable = ['projectTitle', 'projectType', 'introduction', 'isPublic', 'remark', 'cover'];
+    protected $appends = ['project_type_name', 'track_count'];
 
+    /**
+     * @remark 联查附件表里的图片
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function cardAnnexImg() {
         return $this->hasMany('App\Models\CardAnnex', 'aboutId');
+    }
+
+    /**
+     * @remark 联查跟踪记录的条数
+     */
+    public function cardTrackCount() {
+        return $this->hasMany('App\Models\CardProjectTrack', 'projectId');
+    }
+
+    /**
+     * @remark 跟踪记录条数
+     */
+    public function getTrackCountAttribute() {
+        return CardProjectTrack::where(['projectId' => $this->id])->count();
     }
 
     public function getProjectTypeNameAttribute() {

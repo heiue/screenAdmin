@@ -59,9 +59,9 @@ class ProjectController extends BaseController
             $query->select('aboutId', 'path')->where(['aboutType' => 'project', 'type' => 'img']);
         }])->select('id', 'projectTitle','isPublic', 'isTop', 'isFine', 'projectType', 'created_at')->where($where)->orderBy('isTop','desc')->paginate($request->get('limit',10))->toArray();
 
-        $returnData['data'] = $projectData;
+        $returnData['data'] = $projectData['data'];
 
-        return response()->json($projectData);
+        return response()->json($returnData);
     }
 
 

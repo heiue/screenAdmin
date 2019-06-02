@@ -4,10 +4,10 @@
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group ">
-                @can('script.destroy')
+                @can('project.destroy')
                     <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>
                 @endcan
-                @can('script.create')
+                @can('project.create')
                     <a class="layui-btn layui-btn-sm" href="{{ route('admin.project.create') }}">添 加</a>
                 @endcan
             </div>
@@ -16,11 +16,13 @@
             <table id="dataTable" lay-filter="dataTable"></table>
             <script type="text/html" id="options">
                 <div class="layui-btn-group">
-                    @can('script.edit')
-                        <a class="layui-btn layui-btn-sm" lay-event="track">跟踪</a>
+                    @can('project.track')
+                        <a class="layui-btn layui-btn-sm" lay-event="track">跟踪(@{{ d.track_count }})</a>
+                    @endcan
+                    @can('project.edit')
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
                     @endcan
-                    @can('script.destroy')
+                    @can('project.destroy')
                         <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
                     @endcan
                 </div>

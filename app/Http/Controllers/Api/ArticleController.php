@@ -26,7 +26,7 @@ class ArticleController extends BaseController
 
         $article = Article::orderBy('id', 'desc')->paginate($request->get('limit',10))->toArray();
 
-        $returnData['data'] = $article;
+        $returnData['data'] = $article['data'];
 
         return response()->json($returnData);
     }
