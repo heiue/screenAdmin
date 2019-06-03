@@ -108,7 +108,6 @@ class WxPay
         $data = $this->fromXml($xml);
         // 记录日志
         $this->doLogs($xml);
-        $this->doLogs($data);
         // 充值信息
         $recharge = $RechargeModel->payDetail($data['out_trade_no']);
         empty($recharge) && $this->returnCode(true, '订单不存在');
@@ -172,6 +171,7 @@ class WxPay
      */
     private function doLogs($values)
     {
+//        file_put_contents(storage_path().'/logs/wxpay.log', $values.PHP_EOL, FILE_APPEND);
 //        return write_log($values, __DIR__);
     }
 

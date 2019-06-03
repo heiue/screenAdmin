@@ -39,11 +39,10 @@ class ScreenwriterController extends BaseController
 
                 break;
             case 1:
-                $where = ['isHot' => 0];
-
+                $where['isHot'] = 0;
                 break;
             case 2:
-                $where = ['isHot' => 1];
+                $where['isHot'] = 1;
                 break;
         }
         $screenwriterData = Screenwriter::select('id', 'name', 'rating', 'residence','isPublic','avatar')->where($where)->paginate($request->get('limit',5))->toArray();

@@ -279,7 +279,7 @@ class UserController extends BaseController
             return response()->json($returnData);
         }
 
-        $collection = CardCollection::select('rid')->where(['rType' => 1, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//人脉
+        $collection = CardCollection::select('rid','rType')->where(['rType' => 1, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//人脉
 
         $returnData['data'] = $collection;
         return response()->json($returnData);
@@ -304,7 +304,7 @@ class UserController extends BaseController
             return response()->json($returnData);
         }
 
-        $collection = CardCollection::select('rid')->where(['rType' => 2, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//项目
+        $collection = CardCollection::select('rid','rType')->where(['rType' => 2, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//项目
 
         $returnData['data'] = $collection;
         return response()->json($returnData);

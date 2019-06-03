@@ -80,10 +80,10 @@ class PayController extends BaseController
      * 微信回调
      */
     public function notify() {
-        $cardRecharge = new CardRecharge();
-        $recharge = $cardRecharge->payDetail(13);
-        $recharge->updatePayStatus('adf123123asdf','123124123');
-        return response()->json($recharge);
+//        $cardRecharge = new CardRecharge();
+//        $recharge = $cardRecharge->payDetail(13);
+//        $recharge->updatePayStatus('adf123123asdf','123124123');
+//        return response()->json($recharge);
         $WxPay = new WxPay();
         $WxPay->notify(new CardRecharge());
     }

@@ -67,6 +67,11 @@ Route::group(['namespace' => 'Api'], function () {
     //文章详情
     Route::match(['get'], '/article/detail', 'ArticleController@detail');
 
+    //剧本列表
+    Route::match(['get','post'], '/script/list', 'ScriptController@list');
+    //剧本详情
+    Route::match(['get', 'post'], '/script/detail', 'ScriptController@detail');
+
 
     //项目分类列表
     Route::match(['get'], '/project/class', 'ProjectController@classList');
