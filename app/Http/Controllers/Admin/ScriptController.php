@@ -59,7 +59,27 @@ class ScriptController extends Controller
             'scriptTheme'  => 'required',
         ]);
 //        dump($request->all());exit;
-        if (Script::create($request->all())){
+        if ($insertId = Script::create($request->all())->id){
+            $annex = new CardAnnex();
+            $file = $request->get('files');
+            $fsize = $request->get('fsize', []);
+            $fext = $request->get('fext', []);
+            if (!empty($file)) {
+                $fileData = array();
+                foreach ($file as $key => $value) {
+                    $fileData[] = [
+                        'type' => 'file',
+                        'path' => $value,
+                        'size' => $fsize[$key]?$fsize[$key]:0,
+                        'format' => $fext[$key]?$fext[$key]:'',
+                        'aboutId' => $insertId,
+                        'aboutType' => 'script',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($fileData);
+            }
             return redirect(route('admin.script.index'))->with(['status'=>'添加完成']);
         }
         return redirect(route('admin.script.create'))->with(['status'=>'系统错误']);
@@ -89,6 +109,26 @@ class ScriptController extends Controller
         ]);
         $scr = Script::findOrFail($id);
         if ($scr->update($request->only(null))){
+            $annex = new CardAnnex();
+            $file = $request->get('files');
+            $fsize = $request->get('fsize', []);
+            $fext = $request->get('fext', []);
+            if (!empty($file)) {
+                $fileData = array();
+                foreach ($file as $key => $value) {
+                    $fileData[] = [
+                        'type' => 'file',
+                        'path' => $value,
+                        'size' => $fsize[$key]?$fsize[$key]:0,
+                        'format' => $fext[$key]?$fext[$key]:'',
+                        'aboutId' => $id,
+                        'aboutType' => 'script',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($fileData);
+            }
             return redirect(route('admin.script.index'))->with(['status'=>'更新成功']);
         }
         return redirect(route('admin.script.index'))->withErrors(['status'=>'系统错误']);

@@ -6,6 +6,22 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">剧本封面</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
+            <div class="layui-upload-list" >
+                <ul id="layui-upload-box" class="layui-clear">
+                    @if(isset($script->avatar))
+                        <li><img src="{{ $script->cover }}" /></li>
+                    @endif
+                </ul>
+                <input type="hidden" name="cover" id="thumb" value="{{ $script->cover??'' }}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
     <label for="" class="layui-form-label">剧本类型</label>
     <div class="layui-input-block">
         <select name="scriptType" lay-search  lay-filter="parent_id">
@@ -33,6 +49,32 @@
     <label for="" class="layui-form-label">关键词</label>
     <div class="layui-input-block">
         <input type="text" name="keyword" value="{{ $script->keyword ?? old('title') }}" lay-verify="required" placeholder="关键词" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">剧本文件</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+            <div class="layui-upload-list">
+                <table class="layui-table">
+                    <thead>
+                    <tr><th>文件名</th>
+                        <th>大小</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr></thead>
+                    <tbody id="demoList">
+                    @if(isset($script->file))
+                        @foreach($script->file as $key => $value)
+                            <tr id="upload-1559319948825-{{$key}}"><td>{{ $value->path }}</td><td>{{ intval($value->size)/1000 }}</td><td>已经上传</td><td>{{--<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>--}}</td></tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+        </div>
     </div>
 </div>
 
