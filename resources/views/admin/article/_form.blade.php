@@ -75,7 +75,7 @@
     </div>
 </div>
 
-@include('UEditor::head');
+@include('UEditor::head')
 <div class="layui-form-item">
     <label for="" class="layui-form-label">内容</label>
     <div class="layui-input-block">

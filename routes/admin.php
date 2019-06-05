@@ -345,3 +345,27 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
     });
 });
+
+//知识付费
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:knowledge.manage']], function () {
+    //精英养成
+    Route::group(['middleware' => 'permission:knowledge.elite'], function () {
+        //展示页
+        Route::get('knowledge/elite/index', 'KnowledgeController@index_elite')->name('admin.elite.index');
+        Route::get('knowledge/elite/data', 'KnowledgeController@data_elite')->name('admin.elite.data');
+
+        //添加
+        Route::get('knowledge/elite/create', 'KnowledgeController@create_elite')->name('admin.elite.create');
+        Route::post('knowledge/elite/save', 'KnowledgeController@save_elite')->name('admin.elite.save');
+
+        //编辑
+        Route::get('knowledge/elite/{id}/edit', 'KnowledgeController@edit_elite')->name('admin.elite.edit');
+        Route::put('knowledge/elite/{id}/update', 'KnowledgeController@update_elite')->name('admin.elite.update');
+
+        //删除
+        Route::delete('knowledge/elite/destroy', 'knowledgeController@destroy_elite')->name('admin.elite.destroy');
+
+    });
+
+    //
+});
