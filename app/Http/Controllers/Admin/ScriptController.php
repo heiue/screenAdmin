@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\CardAnnex;
 use App\Models\Script;
 use Illuminate\Http\Request;
 
