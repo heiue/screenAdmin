@@ -54,4 +54,6 @@ class KnowledgeController extends BaseController
         $returnData['data'] = $elite;
         return response()->json($returnData);
     }
+
+
 }

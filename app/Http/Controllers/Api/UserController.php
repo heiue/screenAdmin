@@ -56,10 +56,10 @@ class UserController extends BaseController
         ];
         // 当前用户信息
         if (!$token = $request->get('token')) {
-            throw response()->json(['code' => -1, 'msg' => '缺少必要的参数：token']);
+            return response()->json(['code' => -1, 'msg' => '缺少必要的参数：token']);
         }
         if (!$userOpenId = UserModel::getUserOpenId($token)) {
-            throw response()->json(['code' => -1, 'msg' => '没有找到用户信息']);
+            return response()->json(['code' => -1, 'msg' => '没有找到用户信息']);
         }
 
 //        $openId = $request->get('openid', '');//获取请求参数openid
@@ -180,7 +180,7 @@ class UserController extends BaseController
         $uid = $cardDataR['uid'];
         $cardData = $cardDataR['card'];
         $infoData = $cardDataR['info'];
-        if (empty($cardData) || empty($infoData)) {
+        if (empty($cardData) || empty($cardData['name']) || empty($cardData['company']) || empty($cardData['position']) || empty($cardData['industry_id']) || empty($cardData['pic']) || empty($infoData) || empty($infoData['mobile']) || empty($infoData['wechat']) || empty($infoData['email']) || empty($infoData['address']) || empty($infoData['intro'])) {
             $returnData['error'] = 103;
             $returnData['msg'] = 'card or info is empty';
             return response()->json($returnData);
