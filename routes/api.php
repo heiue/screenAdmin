@@ -94,4 +94,11 @@ Route::group(['namespace' => 'Api'], function () {
     //搜索接口
     Route::match(['get'], '/search', 'IndexController@search');
 
+
+    //todo 知识付费
+    //精英养成列表
+    Route::match(['get'], '/knowledge/elite/list', 'KnowledgeController@list_elite');
+    //精英养成详情
+    Route::match(['get'], '/knowledge/elite/detail', 'KnowledgeController@detail_elite');
+
 });
