@@ -34,6 +34,7 @@ class KnowledgeController extends BaseController
         return response()->json($returnData);
     }
 
+
     /**
      * @remark 精英养成详情
      */
