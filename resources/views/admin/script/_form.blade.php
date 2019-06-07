@@ -12,7 +12,7 @@
             <button type="button" class="layui-btn" id="uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
             <div class="layui-upload-list" >
                 <ul id="layui-upload-box" class="layui-clear">
-                    @if(isset($script->avatar))
+                    @if(isset($script->cover))
                         <li><img src="{{ $script->cover }}" /></li>
                     @endif
                 </ul>

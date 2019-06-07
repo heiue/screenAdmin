@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Models\Script;
+use Illuminate\Http\Request;
 
 class ScriptController extends BaseController
 {
@@ -26,7 +27,7 @@ class ScriptController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $scriptData = Script::select('id', 'scriptTitle', 'scriptType', 'scriptTheme')->paginate($request->get('limit',5))->toArray();
+        $scriptData = Script::select()->paginate($request->get('limit',5))->toArray();
 
         $returnData['data'] = $scriptData['data'];
 
