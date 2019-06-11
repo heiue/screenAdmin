@@ -9,6 +9,8 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Models\CardCollection;
+use App\Models\CardRecruitment;
 use App\Models\Screenwriter;
 use Illuminate\Http\Request;
 
@@ -62,13 +64,70 @@ class ScreenwriterController extends BaseController
             'data' => []
         ];
         $id = $request->get('sid'); //todo 编剧ID
+        $uid = $request->get('uid'); //todo 用户ID
         if (empty($id)) {
             $returnData['error'] = 101;
             $returnData['msg'] = 'screenwriter id is empty';
             return response()->json($returnData);
         }
+        if (empty($uid)) {
+            $returnData['error'] = 102;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
         $screenwriter = Screenwriter::findOrFail($id);
+        // todo 是否收藏过
+        $where['rid'] = $id;
+        $where['uid'] = $uid;
+        $where['rType'] = 4;
+        if (CardCollection::where($where)->first()) {
+            $screenwriter['isCollection'] = 1;
+        } else {
+            $screenwriter['isCollection'] = 0;
+        }
         $returnData['data'] = $screenwriter;
+        return response()->json($returnData);
+    }
+
+    /**
+     * @remark 招聘列表
+     */
+    public function recruitment_list(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $recruitment = CardRecruitment::select()->paginate($request->get('limit',10))->toArray();
+
+        $returnData['data'] = $recruitment['data'];
+
+        return response()->json($returnData);
+    }
+
+    /**
+     * @remark 招聘详情
+     */
+    public function recruitment_detail(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $id = $request->get('rid'); //todo 招聘ID
+        $uid = $request->get('uid'); //todo 用户ID
+        if (empty($id)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'screenwriter id is empty';
+            return response()->json($returnData);
+        }
+        if (empty($uid)) {
+            $returnData['error'] = 102;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
+        $recruitment = CardRecruitment::findOrFail($id);
+        $returnData['data'] = $recruitment;
         return response()->json($returnData);
     }
 }

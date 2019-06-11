@@ -86,7 +86,7 @@ class CardController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $card = CardCard::with('cardInfo')->inRandomOrder()->take(1)->get()->toArray();
+        $card = CardCard::with(['cardInfo', 'cardUser'])->inRandomOrder()->take(1)->get()->toArray();
         $returnData['data'] = $card;
         return response()->json($returnData);
     }

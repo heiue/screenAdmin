@@ -20,6 +20,10 @@ class CardCollection extends Model
             return ($card = CardCard::findOrFail($this->rid)) ? $card : [];
         } else if ($this->rType == 2) {
             return ($pro = CardProject::findOrFail($this->rid)) ? $pro : [];
+        } else if ($this->rType == 3) {
+            return ($pro = script::findOrFail($this->rid)) ? $pro : [];
+        } else if ($this->rType == 4) {
+            return ($pro = Screenwriter::findOrFail($this->rid)) ? $pro : [];
         } else {
             return [];
         }

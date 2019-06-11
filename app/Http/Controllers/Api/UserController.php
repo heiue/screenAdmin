@@ -135,6 +135,7 @@ class UserController extends BaseController
         }
         $cardInfo = CardCard::with('cardInfo')->where('uid', $id)->first();
         $returnData['data']['cardInfo'] = $cardInfo;
+        $returnData['data']['_token'] = csrf_token();
         return response()->json($returnData);
 
     }
@@ -163,6 +164,7 @@ class UserController extends BaseController
 		"email":"",
 		"address":"",
 		"intro":"简介"
+        "top_pic":""
 	},
         "images":{
             0:"url",
@@ -180,7 +182,8 @@ class UserController extends BaseController
         $uid = $cardDataR['uid'];
         $cardData = $cardDataR['card'];
         $infoData = $cardDataR['info'];
-        if (empty($cardData) || empty($cardData['name']) || empty($cardData['company']) || empty($cardData['position']) || empty($cardData['industry_id']) || empty($cardData['pic']) || empty($infoData) || empty($infoData['mobile']) || empty($infoData['wechat']) || empty($infoData['email']) || empty($infoData['address']) || empty($infoData['intro'])) {
+//        if (empty($cardData) || empty($cardData['name']) || empty($cardData['company']) || empty($cardData['position']) || empty($cardData['industry_id']) || empty($cardData['pic']) || empty($infoData) || empty($infoData['mobile']) || empty($infoData['wechat']) || empty($infoData['email']) || empty($infoData['address']) || empty($infoData['intro'])) {
+        if (empty($cardData) || empty($infoData)) {
             $returnData['error'] = 103;
             $returnData['msg'] = 'card or info is empty';
             return response()->json($returnData);
@@ -197,19 +200,31 @@ class UserController extends BaseController
                 return response()->json($returnData);
             }
         } elseif (!empty($uid)) {
-            $cardData['uid'] = $uid;
-//            $formData['style_group_id'] = $uid;
-            if ($card = CardCard::create($cardData)) {
-                $infoData['card_id'] = $card->id;
-                $infoData['uid'] = $uid;
-                CardInfo::create($infoData);
-                $returnData['insertId'] = $card->id;
-                $returnData['msg'] = 'Successful inserting';
-                return response()->json($returnData);
+            $cardCard = CardCard::select()->where(['uid' => $uid])->first();
+            if (!empty($cardCard)) {
+                if (CardCard::where('uid', $uid)->update($cardData)) {
+                    CardInfo::where('card_id', $cardCard['id'])->update($infoData);
+                    return response()->json($returnData);
+                } else {
+                    $returnData['error'] = 104;
+                    $returnData['msg'] = 'update is error';
+                    return response()->json($returnData);
+                }
             } else {
-                $returnData['error'] = 104;
-                $returnData['msg'] = 'insert is error';
-                return response()->json($returnData);
+                $cardData['uid'] = $uid;
+//            $formData['style_group_id'] = $uid;
+                if ($card = CardCard::create($cardData)) {
+                    $infoData['card_id'] = $card->id;
+                    $infoData['uid'] = $uid;
+                    CardInfo::create($infoData);
+                    $returnData['insertId'] = $card->id;
+                    $returnData['msg'] = 'Successful inserting';
+                    return response()->json($returnData);
+                } else {
+                    $returnData['error'] = 104;
+                    $returnData['msg'] = 'insert is error';
+                    return response()->json($returnData);
+                }
             }
         } else {
             $returnData['error'] = 101;
@@ -224,7 +239,7 @@ class UserController extends BaseController
      * @author WEIYIZHENG
      * @remark 添加收藏
      * $param $rid int 人脉或者项目的ID
-     * @param $rType int 类型 1 是人脉 2 是项目
+     * @param $rType int 类型 1 是人脉 2 是项目 3是剧本 4是编剧
      */
     public function saveCollection(Request $request) {
         $returnData = [
@@ -250,12 +265,19 @@ class UserController extends BaseController
             $returnData['msg'] = 'rType is empty';
             return response()->json($returnData);
         }
-        $collection = new CardCollection();
-        $collection->rid = $rid;
-        $collection->uid = $uid;
-        $collection->rType = $rType;
-        if ($insertId = $collection->save()) {
-            $returnData['id'] = $collection->id;
+        $collection = CardCollection::select()->where(['rid' => $rid, 'uid' => $uid, 'rType' => $rType])->first();
+        if (!$collection) {
+            $collectionI = new CardCollection();
+            $collectionI->rid = $rid;
+            $collectionI->uid = $uid;
+            $collectionI->rType = $rType;
+            if ($insertId = $collectionI->save()) {
+                $returnData['id'] = $collectionI->id;
+                return response()->json($returnData);
+            }
+        } else {
+            $returnData['error'] = 104;
+            $returnData['msg'] = 'This has been collected or paid attention to';
             return response()->json($returnData);
         }
 
@@ -281,7 +303,7 @@ class UserController extends BaseController
 
         $collection = CardCollection::select('rid','rType')->where(['rType' => 1, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//人脉
 
-        $returnData['data'] = $collection;
+        $returnData['data'] = $collection['data'];
         return response()->json($returnData);
     }
 
@@ -306,7 +328,56 @@ class UserController extends BaseController
 
         $collection = CardCollection::select('rid','rType')->where(['rType' => 2, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//项目
 
-        $returnData['data'] = $collection;
+        $returnData['data'] = $collection['data'];
+        return response()->json($returnData);
+    }
+    /**
+     * @author WEIYIZHENG
+     * @remark 剧本收藏列表接口
+     * @param $request -> uid int 用户的ID
+     * @return $returnData json
+     */
+    public function getScriptList(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $uid = $request->get('uid');//获取用户的ID
+        if (empty($uid)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
+
+        $collection = CardCollection::select('rid','rType')->where(['rType' => 3, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//剧本
+
+        $returnData['data'] = $collection['data'];
+        return response()->json($returnData);
+    }
+
+    /**
+     * @author WEIYIZHENG
+     * @remark 编剧收藏列表接口
+     * @param $request -> uid int 用户的ID
+     * @return $returnData json
+     */
+    public function getScreenList(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $uid = $request->get('uid');//获取用户的ID
+        if (empty($uid)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
+
+        $collection = CardCollection::select('rid','rType')->where(['rType' => 4, 'uid' => $uid])->paginate($request->get('limit',10))->toArray();//编剧
+
+        $returnData['data'] = $collection['data'];
         return response()->json($returnData);
     }
 }

@@ -79,14 +79,14 @@
                     ,cols: [[ //表头
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}
-                        ,{field: 'category', title: '分类',toolbar:'#category'}
-                        ,{field: 'title', title: '标题'}
+                        ,{field: 'category', title: '分类',toolbar:'#category', width:150}
+                        ,{field: 'title', title: '标题', width:200}
                         ,{field: 'thumb', title: '缩略图',toolbar:'#thumb',width:100}
-                        ,{field: 'keywords', title: '关键词'}
+                        ,{field: 'keywords', title: '关键词', width:150}
                         ,{field: 'tags', title: '标签',toolbar:'#tags',width:300}
-                        ,{field: 'click', title: '点击量'}
-                        ,{field: 'created_at', title: '创建时间'}
-                        ,{field: 'updated_at', title: '更新时间'}
+                        ,{field: 'click', title: '点击量', width:150}
+                        ,{field: 'created_at', title: '创建时间', width:200}
+                        ,{field: 'updated_at', title: '更新时间', width:200}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
                     ]]
                 });

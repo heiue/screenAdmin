@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 class CardProject extends Model
 {
     protected $table = 'card_projects';
-    protected $fillable = ['projectTitle', 'projectType', 'introduction', 'isPublic', 'remark', 'cover'];
-    protected $appends = ['project_type_name', 'track_count'];
+    protected $fillable = ['projectTitle', 'projectType', 'introduction', 'isPublic', 'remark', 'cover', 'financing'];
+    protected $appends = ['project_type_name', 'track_count', 'collection_user_count'];
 
     /**
      * @remark 联查附件表里的图片
@@ -39,6 +39,10 @@ class CardProject extends Model
         return CardProjectTrack::where(['projectId' => $this->id])->count();
     }
 
+    /**
+     * @remark 项目类型名字
+     * @return mixed|string
+     */
     public function getProjectTypeNameAttribute() {
         $projectType = [
             '1' => '小说',
@@ -47,5 +51,12 @@ class CardProject extends Model
             '4' => '电视剧',
         ];
         return $this->projectType ? $projectType[$this->projectType] : '';
+    }
+
+    /**
+     * @remark 收藏项目的用户数
+     */
+    public function getCollectionUserCountAttribute() {
+        return CardCollection::where(['rid' => $this->id, 'rType' => 2])->count();
     }
 }

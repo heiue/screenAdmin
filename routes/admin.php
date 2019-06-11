@@ -295,6 +295,26 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => ['auth'
         Route::post('screenwriter/updateIsPublic', 'ScreenwriterController@updateIsPublic')->name('admin.screenwriter.updateIsPublic');
 
     });
+
+    //招聘管理
+    Route::group(['middleware' => 'permission:recruitment.manage'], function () {
+        //展示页
+        Route::get('task/recruitment/index', 'TaskController@index_recruitment')->name('admin.recruitment.index');
+        Route::get('task/recruitment/data', 'TaskController@data_recruitment')->name('admin.recruitment.data');
+
+        //添加
+        Route::get('task/recruitment/create', 'TaskController@create_recruitment')->name('admin.recruitment.create');
+        Route::post('task/recruitment/save', 'TaskController@save_recruitment')->name('admin.recruitment.save');
+
+        //编辑
+        Route::get('task/recruitment/{id}/edit','TaskController@edit_recruitment')->name('admin.recruitment.edit');
+        Route::put('task/recruitment/{id}/update', 'TaskController@update_recruitment')->name('admin.recruitment.update');
+
+        //删除
+        Route::delete('task/recruitment/destroy', 'TaskController@destroy_recruitment')->name('admin.recruitment.destroy');
+
+
+    });
 });
 
 //剧本管理
@@ -368,4 +388,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     });
 
     //
+});
+
+//任务广场
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:task.manage']], function () {
+
 });

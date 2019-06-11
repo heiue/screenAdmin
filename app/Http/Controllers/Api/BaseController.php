@@ -13,5 +13,11 @@ use App\Http\Controllers\Controller;
 
 class BaseController extends Controller
 {
-
+    public $aboutType = [
+        '1' => '人脉',
+        '2' => '项目',
+        '3' => '剧本',
+        '4' => '编剧',
+        '5' => '精英'
+    ];
 }

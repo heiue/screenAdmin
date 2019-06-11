@@ -2,6 +2,8 @@
 //文件上传接口，前后台共用
 Route::post('uploadImg', 'PublicController@uploadImg')->name('uploadImg');
 Route::post('uploadFile', 'PublicController@uploadFile')->name('uploadFile');
+//todo 上传视频
+Route::post('uploadVideo', 'PublicController@uploadVideo')->name('uploadVideo');
 //发送短信
 Route::post('/sendMsg', 'PublicController@sendMsg')->name('sendMsg');
 

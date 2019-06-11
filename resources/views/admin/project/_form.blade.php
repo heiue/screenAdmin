@@ -40,9 +40,15 @@
     </div>
 </div>
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">项目简介</label>
+    <label for="" class="layui-form-label">项目备注</label>
     <div class="layui-input-block">
         <textarea name="remark" placeholder="请输入备注" class="layui-textarea">{{$project->remark??old('remark')}}</textarea>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">融资</label>
+    <div class="layui-input-block">
+        <input type="number" name="financing" value="{{ $project->financing ?? old('financing') }}" lay-verify="required" placeholder="请输入融资" class="layui-input" >
     </div>
 </div>
 <div class="layui-form-item">

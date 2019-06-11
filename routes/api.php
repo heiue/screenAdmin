@@ -54,6 +54,8 @@ Route::group(['namespace' => 'Api'], function () {
         /*收藏*/
         Route::match(['get'], '/collection/peolist', 'UserController@getPeoList');//人脉收藏
         Route::match(['get'], '/collection/prolist', 'UserController@getProList');//项目收藏
+        Route::match(['get'], '/collection/scriptlist', 'UserController@getScriptList');//剧本收藏
+        Route::match(['get'], '/collection/screenlist', 'UserController@getScreenList');//编剧收藏
         Route::match(['post'], '/collection/save', 'UserController@saveCollection');//添加收藏
 
     });
@@ -66,6 +68,10 @@ Route::group(['namespace' => 'Api'], function () {
     Route::match(['get'], '/article/list', 'ArticleController@list');
     //文章详情
     Route::match(['get'], '/article/detail', 'ArticleController@detail');
+
+    //todo 任务广场 招聘列表
+    Route::match(['get'], '/task/recruitment/list', 'ScreenwriterController@recruitment_list');
+    Route::match(['get'], '/task/recruitment/detail', 'ScreenwriterController@recruitment_detail');
 
     //剧本列表
     Route::match(['get','post'], '/script/list', 'ScriptController@list');

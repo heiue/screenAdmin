@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Models\CardCollection;
 use App\Models\Script;
 use Illuminate\Http\Request;
 
@@ -44,12 +45,27 @@ class ScriptController extends BaseController
             'data' => []
         ];
         $id = $request->get('sid'); //todo 剧本ID
+        $uid = $request->get('uid'); //todo 用户ID
         if (empty($id)) {
             $returnData['error'] = 101;
             $returnData['msg'] = 'screenwriter id is empty';
             return response()->json($returnData);
         }
+        if (empty($uid)) {
+            $returnData['error'] = 102;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
         $script = Script::findOrFail($id);
+        // todo 是否收藏过
+        $where['rid'] = $id;
+        $where['uid'] = $uid;
+        $where['rType'] = 3;
+        if (CardCollection::where($where)->first()) {
+            $screenwriter['isCollection'] = 1;
+        } else {
+            $screenwriter['isCollection'] = 0;
+        }
         $returnData['data'] = $script;
         return response()->json($returnData);
     }
