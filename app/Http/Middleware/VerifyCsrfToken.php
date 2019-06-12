@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         'https://api.gojbcs.com/uploadImg',
-        'http://laravel.apache.com/uploadImg'
+        'http://laravel.apache.com/uploadImg',
+        'http://laravel.apache.com/uploadVideo',
     ];
 }

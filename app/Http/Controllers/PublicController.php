@@ -14,7 +14,7 @@ class PublicController extends Controller
     {
 
         //上传文件最大大小,单位M
-        $maxSize = 10;
+        $maxSize = 5;
         //支持的上传图片类型
         $allowed_extensions = ["png", "jpg", "gif", "jpeg"];
         //返回信息json
@@ -112,13 +112,13 @@ class PublicController extends Controller
     public function uploadVideo(Request $request) {
 
         //上传文件最大大小,单位M
-        $maxSize = 10;
+        $maxSize = 5;
         //支持的上传视频类型
         $allowed_extensions = ["mp4"];
         //返回信息json
         $data = ['code'=>200, 'msg'=>'上传失败', 'data'=>''];
         $file = $request->file('file');
-
+        $fileRealName = $file->getClientOriginalName();
         //检查文件是否上传完成
         if ($file->isValid()){
             //检测图片类型
@@ -136,7 +136,7 @@ class PublicController extends Controller
             $data['msg'] = $file->getErrorMessage();
             return response()->json($data);
         }
-        $newFile = date('Y-m-d')."/".time()."_".uniqid().".".$file->getClientOriginalExtension();
+        $newFile = 'video/'.date('Y-m-d')."/".time()."_".uniqid().".".$file->getClientOriginalExtension();
 //        $disk = QiniuStorage::disk('qiniu');
         $disk = Storage::disk('public');
         $res = $disk->put($newFile,file_get_contents($file->getRealPath()));
@@ -147,7 +147,8 @@ class PublicController extends Controller
                 'data'  => $newFile,
                 'ext'   => $ext,
                 'size'  => $file->getClientSize()?$file->getClientSize():0,
-                'url'   => '/upload/video/'.$newFile
+                'url'   => '/upload/'.$newFile,
+                'fileRealName' => $fileRealName
             ];
         }else{
             $data['data'] = $file->getErrorMessage();

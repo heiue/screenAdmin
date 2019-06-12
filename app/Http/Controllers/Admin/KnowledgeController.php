@@ -31,7 +31,11 @@ class KnowledgeController extends Controller
     {
 
         $model = CardElite::query();
-
+        if ($request->get('category_id')){
+            $model = $model->where('category_id',$request->get('category_id'));
+        } else {
+            $model = $model->where('category_id',1);
+        }
         $res = $model->orderBy('created_at','desc')->paginate($request->get('limit',30))->toArray();
         $data = [
             'code' => 0,
@@ -53,7 +57,7 @@ class KnowledgeController extends Controller
      * @remark 保存文章
      */
     public function save_elite(Request $request) {
-        $data = $request->only(['category_id','title','keywords','description','content','thumb','click']);
+        $data = $request->all();
         $elite = CardElite::create($data);
 
         return redirect(route('admin.elite.index'))->with(['status'=>'添加成功']);
@@ -80,7 +84,6 @@ class KnowledgeController extends Controller
         }
         return redirect(route('admin.elite.index'))->withErrors(['status'=>'系统错误']);
     }
-
 
 
     /**

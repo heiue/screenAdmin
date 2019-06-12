@@ -10,7 +10,15 @@
                 @can('zixun.article.create')
                     <a class="layui-btn layui-btn-sm" href="{{ route('admin.elite.create') }}">添 加</a>
                 @endcan
-                {{--<button class="layui-btn layui-btn-sm" id="searchBtn">搜 索</button>--}}
+                <button class="layui-btn layui-btn-sm" id="searchBtn">搜 索</button>
+            </div>
+            <div class="layui-form" >
+                <div class="layui-input-inline">
+                    <select name="category_id" lay-verify="required" id="category_id">
+                        <option value="1">精品课程</option>
+                        <option value="2">精英养成</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="layui-card-body">

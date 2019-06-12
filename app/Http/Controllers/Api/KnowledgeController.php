@@ -27,7 +27,7 @@ class KnowledgeController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $eliteData = CardElite::select()->paginate($request->get('limit',5))->toArray();
+        $eliteData = CardElite::select()->where(['category_id' => 2])->paginate($request->get('limit',5))->toArray();
 
         $returnData['data'] = $eliteData['data'];
 

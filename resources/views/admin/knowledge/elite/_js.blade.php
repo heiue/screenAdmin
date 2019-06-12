@@ -66,6 +66,35 @@
                 return layer.msg(res.msg);
             }
         });
+
+        //todo 普通视频上传
+        var uploadVideo = upload.render({
+            elem: '#uploadVideo'
+            ,url: '{{ route("uploadVideo") }}'
+            ,multiple: false
+            ,accept: 'video'
+            ,data:{"_token":"{{ csrf_token() }}"}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                /*obj.preview(function(index, file, result){
+                 $('#layui-upload-box').append('<li><img src="'+result+'" /><p>待上传</p></li>')
+                 });*/
+                obj.preview(function(index, file, result){
+                    console.log(result)
+                    $('#layui-upload-box-video').html('<li><video controls="controls" width="200" height="150" src="'+result+'"></video></li>')
+                });
+
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code == 0){
+                    $("#video").val(res.url);
+                    $('#layui-upload-box-video li p').text('上传成功');
+                    return layer.msg(res.msg);
+                }
+                return layer.msg(res.msg);
+            }
+        });
     })
 </script>
 <!-- 实例化编辑器 -->
