@@ -48,6 +48,7 @@
                         ,{field: 'address', title: '地址', width:150}
                         ,{field: 'education', title: '学历', width:150}
                         ,{field: 'experience', title: '经验', width:150}
+                        ,{field: 'price', title: '薪资', width:150}
                         ,{field: 'created_at', title: '创建时间', width:200}
                         ,{field: 'updated_at', title: '更新时间', width:200}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}

@@ -57,7 +57,7 @@
                 <ul id="layui-upload-box-video" class="layui-clear">
                     @if(isset($elite->video))
                         <li>
-                            <video width="200" height="150" src="{{ $elite->video }}"></video>
+                            <video width="200" height="150" controls="controls" src="{{ $elite->video }}"></video>
                         </li>
                     @endif
                 </ul>

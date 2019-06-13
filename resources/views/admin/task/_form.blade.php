@@ -27,6 +27,12 @@
         <input type="text" name="experience" value="{{$recruitment->experience??old('experience')}}" lay-verify="required" placeholder="请输入经验" class="layui-input" >
     </div>
 </div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">薪资</label>
+    <div class="layui-input-block">
+        <input type="text" name="price" value="{{$recruitment->price??old('price')}}" lay-verify="required" placeholder="请输入薪资" class="layui-input" >
+    </div>
+</div>
 
 @include('UEditor::head')
 <div class="layui-form-item">

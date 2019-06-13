@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardRecruitment extends Model
 {
-    protected $fillable = ['position', 'address', 'education', 'experience', 'introduction', 'positionClaim'];
+    protected $fillable = ['position', 'address', 'education', 'experience', 'introduction', 'positionClaim', 'price'];
 
 
 }

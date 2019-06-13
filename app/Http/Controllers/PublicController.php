@@ -112,7 +112,7 @@ class PublicController extends Controller
     public function uploadVideo(Request $request) {
 
         //上传文件最大大小,单位M
-        $maxSize = 5;
+        $maxSize = 10;
         //支持的上传视频类型
         $allowed_extensions = ["mp4"];
         //返回信息json

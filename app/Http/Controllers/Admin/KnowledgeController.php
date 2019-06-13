@@ -78,7 +78,7 @@ class KnowledgeController extends Controller
      */
     public function update_elite(Request $request, $id) {
         $elite = CardElite::findOrFail($id);
-        $data = $request->only(['category_id','title','keywords','description','content','thumb','click']);
+        $data = $request->all();
         if ($elite->update($data)){
             return redirect(route('admin.elite.index'))->with(['status'=>'更新成功']);
         }
