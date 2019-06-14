@@ -26,6 +26,13 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">编剧描述</label>
+    <div class="layui-input-block">
+        <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$screenwriter->introduction??old('introduction')}}</textarea>
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">头像</label>
     <div class="layui-input-block">
         <div class="layui-upload">

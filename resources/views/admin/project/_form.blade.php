@@ -26,23 +26,27 @@
     <div class="layui-input-block">
         <select name="projectType" lay-search  lay-filter="parent_id">
             <option value="0">请选择</option>
-            <option value="1" @if(isset($project->projectType) && $project->projectType == 1) selected @endif>小说</option>
-            <option value="2" @if(isset($project->projectType) && $project->projectType == 2) selected @endif>网剧</option>
-            <option value="3" @if(isset($project->projectType) && $project->projectType == 3) selected @endif>综艺</option>
-            <option value="4" @if(isset($project->projectType) && $project->projectType == 4) selected @endif>电视剧</option>
+            <option value="1" @if(isset($project->projectType) && $project->projectType == 1) selected @endif>院线电影</option>
+            <option value="2" @if(isset($project->projectType) && $project->projectType == 2) selected @endif>电视剧</option>
+            <option value="3" @if(isset($project->projectType) && $project->projectType == 3) selected @endif> 网络大电影</option>
+            <option value="4" @if(isset($project->projectType) && $project->projectType == 4) selected @endif>网络剧</option>
+            <option value="5" @if(isset($project->projectType) && $project->projectType == 4) selected @endif> 央6</option>
+            <option value="6" @if(isset($project->projectType) && $project->projectType == 4) selected @endif>舞台剧</option>
+            <option value="7" @if(isset($project->projectType) && $project->projectType == 4) selected @endif> 短视频 </option>
+            <option value="8" @if(isset($project->projectType) && $project->projectType == 4) selected @endif> 小说 </option>
         </select>
     </div>
 </div>
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">项目简介</label>
+    <label for="" class="layui-form-label">项目描述</label>
     <div class="layui-input-block">
-        <textarea name="introduction" placeholder="请输入简介" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>
+        <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>
     </div>
 </div>
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">项目备注</label>
+    <label for="" class="layui-form-label">卖点分析</label>
     <div class="layui-input-block">
-        <textarea name="remark" placeholder="请输入备注" class="layui-textarea">{{$project->remark??old('remark')}}</textarea>
+        <textarea name="remark" placeholder="请输入分析" class="layui-textarea">{{$project->remark??old('remark')}}</textarea>
     </div>
 </div>
 <div class="layui-form-item">

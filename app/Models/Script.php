@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Script extends Model
 {
-    protected $fillable = ['scriptTitle', 'scriptType', 'scriptTheme', 'cover'];
+    protected $fillable = ['scriptTitle', 'scriptType', 'scriptTheme', 'cover', 'introduction'];
     protected $table = 'card_scripts';
     protected $appends = ['script_type_name', 'script_theme_name'];
 

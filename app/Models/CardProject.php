@@ -42,13 +42,18 @@ class CardProject extends Model
     /**
      * @remark 项目类型名字
      * @return mixed|string
+     * 院线电影 电视剧 网络大电影 网络剧 央6 舞台剧 短视频 小说
      */
     public function getProjectTypeNameAttribute() {
         $projectType = [
-            '1' => '小说',
-            '2' => '网剧',
-            '3' => '综艺',
-            '4' => '电视剧',
+            '1' => '院线电影',
+            '2' => '电视剧',
+            '3' => '网络大电影',
+            '4' => '网络剧',
+            '5' => '央6',
+            '6' => '舞台剧',
+            '7' => '短视频',
+            '8' => '小说'
         ];
         return $this->projectType ? $projectType[$this->projectType] : '';
     }
