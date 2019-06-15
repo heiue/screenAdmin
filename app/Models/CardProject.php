@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 class CardProject extends Model
 {
     protected $table = 'card_projects';
-    protected $fillable = ['projectTitle', 'projectType', 'introduction', 'isPublic', 'remark', 'cover', 'financing'];
-    protected $appends = ['project_type_name', 'track_count', 'collection_user_count'];
+    protected $fillable = ['projectTitle', 'projectType', 'projectType2', 'introduction', 'isPublic', 'remark', 'cover', 'financing'];
+    protected $appends = ['project_type_name', 'project_type2_name', 'track_count', 'collection_user_count'];
 
     /**
      * @remark 联查附件表里的图片
@@ -56,6 +56,18 @@ class CardProject extends Model
             '8' => '小说'
         ];
         return $this->projectType ? $projectType[$this->projectType] : '';
+    }
+    /**
+     * @remark 项目类型2名字
+     * @return mixed|string
+     *
+     */
+    public function getProjectType2NameAttribute() {
+        $projectType2 = [
+            '1' => '言情类',
+            '2' => '武侠类',
+        ];
+        return $this->projectType2 ? $projectType2[$this->projectType2] : '';
     }
 
     /**

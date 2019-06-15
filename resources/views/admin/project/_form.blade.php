@@ -38,6 +38,16 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">项目类型2</label>
+    <div class="layui-input-block">
+        <select name="projectType2" lay-search  lay-filter="parent_id">
+            <option value="0">请选择</option>
+            <option value="1" @if(isset($project->projectType2) && $project->projectType2 == 1) selected @endif>言情类</option>
+            <option value="2" @if(isset($project->projectType2) && $project->projectType2 == 2) selected @endif>武侠类</option>
+        </select>
+    </div>
+</div>
+<div class="layui-form-item">
     <label for="" class="layui-form-label">项目描述</label>
     <div class="layui-input-block">
         <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>

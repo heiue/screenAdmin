@@ -19,9 +19,22 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">常驻地</label>
+    <div class="layui-input-block">
+        <input type="text" name="residence" value="{{ $screenwriter->residence ?? '' }}" lay-verify="required" placeholder="请输入常驻地" class="layui-input" >
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">代表作品</label>
     <div class="layui-input-block">
-        <input type="text" name="residence" value="{{ $screenwriter->residence ?? '' }}" lay-verify="required" placeholder="请输入代表作品" class="layui-input" >
+        <input type="text" name="works" value="{{ $screenwriter->works ?? '' }}" lay-verify="required" placeholder="请输入代表作品" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">联系电话</label>
+    <div class="layui-input-block">
+        <input type="text" name="phone" value="{{ $screenwriter->phone ?? '' }}"  placeholder="请输入联系电话" class="layui-input" >
     </div>
 </div>
 

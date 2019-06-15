@@ -28,6 +28,11 @@ class ProjectController extends BaseController
         '8' => '小说'
     ];
 
+    protected static $type2Data = [
+        '1' => '言情类',
+        '2' => '武侠类',
+    ];
+
     /**
      * @remark 项目分类列表
      */

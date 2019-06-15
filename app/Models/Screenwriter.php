@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Screenwriter extends Model
 {
-    protected $fillable = ['id','name','rating','residence','avatar', 'isPublic', 'isHot','introduction'];
+    protected $fillable = ['id','name','rating','residence','avatar', 'isPublic', 'isHot','introduction', 'phone', 'works'];
     protected $table = 'card_screenwriters';
     protected $appends = ['rating_name'];
 
