@@ -17,13 +17,13 @@ class CardCollection extends Model
 
     public function getRidInfoAttribute() {
         if ($this->rType == 1) {
-            return ($card = CardCard::findOrFail($this->rid)) ? $card : [];
+            return ($card = CardCard::where(['id' => $this->rid])->first()) ? $card : [];
         } else if ($this->rType == 2) {
-            return ($pro = CardProject::findOrFail($this->rid)) ? $pro : [];
+            return ($pro = CardProject::where(['id' => $this->rid])->first()) ? $pro : [];
         } else if ($this->rType == 3) {
-            return ($pro = script::findOrFail($this->rid)) ? $pro : [];
+            return ($pro = script::where(['id' => $this->rid])->first()) ? $pro : [];
         } else if ($this->rType == 4) {
-            return ($pro = Screenwriter::findOrFail($this->rid)) ? $pro : [];
+            return ($pro = Screenwriter::where(['id' => $this->rid])->first()) ? $pro : [];
         } else {
             return [];
         }

@@ -29,6 +29,7 @@ class ProjectController extends BaseController
     ];
 
     protected static $type2Data = [
+        '0' => '全部',
         '1' => '言情类',
         '2' => '武侠类',
     ];
@@ -42,7 +43,8 @@ class ProjectController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $returnData['data'] = self::$typeData;
+        $returnData['data']['type1'] = self::$typeData;
+        $returnData['data']['type2'] = self::$type2Data;
         return response()->json($returnData);
     }
     /**
@@ -61,8 +63,12 @@ class ProjectController extends BaseController
         ];
         $where = ['isPublic' => 1];
         $typeId = $request->get('type');
+        $type2Id = $request->get('type2');
         if (!empty($typeId)) {
             $where['projectType'] = $typeId;
+        }
+        if (!empty($type2Id)) {
+            $where['projectType2'] = $type2Id;
         }
         $projectData = CardProject::with(['cardAnnexImg' => function($query){
             $query->select('aboutId', 'path')->where(['aboutType' => 'project', 'type' => 'img']);
