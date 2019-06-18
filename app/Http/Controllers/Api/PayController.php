@@ -16,9 +16,9 @@ class PayController extends BaseController
 {
     public $recharge = [
         '1' => ['price' => 9.9, 'time' => 30*24*60*60],
-        '2' => ['price' => 29, 'time' => 3*30*24*60*60],
-        '3' => ['price' => 59, 'time' => 6*30*24*60*60],
-        '4' => ['price' => 118, 'time' => 12*30*24*60*60],
+        '2' => ['price' => 19.9, 'time' => 3*30*24*60*60],
+        '3' => ['price' => 39.9, 'time' => 6*30*24*60*60],
+        '4' => ['price' => 79.9, 'time' => 12*30*24*60*60],
     ];
     /**
      * @author WEIYIZHENG
