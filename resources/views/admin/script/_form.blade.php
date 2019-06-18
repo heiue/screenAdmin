@@ -51,10 +51,13 @@
         <input type="text" name="keyword" value="{{ $script->keyword ?? old('title') }}" lay-verify="required" placeholder="关键词" class="layui-input" >
     </div>
 </div>
+@include('UEditor::head')
 <div class="layui-form-item">
     <label for="" class="layui-form-label">剧本描述</label>
     <div class="layui-input-block">
-        <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$script->introduction??old('introduction')}}</textarea>
+        <script id="container" name="introduction" type="text/plain">
+            {!! $script->introduction??old('introduction') !!}
+        </script>
     </div>
 </div>
 <div class="layui-form-item">

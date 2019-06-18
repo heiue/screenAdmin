@@ -38,10 +38,13 @@
     </div>
 </div>
 
+@include('UEditor::head')
 <div class="layui-form-item">
     <label for="" class="layui-form-label">编剧描述</label>
     <div class="layui-input-block">
-        <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$screenwriter->introduction??old('introduction')}}</textarea>
+        <script id="container" name="introduction" type="text/plain">
+            {!! $screenwriter->introduction??old('introduction') !!}
+        </script>
     </div>
 </div>
 

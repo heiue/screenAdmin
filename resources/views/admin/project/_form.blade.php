@@ -47,10 +47,13 @@
         </select>
     </div>
 </div>
+@include('UEditor::head')
 <div class="layui-form-item">
     <label for="" class="layui-form-label">项目描述</label>
     <div class="layui-input-block">
-        <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>
+        <script id="container" name="introduction" type="text/plain">
+            {!! $project->introduction??old('introduction') !!}
+        </script>
     </div>
 </div>
 <div class="layui-form-item">

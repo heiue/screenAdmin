@@ -1,9 +1,16 @@
 {{csrf_field()}}
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">职位名称</label>
+    <label for="" class="layui-form-label">需求名称</label>
     <div class="layui-input-block">
-        <input type="text" name="position" value="{{$recruitment->position??old('position')}}" lay-verify="required" placeholder="请输入职位" class="layui-input" >
+        <input type="text" name="position" value="{{$recruitment->position??old('position')}}" lay-verify="required" placeholder="请输入需求名称" class="layui-input" >
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">公司名称</label>
+    <div class="layui-input-block">
+        <input type="text" name="company" value="{{$recruitment->company??old('company')}}" lay-verify="required" placeholder="请输入公司地址" class="layui-input" >
     </div>
 </div>
 
@@ -15,28 +22,28 @@
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">学历</label>
+    <label for="" class="layui-form-label">职务</label>
     <div class="layui-input-block">
-        <input type="text" name="education" value="{{$recruitment->education??old('education')}}" lay-verify="required" placeholder="请输入学历" class="layui-input" >
+        <input type="text" name="education" value="{{$recruitment->education??old('education')}}" lay-verify="required" placeholder="请输入职务" class="layui-input" >
     </div>
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">经验</label>
+    <label for="" class="layui-form-label">关键字</label>
     <div class="layui-input-block">
-        <input type="text" name="experience" value="{{$recruitment->experience??old('experience')}}" lay-verify="required" placeholder="请输入经验" class="layui-input" >
+        <input type="text" name="experience" value="{{$recruitment->experience??old('experience')}}" lay-verify="required" placeholder="请输入关键字" class="layui-input" >
     </div>
 </div>
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">薪资</label>
+    <label for="" class="layui-form-label">金额</label>
     <div class="layui-input-block">
-        <input type="text" name="price" value="{{$recruitment->price??old('price')}}" lay-verify="required" placeholder="请输入薪资" class="layui-input" >
+        <input type="text" name="price" value="{{$recruitment->price??old('price')}}" lay-verify="required" placeholder="请输入金额" class="layui-input" >
     </div>
 </div>
 
 @include('UEditor::head')
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">公司介绍</label>
+    <label for="" class="layui-form-label">需求方介绍</label>
     <div class="layui-input-block">
         <script id="container" name="introduction" type="text/plain">
             {!! $recruitment->introduction??old('introduction') !!}
@@ -45,7 +52,7 @@
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">职位要求</label>
+    <label for="" class="layui-form-label">任务详情</label>
     <div class="layui-input-block">
         <script id="container-1" name="positionClaim" type="text/plain">
             {!! $recruitment->positionClaim??old('positionClaim') !!}

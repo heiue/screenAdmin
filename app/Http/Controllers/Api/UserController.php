@@ -273,11 +273,15 @@ class UserController extends BaseController
             $collectionI->rType = $rType;
             if ($insertId = $collectionI->save()) {
                 $returnData['id'] = $collectionI->id;
+                $returnData['success'] = true;
+                $returnData['msg'] = '已关注或收藏';
                 return response()->json($returnData);
             }
         } else {
+            CardCollection::destroy($collection['id']);
             $returnData['error'] = 104;
-            $returnData['msg'] = 'This has been collected or paid attention to';
+            $returnData['success'] = false;
+            $returnData['msg'] = '已取消关注或收藏';
             return response()->json($returnData);
         }
 
