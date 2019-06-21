@@ -47,8 +47,8 @@ class WxPay
             'openid' => $openid,
             'out_trade_no' => $order_no,
             'spbill_create_ip' => $request->ip(),
-            'total_fee' => $total_fee * 100, // 价格:单位分
-//            'total_fee' => 1, // 价格:单位分
+//            'total_fee' => $total_fee * 100, // 价格:单位分
+            'total_fee' => 1, // 价格:单位分
             'trade_type' => 'JSAPI',
         ];
 //        return $params;

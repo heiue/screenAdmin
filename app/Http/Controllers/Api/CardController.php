@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Models\CardCard;
+use App\Models\CardCollection;
 use App\Models\CardIndustry;
 use Illuminate\Http\Request;
 
@@ -67,12 +68,27 @@ class CardController extends BaseController
             'data' => []
         ];
         $cardId= $request->get('card_id');
+        $uid = $request->get('uid'); //todo 用户ID
         if (empty($cardId)) {
             $returnData['error'] = 101;
             $returnData['msg'] = 'card_id is empty';
             return response()->json($returnData);
         }
+        if (empty($uid)) {
+            $returnData['error'] = 102;
+            $returnData['msg'] = 'uid is empty';
+            return response()->json($returnData);
+        }
         $card = CardCard::with('cardInfo')->findOrFail($cardId);
+        // todo 是否收藏过
+        $where['rid'] = $cardId;
+        $where['uid'] = $uid;
+        $where['rType'] = 1;
+        if (CardCollection::where($where)->first()) {
+            $card['isCollection'] = 1;
+        } else {
+            $card['isCollection'] = 0;
+        }
         $returnData['data'] = $card;
         return response()->json($returnData);
     }

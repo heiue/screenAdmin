@@ -34,17 +34,23 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">联系电话</label>
     <div class="layui-input-block">
-        <input type="text" name="phone" value="{{ $screenwriter->phone ?? '' }}"  placeholder="请输入联系电话" class="layui-input" >
+        <input type="number" name="phone" value="{{ $screenwriter->phone ?? '' }}"  placeholder="请输入联系电话" class="layui-input" >
     </div>
 </div>
-
-@include('UEditor::head')
 <div class="layui-form-item">
     <label for="" class="layui-form-label">编剧描述</label>
     <div class="layui-input-block">
-        <script id="container" name="introduction" type="text/plain">
+        <textarea name="description" placeholder="请输入描述" class="layui-textarea">{{$screenwriter->description??old('description')}}</textarea>
+    </div>
+</div>
+@include('UEditor::head')
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">编剧简介</label>
+    <div class="layui-input-block">
+        <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$screenwriter->introduction??old('introduction')}}</textarea>
+        {{--<script id="container" name="introduction" type="text/plain">
             {!! $screenwriter->introduction??old('introduction') !!}
-        </script>
+        </script>--}}
     </div>
 </div>
 

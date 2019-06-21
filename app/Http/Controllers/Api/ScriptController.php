@@ -62,9 +62,9 @@ class ScriptController extends BaseController
         $where['uid'] = $uid;
         $where['rType'] = 3;
         if (CardCollection::where($where)->first()) {
-            $screenwriter['isCollection'] = 1;
+            $script['isCollection'] = 1;
         } else {
-            $screenwriter['isCollection'] = 0;
+            $script['isCollection'] = 0;
         }
         $returnData['data'] = $script;
         return response()->json($returnData);

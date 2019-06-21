@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class CardProject extends Model
 {
     protected $table = 'card_projects';
-    protected $fillable = ['projectTitle', 'projectType', 'projectType2', 'introduction', 'isPublic', 'remark', 'cover', 'financing'];
+    protected $fillable = ['projectTitle', 'projectType', 'projectType2', 'introduction', 'isPublic', 'remark', 'cover', 'financing', 'browseCount', 'fCompany'];
     protected $appends = ['project_type_name', 'project_type2_name', 'track_count', 'collection_user_count'];
 
     /**

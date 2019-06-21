@@ -6,6 +6,12 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">发布公司的名称</label>
+    <div class="layui-input-block">
+        <input type="text" name="fCompany" value="{{ $project->fCompany ?? old('fCompany') }}" lay-verify="required" placeholder="请输入发布公司的名称" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
     <label for="" class="layui-form-label">封面</label>
     <div class="layui-input-block">
         <div class="layui-upload">
@@ -99,11 +105,12 @@
 </div>
 @include('UEditor::head')
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">项目描述</label>
+    <label for="" class="layui-form-label">项目简介</label>
     <div class="layui-input-block">
-        <script id="container" name="introduction" type="text/plain">
+        <textarea name="description" placeholder="请输入简介" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>
+        {{--<script id="container" name="introduction" type="text/plain">
             {!! $project->introduction??old('introduction') !!}
-        </script>
+        </script>--}}
     </div>
 </div>
 <div class="layui-form-item">
@@ -116,6 +123,12 @@
     <label for="" class="layui-form-label">融资</label>
     <div class="layui-input-block">
         <input type="number" name="financing" value="{{ $project->financing ?? old('financing') }}" lay-verify="required" placeholder="请输入融资" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">浏览量</label>
+    <div class="layui-input-block">
+        <input type="number" name="browseCount" value="{{ $project->browseCount ?? old('browseCount') }}" lay-verify="required" placeholder="请输入浏览量" class="layui-input" >
     </div>
 </div>
 <div class="layui-form-item">

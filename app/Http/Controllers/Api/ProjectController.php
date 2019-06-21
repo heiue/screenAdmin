@@ -154,6 +154,9 @@ class ProjectController extends BaseController
         }
         $project = CardProject::findOrFail($projectId);
         if ($project) {
+            //todo 增加浏览量
+            CardProject::where('id', $projectId)->increment('browseCount');
+
             $img = CardAnnex::select('path')->where(['aboutId' => $projectId,'aboutType' => 'project', 'type' => 'img'])->get()->toArray();
             $project['img'] = $img;
         }

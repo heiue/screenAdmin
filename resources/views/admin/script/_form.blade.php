@@ -107,9 +107,10 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">剧本描述</label>
     <div class="layui-input-block">
-        <script id="container" name="introduction" type="text/plain">
+        <textarea name="introduction" placeholder="请输入描述" class="layui-textarea">{{$script->introduction??old('introduction')}}</textarea>
+        {{--<script id="container" name="introduction" type="text/plain">
             {!! $script->introduction??old('introduction') !!}
-        </script>
+        </script>--}}
     </div>
 </div>
 <div class="layui-form-item">

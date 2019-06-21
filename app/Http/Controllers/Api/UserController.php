@@ -156,7 +156,8 @@ class UserController extends BaseController
 		"company":"公司",
 		"position":"行业",
         "industry_id":"3",
-        "pic":"url"
+        "pic":"url",
+        "is_aut":"false"  //判断是不是公开隐私信息
 	},
 	"info":{
 		"mobile":"手机",

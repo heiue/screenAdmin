@@ -59,7 +59,8 @@ class ScreenwriterController extends Controller
             'name'  => 'required|string',
             'rating'  => 'required',
             'residence'  => 'required',
-            'avatar'    => 'required'
+            'avatar'    => 'required',
+            'phone' => 'required|max:15'
         ]);
 //        dump($request->all());exit;
         if ($insertId = Screenwriter::create($request->all())->id){
@@ -102,6 +103,7 @@ class ScreenwriterController extends Controller
             'name'  => 'required|string',
             'rating'  => 'required',
             'residence'  => 'required',
+            'phone' => 'required|max:15'
         ]);
         $scr = Screenwriter::findOrFail($id);
         if ($scr->update($request->only(null))){
