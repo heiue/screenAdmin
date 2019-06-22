@@ -44,13 +44,22 @@ class CardController extends BaseController
             'data' => []
         ];
         $industryId = $request->get('industry_id');
+        $uid = $request->get('uid');
         $where = [];
+        $model = CardCard::query();
         if (!empty($industryId)) {
-            $where['industry_id'] = $industryId;
+            $model->where('industry_id', $industryId);
+//            $where['industry_id'] = $industryId;
         }
-        $cardData = CardCard::with(['cardInfo','cardUser' => function($query){
+        if (!empty($uid)) {
+            $model->where('uid', '!=', $uid);
+        }
+        /*$cardData = CardCard::with(['cardInfo','cardUser' => function($query){
             $query->select('id','is_vip');
-        }])->orderBy('id', 'desc')->where($where)->paginate($request->get('limit',10))->toArray();
+        }])->orderBy('id', 'desc')->where($where)->paginate($request->get('limit',10))->toArray();*/
+        $cardData = $model->with(['cardInfo','cardUser' => function($query){
+            $query->select('id','is_vip');
+        }])->orderBy('id', 'desc')->paginate($request->get('limit',10))->toArray();
 
         $returnData['data'] = $cardData['data'];
 

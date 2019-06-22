@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\CardCard;
 use App\Models\CardProject;
+use App\Models\Screenwriter;
+use App\Models\Script;
 use Illuminate\Http\Request;
 
 class IndexController extends BaseController
@@ -39,8 +41,16 @@ class IndexController extends BaseController
         //搜索人脉
         $card = CardCard::where('name', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
 
+        //搜索编剧
+        $screenwriter = Screenwriter::where('name', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
+
+        //搜索剧本
+        $script = Script::where('scriptTitle', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
+
         $returnData['data']['project'] = $project;
         $returnData['data']['card'] = $card;
+        $returnData['data']['screenwriter'] = $screenwriter;
+        $returnData['data']['script'] = $script;
 
         return response()->json($returnData);
     }

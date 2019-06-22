@@ -65,4 +65,8 @@ return [
         // 'hk' 时为东南亚节点
         // 'mode' => 'dev',
     ],
+    'im' => [
+        'sdkappid' => '1400222815',
+        'identifier' => 'admin'
+    ]
 ];

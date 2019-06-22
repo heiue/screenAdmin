@@ -2,6 +2,7 @@
 
 namespace App\Models\Api;
 
+use App\Http\Controllers\Common\Im\TLSSigAPI;
 use App\Http\Controllers\Common\Wechat\WxUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -28,12 +29,18 @@ class CardUser extends Model
         'app_id' => '',
         'app_secret' => '',
     ];
+    protected $im = [
+        'sdkappid' => '',
+        'identifier' => ''
+    ];
 
     public function __construct()
     {
         parent::__construct();
         $this->wxapp['app_id'] = config('pay.wechat.app_id');
         $this->wxapp['app_secret'] = config('pay.wechat.app_secret');
+        $this->im['sdkappid'] = config('pay.im.sdkappid');
+        $this->im['identifier'] = config('pay.im.identifier');
     }
 
     /**
@@ -165,4 +172,33 @@ class CardUser extends Model
         return $guidv4;
     }
 
+    /**
+     * @remark 用户登陆生成usersig
+     */
+    public function userSigIm($identifier) {
+        //todo 获取签名 userSig
+        $usersig = 'eJxlj1FPgzAUhd-5FQ2vM9oWisNkD9vY1ASGZEjIXhpGi14ZDLuCGuN-N*ISm3hfv*-knPtpIYTsNNxeFmV57FvN9UcnbXSDbGxf-MGuA8ELzR0l-kH53oGSvKi0VCMkjDGKsemAkK2GCs5GIRpoDXwSNR87fvMuxpTSKWGmAk8jjFbJ8v4uqJ2rBLy3Vb6O3NTPZCJ2wUsZdA6tqiYOB-FIrid*td-MYV5v4tSP3W2v2O3rNFCHxSFceL3e5Vg-T9b7esizZSaihzCZzYxKDY08P*QR4jvUNwcNUp3g2I4CxYQR6uCfs60v6xuXSVwe';
+
+        $model = new TLSSigAPI();
+        $model->setAppid($this->im['sdkappid']);
+        $private = file_get_contents('./im/keys/private_key.txt');
+        $model->SetPrivateKey($private);
+        $sig = $model->genSig($identifier);
+        //todo 判断用户登陆状态
+        /*$querystateApi = "https://console.tim.qq.com/v4/openim/querystate?sdkappid={$this->im['sdkappid']}&identifier={$this->im['identifier']}&usersig={$usersig}&contenttype=json";
+        $postData = [
+            'To_Account' => [$identifier]
+        ];
+        $result = json_decode(curl_post($querystateApi, json_encode($postData)),true);
+        if ($result['ErrorCode'] == 0) {
+            if ($result['QueryResult']['State'] != 'Online') {
+                //todo 去登陆
+
+            }
+        } else {
+
+        }*/
+
+        return $sig;
+    }
 }

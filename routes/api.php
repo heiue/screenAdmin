@@ -37,6 +37,8 @@ Route::group(['namespace' => 'Api'], function () {
     Route::match(['post'], '/pay', 'PayController@pay');
     Route::match(['get', 'post'], '/pay/notice', 'PayController@notify');
 
+    //即时通讯
+    Route::match(['get'], '/user/im', 'UserController@im');
 
 
     //个人信息路由组

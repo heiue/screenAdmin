@@ -42,6 +42,24 @@ class UserController extends BaseController
     }
 
     /**
+     * @remark 即时通讯im信息
+     */
+    public function im(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'success',
+            'data' => []
+        ];
+        $identifier_prefix = 'ju';
+        $identifier = $request->get('$identifier', 'wyz');
+        $model = new UserModel();
+        //todo 即时通讯
+        $imResult = $model->userSigIm($identifier_prefix.$identifier);
+        $returnData['data']['usersig'] = $imResult;
+        return response()->json($returnData);
+    }
+
+    /**
      * @author WEIYIZHENG
      * @remark 获取本人的信息
      * @param Request $request
@@ -280,7 +298,7 @@ class UserController extends BaseController
             }
         } else {
             CardCollection::destroy($collection['id']);
-            $returnData['error'] = 104;
+            $returnData['error'] = 0;
             $returnData['success'] = false;
             $returnData['msg'] = '已取消关注或收藏';
             return response()->json($returnData);

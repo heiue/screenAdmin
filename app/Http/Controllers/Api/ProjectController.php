@@ -122,7 +122,7 @@ class ProjectController extends BaseController
         }
         $projectData = CardProject::with(['cardAnnexImg' => function($query){
             $query->select('aboutId', 'path')->where(['aboutType' => 'project', 'type' => 'img']);
-        }])->select('id', 'projectTitle','isPublic', 'isTop', 'isFine', 'projectType', 'created_at', 'financing', 'browseCount')->where($where)->orderBy('isTop','desc')->paginate($request->get('limit',10))->toArray();
+        }])->select()->where($where)->orderBy('isTop','desc')->paginate($request->get('limit',10))->toArray();
 
         $returnData['data'] = $projectData['data'];
 
