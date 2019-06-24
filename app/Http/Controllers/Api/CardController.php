@@ -98,6 +98,7 @@ class CardController extends BaseController
         } else {
             $card['isCollection'] = 0;
         }
+        $card['identifier'] = 'ju'.$card['uid'];
         $returnData['data'] = $card;
         return response()->json($returnData);
     }

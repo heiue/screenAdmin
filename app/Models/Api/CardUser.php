@@ -175,30 +175,34 @@ class CardUser extends Model
     /**
      * @remark 用户登陆生成usersig
      */
-    public function userSigIm($identifier) {
+    public function userSigIm($identifier, $nick, $avater) {
         //todo 获取签名 userSig
-        $usersig = 'eJxlj1FPgzAUhd-5FQ2vM9oWisNkD9vY1ASGZEjIXhpGi14ZDLuCGuN-N*ISm3hfv*-knPtpIYTsNNxeFmV57FvN9UcnbXSDbGxf-MGuA8ELzR0l-kH53oGSvKi0VCMkjDGKsemAkK2GCs5GIRpoDXwSNR87fvMuxpTSKWGmAk8jjFbJ8v4uqJ2rBLy3Vb6O3NTPZCJ2wUsZdA6tqiYOB-FIrid*td-MYV5v4tSP3W2v2O3rNFCHxSFceL3e5Vg-T9b7esizZSaihzCZzYxKDY08P*QR4jvUNwcNUp3g2I4CxYQR6uCfs60v6xuXSVwe';
+        $usersiga = 'eJxlj11PgzAUhu-5FYRro22xbDPZhTC7OSFkAtF50yAty3F8NFAdm-G-G3GJTTy3z-Pmfc*nZdu2k4bJZV4U7XujuT4q6dg3toOciz*oFAiea*524h*Ug4JO8rzUshshppQShEwHhGw0lHA2clFDY*Be7PnY8Zu-RogQMsXUVGA3wuhuE9yzLUOLVXTlH9VpNlQa2GGVtYlgxVCFOMjX-utyEs*yNhK34NflIls-7h*WVRX3z9vgZQj9DUonsfLeEsLSgTXeAdwnb7qbz41KDbU8P*Rh4hGXmIM*ZNdD24wCQZhi4qKfc6wv6xv-Dlyy';
 
         $model = new TLSSigAPI();
         $model->setAppid($this->im['sdkappid']);
         $private = file_get_contents('./im/keys/private_key.txt');
         $model->SetPrivateKey($private);
-        $sig = $model->genSig($identifier);
+        $usersig = $model->genSig($identifier);
+
         //todo 判断用户登陆状态
-        /*$querystateApi = "https://console.tim.qq.com/v4/openim/querystate?sdkappid={$this->im['sdkappid']}&identifier={$this->im['identifier']}&usersig={$usersig}&contenttype=json";
+        $querystateApi = "https://console.tim.qq.com/v4/openim/querystate?sdkappid={$this->im['sdkappid']}&identifier={$this->im['identifier']}&usersig={$usersiga}&contenttype=json";
         $postData = [
             'To_Account' => [$identifier]
         ];
         $result = json_decode(curl_post($querystateApi, json_encode($postData)),true);
         if ($result['ErrorCode'] == 0) {
-            if ($result['QueryResult']['State'] != 'Online') {
+            if ($result['QueryResult'][0]['State'] != 'Online') {
                 //todo 去登陆
-
+                $postData1 = [
+                    'Identifier' => $identifier,
+                    'Nick' => $nick ? $nick : '',
+                    'FaceUrl' => $avater ? $avater : ''
+                ];
+                $import = 'https://console.tim.qq.com/v4/im_open_login_svc/account_import?sdkappid='.$this->im['sdkappid'].'&identifier='.$this->im['identifier'].'&usersig='.$usersiga.'&contenttype=json';
+                $result = json_decode(curl_post($import,json_encode($postData1)));
             }
-        } else {
-
-        }*/
-
-        return $sig;
+        }
+        return $usersig;
     }
 }

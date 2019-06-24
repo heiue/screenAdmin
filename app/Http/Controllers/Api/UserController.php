@@ -50,11 +50,10 @@ class UserController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $identifier_prefix = 'ju';
-        $identifier = $request->get('$identifier', 'wyz');
+        $identifier = $request->get('identifier');
         $model = new UserModel();
         //todo 即时通讯
-        $imResult = $model->userSigIm($identifier_prefix.$identifier);
+        $imResult = $model->userSigIm($identifier);
         $returnData['data']['usersig'] = $imResult;
         return response()->json($returnData);
     }
@@ -91,6 +90,13 @@ class UserController extends BaseController
             $userInfo->is_vip = 'false';
             $userInfo->save();
         }
+        $identifier_prefix = 'ju';
+        $model = new UserModel();
+        //todo 即时通讯
+        $imResult = $model->userSigIm($identifier_prefix.$userInfo['id'],$userInfo['name'], $userInfo['pic']);
+        $userInfo['identifier'] = $identifier_prefix.$userInfo['id'];
+        $userInfo['usersig'] = $imResult;
+
         $returnData['data']['userinfo'] = $userInfo;
         return response()->json($returnData);
     }
@@ -152,6 +158,7 @@ class UserController extends BaseController
             return response()->json($returnData);
         }
         $cardInfo = CardCard::with('cardInfo')->where('uid', $id)->first();
+        $cardInfo['identifier'] = 'ju'.$cardInfo['uid'];
         $returnData['data']['cardInfo'] = $cardInfo;
         $returnData['data']['_token'] = csrf_token();
         return response()->json($returnData);
@@ -197,8 +204,8 @@ class UserController extends BaseController
             'data' => []
         ];
         $cardDataR = $request->get('cardData', []);
-        $cardid = $cardDataR['cardid'];
-        $uid = $cardDataR['uid'];
+        $cardid = !empty($cardDataR['cardid']) ? $cardDataR['cardid'] : '';
+        $uid = !empty($cardDataR['uid']) ? $cardDataR['uid'] : '';
         $cardData = $cardDataR['card'];
         $infoData = $cardDataR['info'];
 //        if (empty($cardData) || empty($cardData['name']) || empty($cardData['company']) || empty($cardData['position']) || empty($cardData['industry_id']) || empty($cardData['pic']) || empty($infoData) || empty($infoData['mobile']) || empty($infoData['wechat']) || empty($infoData['email']) || empty($infoData['address']) || empty($infoData['intro'])) {
