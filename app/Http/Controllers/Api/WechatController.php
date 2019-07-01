@@ -11,7 +11,6 @@ use App\Http\Controllers\Common\Wechat\WxUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-
 /**
  * Class WechatController
  * @package App\Http\Controllers\Api
@@ -106,4 +105,5 @@ class WechatController extends BaseController
         $res = curl_post($api, json_encode($sendData));
         echo $res;
     }
+
 }

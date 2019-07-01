@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Http\Controllers\Common\Wechat\WxUser;
 use App\Models\CardCard;
 use App\Models\CardCollection;
 use App\Models\CardIndustry;

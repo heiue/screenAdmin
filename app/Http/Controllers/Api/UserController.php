@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Http\Controllers\Common\Wechat\WxUser;
 use App\Models\CardCard;
 use App\Models\CardCollection;
 use App\Models\CardInfo;
@@ -151,16 +152,34 @@ class UserController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $id = $request->get('uid', 0);
-        if (empty($id) || $id == 0) {
+        $formId = $request->get('formId', '');
+        $cardUeriId = $request->get('uid', 0); //todo 当前名片的uid
+        $uid = $request->get('userId', 0);//todo 当前小程序用户的ID
+        if (empty($cardUeriId) || $cardUeriId == 0) {
             $returnData['error'] = 101;
             $returnData['msg'] = 'uid is empty';
             return response()->json($returnData);
         }
-        $cardInfo = CardCard::with('cardInfo')->where('uid', $id)->first();
+        $cardInfo = CardCard::with('cardInfo')->where('uid', $cardUeriId)->first();
+        // todo 是否收藏过
+        $where['rid'] = $cardInfo['id'];
+        $where['uid'] = $cardUeriId;
+        $where['rType'] = 1;
+        if (CardCollection::where($where)->first()) {
+            $cardInfo['isCollection'] = 1;
+        } else {
+            $cardInfo['isCollection'] = 0;
+        }
         $cardInfo['identifier'] = 'ju'.$cardInfo['uid'];
         $returnData['data']['cardInfo'] = $cardInfo;
-        $returnData['data']['_token'] = csrf_token();
+
+        //todo 服务通知--新客户访问提醒
+        if (!empty($formId) && $cardInfo['id'] != $cardUeriId) {
+            if ($open = CardUser::where(['id' => $cardInfo['id']])->first(['openid'])) {
+                $cardName = CardUser::where(['id' => $uid])->first(['name']);
+                (new WxUser())->newCustomerService($formId, $open['openid'], $cardName['name']);
+            }
+        }
         return response()->json($returnData);
 
     }
