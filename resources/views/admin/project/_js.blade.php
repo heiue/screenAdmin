@@ -171,6 +171,19 @@
                 // tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
             }
         });
+
+        //删除项目文件
+        $('.script-file-delete').on('click', function () {
+            var annexId = $(this).attr('fileId')
+            var This = $(this)
+            $.post("{{ route('admin.annex') }}",{'ids':annexId},function (result) {
+                if (result.code==0){
+                    layer.msg('已删除');
+                    This.parents('tr').remove();
+                }
+                layer.msg(result.msg,)
+            });
+        });
     })
 </script>
 <!-- 实例化编辑器 -->

@@ -70,7 +70,7 @@ class ProjectController extends Controller
         $insertId = CardProject::create($request->all())->id;
         if ($insertId) {
             $annex = new CardAnnex();
-            //判断图集 添加图片附件
+            //todo 判断图集 添加图片附件
             $img = $request->get('img');
             $size = $request->get('size', []);
             $ext = $request->get('ext', []);
@@ -149,7 +149,7 @@ class ProjectController extends Controller
         $pro = CardProject::findOrFail($id);
         if (!empty($pro)) {
             $annex = new CardAnnex();
-            //判断图集 添加图片附件
+            //todo 判断图集 添加图片附件
             $img = $request->get('img');
             $size = $request->get('size', []);
             $ext = $request->get('ext', []);

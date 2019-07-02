@@ -9,14 +9,14 @@
     <label for="" class="layui-form-label">剧本封面</label>
     <div class="layui-input-block">
         <div class="layui-upload">
-            <button type="button" class="layui-btn" id="uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
+            <button type="button" class="layui-btn" id="uploadCoverPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
             <div class="layui-upload-list" >
-                <ul id="layui-upload-box" class="layui-clear">
+                <ul id="layui-upload-box-cover" class="layui-clear layui-upload-box">
                     @if(isset($script->cover))
                         <li><img src="{{ $script->cover }}" /></li>
                     @endif
                 </ul>
-                <input type="hidden" name="cover" id="thumb" value="{{ $script->cover??'' }}">
+                <input type="hidden" name="cover" id="thumb-cover" value="{{ $script->cover??'' }}">
             </div>
         </div>
     </div>
@@ -114,6 +114,27 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">剧本图集</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
+            <button type="button" class="layui-btn" id="begin_up">开始上传</button>
+            <span></span>
+            <div class="layui-upload-list" >
+                <ul id="layui-upload-box" class="layui-clear layui-upload-box">
+                    @if(isset($script->img))
+                        @foreach($script->img as $value)
+                            <li><img src="{{ $value->path }}" /><p><button class="layui-btn layui-btn-xs layui-btn-fluid delete_project_img" type="button" imgId="{{$value->id}}"><i class="layui-icon"></i></button></p></li>
+                        @endforeach
+                    @endif
+                </ul>
+            </div>
+            <div class="upload_url_list" id="thumb">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
     <label for="" class="layui-form-label">剧本文件</label>
     <div class="layui-input-block">
         <div class="layui-upload">
@@ -129,7 +150,7 @@
                     <tbody id="demoList">
                     @if(isset($script->file))
                         @foreach($script->file as $key => $value)
-                            <tr id="upload-1559319948825-{{$key}}"><td>{{ $value->path }}</td><td>{{ intval($value->size)/1000 }}</td><td>已经上传</td><td>{{--<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>--}}</td></tr>
+                            <tr id="upload-1559319948825-{{$key}}"><td>{{ $value->path }}</td><td>{{ intval($value->size)/1000 }}</td><td>已经上传</td><td><button type="button" class="layui-btn layui-btn-xs layui-btn-danger script-file-delete" fileId="{{ $value->id }}">删除</button></td></tr>
                         @endforeach
                     @endif
                     </tbody>

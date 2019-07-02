@@ -77,6 +77,13 @@
     </div>
 </div>
 
+<div class="layui-form-item">
+    <label class="layui-form-label">是否在轮播位</label>
+    <div class="layui-input-inline">
+        <input type="checkbox" name="isCarousel" lay-skin="switch" value="1" lay-text="是|否" @if(!isset($elite) || $elite->isCarousel != 0) checked @endif>
+    </div>
+    <div class="layui-form-mid layui-word-aux">打开后会在轮播位展示</div>
+</div>
 
 <div class="layui-form-item">
     <div class="layui-input-block">

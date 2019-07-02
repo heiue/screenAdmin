@@ -62,6 +62,27 @@ class ScriptController extends Controller
 //        dump($request->all());exit;
         if ($insertId = Script::create($request->all())->id){
             $annex = new CardAnnex();
+            //todo 判断图集 添加图片附件
+            $img = $request->get('img');
+            $size = $request->get('size', []);
+            $ext = $request->get('ext', []);
+            if (!empty($img)) {
+                $imgData = array();
+                foreach ($img as $key => $value) {
+                    $imgData[] = [
+                        'type' => 'img',
+                        'path' => $value,
+                        'size' => $size[$key]?$size[$key]:0,
+                        'format' => $ext[$key]?$ext[$key]:'',
+                        'aboutId' => $insertId,
+                        'aboutType' => 'script',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($imgData);
+            }
+
             $file = $request->get('files');
             $fsize = $request->get('fsize', []);
             $fext = $request->get('fext', []);
@@ -92,6 +113,12 @@ class ScriptController extends Controller
      */
     public function edit($id) {
         $script = Script::findOrFail($id);
+        $imgData = CardAnnex::select('id','path')->where(['aboutId' => $script->id, 'type' => 'img', 'aboutType' => 'script'])->get();
+        $fileData = CardAnnex::select('id','path','size')->where(['aboutId' => $script->id, 'type' => 'file', 'aboutType' => 'script'])->get();
+        $script->img = $imgData;
+        $script->imgCount = count($imgData);
+        $script->file = $fileData;
+        $script->fileCount = count($fileData);
         return view('admin.script.edit',compact('script'));
     }
 
@@ -111,6 +138,27 @@ class ScriptController extends Controller
         $scr = Script::findOrFail($id);
         if ($scr->update($request->only(null))){
             $annex = new CardAnnex();
+            //todo 判断图集 添加图片附件
+            $img = $request->get('img');
+            $size = $request->get('size', []);
+            $ext = $request->get('ext', []);
+            if (!empty($img)) {
+                $imgData = array();
+                foreach ($img as $key => $value) {
+                    $imgData[] = [
+                        'type' => 'img',
+                        'path' => $value,
+                        'size' => $size[$key]?$size[$key]:0,
+                        'format' => $ext[$key]?$ext[$key]:'',
+                        'aboutId' => $id,
+                        'aboutType' => 'script',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($imgData);
+            }
+
             $file = $request->get('files');
             $fsize = $request->get('fsize', []);
             $fext = $request->get('fext', []);

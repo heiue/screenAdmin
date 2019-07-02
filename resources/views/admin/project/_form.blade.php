@@ -168,7 +168,7 @@
             <tbody id="demoList">
             @if(isset($project->file))
                 @foreach($project->file as $key => $value)
-                    <tr id="upload-1559319948825-{{$key}}"><td>{{ $value->path }}</td><td>{{ intval($value->size)/1000 }}</td><td>已经上传</td><td>{{--<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>--}}</td></tr>
+                    <tr id="upload-1559319948825-{{$key}}"><td>{{ $value->path }}</td><td>{{ intval($value->size)/1000 }}</td><td>已经上传</td><td><button type="button" class="layui-btn layui-btn-xs layui-btn-danger script-file-delete" fileId="{{ $value->id }}">删除</button></td></tr>
                 @endforeach
             @endif
             </tbody>

@@ -1,5 +1,5 @@
 <style>
-    #layui-upload-box li{
+    .layui-upload-box li{
         width: 120px;
         height: 100px;
         float: left;
@@ -8,10 +8,10 @@
         margin-right: 10px;
         border:1px solid #ddd;
     }
-    #layui-upload-box li img{
+    .layui-upload-box li img{
         width: 100%;
     }
-    #layui-upload-box li p{
+    .layui-upload-box li p{
         width: 100%;
         height: 22px;
         font-size: 12px;
@@ -24,7 +24,7 @@
         background-color: #333;
         opacity: 0.6;
     }
-    #layui-upload-box li i{
+    .layui-upload-box li i{
         display: block;
         width: 20px;
         height:20px;
@@ -41,30 +41,74 @@
         var upload = layui.upload
 
         //普通图片上传
-        var uploadInst = upload.render({
-            elem: '#uploadPic'
+        var uploadCover = upload.render({
+            elem: '#uploadCoverPic'
             ,url: '{{ route("uploadImg") }}'
             ,multiple: false
             ,data:{"_token":"{{ csrf_token() }}"}
             ,before: function(obj){
-                //预读本地文件示例，不支持ie8
-                /*obj.preview(function(index, file, result){
-                 $('#layui-upload-box').append('<li><img src="'+result+'" /><p>待上传</p></li>')
-                 });*/
                 obj.preview(function(index, file, result){
-                    $('#layui-upload-box').html('<li><img src="'+result+'" /><p>上传中</p></li>')
+                    $('#layui-upload-box-cover').html('<li><img src="'+result+'" /><p>上传中</p></li>')
                 });
 
             }
             ,done: function(res){
                 //如果上传失败
                 if(res.code == 0){
-                    $("#thumb").val(res.url);
-                    $('#layui-upload-box li p').text('上传成功');
+                    $("#thumb-cover").val(res.url);
+                    $('#layui-upload-box-cover li p').text('上传成功');
                     return layer.msg(res.msg);
                 }
                 return layer.msg(res.msg);
             }
+        });
+
+        //多图片上传
+        var uploadInst = upload.render({
+            elem: '#uploadPic'
+            ,url: '{{ route("uploadImg") }}'
+            ,exts:'JPG|JPEG|PNG|GIF'
+            ,multiple: false
+            ,auto:false
+            ,bindAction:'#begin_up'
+            ,data:{"_token":"{{ csrf_token() }}"}
+            ,before: function(obj){
+                if ($('#layui-upload-box li').length >= 3) {
+                    console.log('上传最多3张')
+                    layer.msg('上传最多3张')
+                    return false
+                }
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#layui-upload-box').append('<li><img src="'+result+'" /><p>上传成功</p></li>')
+                });
+                /*obj.preview(function(index, file, result){
+                    $('#layui-upload-box').html('<li><img src="'+result+'" /><p>上传中</p></li>')
+                });*/
+
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code == 0){
+                    $("#thumb").append('<span><input type="hidden" name="img[]" value="'+res.url+'"><input type="hidden" name="size[]" value="'+res.size+'"><input type="hidden" name="ext[]" value="'+res.ext+'"></span>');
+                    // $('#layui-upload-box li p').text('上传成功');
+                    return layer.msg(res.msg);
+                }
+                return layer.msg(res.msg);
+            }
+        });
+
+        //删除项目图集图片
+        $('.delete_project_img').on('click', function () {
+            var annexId = $(this).attr('imgId')
+            var This = $(this)
+            $.post("{{ route('admin.annex') }}",{'ids':annexId},function (result) {
+                if (result.code==0){
+                    layer.msg('已删除');
+                    This.parents('li').remove();
+                }
+                layer.msg(result.msg,)
+            });
         });
 
         //多文件列表示例
@@ -125,6 +169,19 @@
                 tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
                 // tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
             }
+        });
+
+        //删除编剧文件
+        $('.script-file-delete').on('click', function () {
+            var annexId = $(this).attr('fileId')
+            var This = $(this)
+            $.post("{{ route('admin.annex') }}",{'ids':annexId},function (result) {
+                if (result.code==0){
+                    layer.msg('已删除');
+                    This.parents('tr').remove();
+                }
+                layer.msg(result.msg,)
+            });
         });
     })
 </script>

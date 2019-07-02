@@ -65,6 +65,27 @@ class ScreenwriterController extends Controller
 //        dump($request->all());exit;
         if ($insertId = Screenwriter::create($request->all())->id){
             $annex = new CardAnnex();
+            //todo 判断图集 添加图片附件
+            $img = $request->get('img');
+            $size = $request->get('size', []);
+            $ext = $request->get('ext', []);
+            if (!empty($img)) {
+                $imgData = array();
+                foreach ($img as $key => $value) {
+                    $imgData[] = [
+                        'type' => 'img',
+                        'path' => $value,
+                        'size' => $size[$key]?$size[$key]:0,
+                        'format' => $ext[$key]?$ext[$key]:'',
+                        'aboutId' => $insertId,
+                        'aboutType' => 'screenwriter',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($imgData);
+            }
+
             $file = $request->get('files');
             $fsize = $request->get('fsize', []);
             $fext = $request->get('fext', []);
@@ -93,6 +114,9 @@ class ScreenwriterController extends Controller
     public function edit($id) {
         $screenwriter = Screenwriter::findOrFail($id);
         $fileData = CardAnnex::select('id','path','size')->where(['aboutId' => $screenwriter->id, 'type' => 'file', 'aboutType' => 'screenwriter'])->get();
+        $imgData = CardAnnex::select('id','path')->where(['aboutId' => $screenwriter->id, 'type' => 'img', 'aboutType' => 'screenwriter'])->get();
+        $screenwriter->img = $imgData;
+        $screenwriter->imgCount = count($imgData);
         $screenwriter->file = $fileData;
         $screenwriter->fileCount = count($fileData);
         return view('admin.screenwriter.edit',compact('screenwriter'));
@@ -108,6 +132,27 @@ class ScreenwriterController extends Controller
         $scr = Screenwriter::findOrFail($id);
         if ($scr->update($request->only(null))){
             $annex = new CardAnnex();
+            //todo 判断图集 添加图片附件
+            $img = $request->get('img');
+            $size = $request->get('size', []);
+            $ext = $request->get('ext', []);
+            if (!empty($img)) {
+                $imgData = array();
+                foreach ($img as $key => $value) {
+                    $imgData[] = [
+                        'type' => 'img',
+                        'path' => $value,
+                        'size' => $size[$key]?$size[$key]:0,
+                        'format' => $ext[$key]?$ext[$key]:'',
+                        'aboutId' => $id,
+                        'aboutType' => 'screenwriter',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                $annex->addAll($imgData);
+            }
+
             $file = $request->get('files');
             $fsize = $request->get('fsize', []);
             $fext = $request->get('fext', []);

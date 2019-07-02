@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class CardElite extends Model
 {
     protected $table = 'card_elite_articles';
-    protected $fillable = ['category_id','title','keywords','description','content','thumb','click', 'video'];
+    protected $fillable = ['category_id','title','keywords','description','content','thumb','click', 'video', 'isCarousel'];
 
 
 }
