@@ -26,6 +26,11 @@ class CardCard extends Model
 
     public function getIndustryNameAttribute() {
         $id = $this->industry_id ? $this->industry_id : 0;
-        return CardIndustry::where(['id' => $id])->value('name');
+        $ids = explode(',', $id);
+        $idsArr = array();
+        foreach ($ids as $value) {
+            $idsArr[] = CardIndustry::where(['id' => $value])->value('name');
+        }
+        return $idsArr;
     }
 }

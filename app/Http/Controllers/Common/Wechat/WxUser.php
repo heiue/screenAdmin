@@ -64,12 +64,19 @@ class WxUser
      * getAccessToken
      */
     public function getAccessToken() {
-        if ($accessToken = Cache::get('accessToken')) {
+        if ($accessToken = Cache::get('accessToken3')) {
+            if (Cache::get('expires_in') < time()) {
+                $api = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appId.'&secret='.$this->appSecret;
+                $accessToken = curl($api);
+                Cache::put('accessToken3', $accessToken, 7000);
+                Cache::put('expires_in', time()+7000, 7000);
+            }
             return $accessToken;
         } else {
             $api = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appId.'&secret='.$this->appSecret;
             $accessToken = curl($api);
-            Cache::put('accessToken', $accessToken, 7200);
+            Cache::put('accessToken3', $accessToken, 50);
+            Cache::put('expires_in', time()+7000, 7000);
             return $accessToken;
         }
 
@@ -134,7 +141,7 @@ class WxUser
     }
 }
 */
-    public function newCustomerService($formId, $openId = 'ojWn70Kqi-RRb70YCH5zd9elWMjw',$cardName) {
+    public function newCustomerService($formId, $openId,$cardName) {
         //todo 获取access_token$accessToken
         $accessToken = json_decode($this->getAccessToken(),true);
         if (empty($accessToken['access_token'])) {

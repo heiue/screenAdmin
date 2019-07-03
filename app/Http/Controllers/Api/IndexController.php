@@ -36,16 +36,22 @@ class IndexController extends BaseController
             return response()->json($returnData);
         }
         //搜索项目
-        $project = CardProject::where('projectTitle', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
+        $project = CardProject::where(function ($query) use ($keyWord) {
+            $query->where('projectTitle', 'like', "%{$keyWord}%")->orWhere('keyword', 'like', "%{$keyWord}%");
+        })->limit($request->get('limit', 10))->get()->toArray();
 
         //搜索人脉
         $card = CardCard::where('name', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
 
         //搜索编剧
-        $screenwriter = Screenwriter::where('name', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
+        $screenwriter = Screenwriter::where(function ($query) use ($keyWord) {
+            $query->where('name', 'like', "%{$keyWord}%")->orWhere('keyword', 'like', "%{$keyWord}%");
+        })->limit($request->get('limit', 10))->get()->toArray();
 
         //搜索剧本
-        $script = Script::where('scriptTitle', 'like', "%{$keyWord}%")->limit($request->get('limit', 10))->get()->toArray();
+        $script = Script::where(function ($query) use ($keyWord) {
+            $query->where('scriptTitle', 'like', "%{$keyWord}%")->orWhere('keyword', 'like', "%{$keyWord}%");
+        })->limit($request->get('limit', 10))->get()->toArray();
 
         $returnData['data']['project'] = $project;
         $returnData['data']['card'] = $card;

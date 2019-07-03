@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Models\CardAnnex;
 use App\Models\CardCollection;
 use App\Models\CardRecruitment;
 use App\Models\Screenwriter;
@@ -76,6 +77,10 @@ class ScreenwriterController extends BaseController
             return response()->json($returnData);
         }
         $screenwriter = Screenwriter::findOrFail($id);
+        if ($screenwriter) {
+            $img = CardAnnex::select('path')->where(['aboutId' => $id,'aboutType' => 'screenwriter', 'type' => 'img'])->get()->toArray();
+            $screenwriter['img'] = $img;
+        }
         // todo 是否收藏过
         $where['rid'] = $id;
         $where['uid'] = $uid;

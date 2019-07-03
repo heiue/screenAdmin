@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Common\Wechat\WxUser;
+use App\Models\CardAnnex;
 use App\Models\CardCard;
 use App\Models\CardCollection;
 use App\Models\CardInfo;
@@ -161,6 +162,11 @@ class UserController extends BaseController
             return response()->json($returnData);
         }
         $cardInfo = CardCard::with('cardInfo')->where('uid', $cardUeriId)->first();
+        if (empty($cardInfo)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = '名片不存在';
+            return response()->json($returnData);
+        }
         // todo 是否收藏过
         $where['rid'] = $cardInfo['id'];
         $where['uid'] = $cardUeriId;
@@ -174,10 +180,12 @@ class UserController extends BaseController
         $returnData['data']['cardInfo'] = $cardInfo;
 
         //todo 服务通知--新客户访问提醒
-        if (!empty($formId) && $cardInfo['id'] != $cardUeriId) {
-            if ($open = CardUser::where(['id' => $cardInfo['id']])->first(['openid'])) {
+        if (!empty($formId)) {
+            if ($open = CardUser::where(['id' => $cardUeriId])->first(['openid'])) {
                 $cardName = CardUser::where(['id' => $uid])->first(['name']);
-                (new WxUser())->newCustomerService($formId, $open['openid'], $cardName['name']);
+                $newService = (new WxUser())->newCustomerService($formId, $open['openid'], $cardName['name']);
+                // $newService = (new WxUser())->newCustomerService($formId, 'ojWn70Kqi-RRb70YCH5zd9elWMjw', $cardName['name']);
+                $returnData['data']['newService'] = $newService;
             }
         }
         return response()->json($returnData);
@@ -212,8 +220,9 @@ class UserController extends BaseController
         "top_pic":""
 	},
         "images":{
-            0:"url",
-            1:"url"
+            ['url':'',''],
+            [],
+            []
         }
 
 }*/
@@ -225,8 +234,9 @@ class UserController extends BaseController
         $cardDataR = $request->get('cardData', []);
         $cardid = !empty($cardDataR['cardid']) ? $cardDataR['cardid'] : '';
         $uid = !empty($cardDataR['uid']) ? $cardDataR['uid'] : '';
-        $cardData = $cardDataR['card'];
-        $infoData = $cardDataR['info'];
+        $cardData = empty($cardDataR['card']) ? [] : $cardDataR['card'];
+        $infoData = empty($cardDataR['info']) ? [] : $cardDataR['info'];
+        $imageData = empty($cardDataR['images']) ? [] : $cardDataR['images'];
 //        if (empty($cardData) || empty($cardData['name']) || empty($cardData['company']) || empty($cardData['position']) || empty($cardData['industry_id']) || empty($cardData['pic']) || empty($infoData) || empty($infoData['mobile']) || empty($infoData['wechat']) || empty($infoData['email']) || empty($infoData['address']) || empty($infoData['intro'])) {
         if (empty($cardData) || empty($infoData)) {
             $returnData['error'] = 103;
@@ -238,6 +248,26 @@ class UserController extends BaseController
         if (!empty($cardid)) {
             if (CardCard::where('id', $cardid)->update($cardData)) {
                 CardInfo::where('card_id', $cardid)->update($infoData);
+
+                //todo 名片图册
+                if (!empty($imageData)) {
+                    $cardAnnexes = new CardAnnex();
+                    $imgData = array();
+                    foreach ($imageData as $value) {
+                        $imgData[] = [
+                            'type' => 'img',
+                            'path' => $value['url'],
+                            'size' => $value['size'],
+                            'format' => $value['ext'],
+                            'aboutId' => $cardid,
+                            'aboutType' => 'card',
+                            'created_at' => date('Y-m-d H:i:s', time()),
+                            'updated_at' => date('Y-m-d H:i:s', time())
+                        ];
+                    }
+                    $cardAnnexes->addAll($imgData);
+                }
+
                 return response()->json($returnData);
             } else {
                 $returnData['error'] = 104;
@@ -249,6 +279,26 @@ class UserController extends BaseController
             if (!empty($cardCard)) {
                 if (CardCard::where('uid', $uid)->update($cardData)) {
                     CardInfo::where('card_id', $cardCard['id'])->update($infoData);
+
+                    //todo 名片图册
+                    if (!empty($imageData)) {
+                        $cardAnnexes = new CardAnnex();
+                        $imgData = array();
+                        foreach ($imageData as $value) {
+                            $imgData[] = [
+                                'type' => 'img',
+                                'path' => $value['url'],
+                                'size' => $value['size'],
+                                'format' => $value['ext'],
+                                'aboutId' => $cardCard['id'],
+                                'aboutType' => 'card',
+                                'created_at' => date('Y-m-d H:i:s', time()),
+                                'updated_at' => date('Y-m-d H:i:s', time())
+                            ];
+                        }
+                        $cardAnnexes->addAll($imgData);
+                    }
+
                     return response()->json($returnData);
                 } else {
                     $returnData['error'] = 104;
@@ -262,6 +312,26 @@ class UserController extends BaseController
                     $infoData['card_id'] = $card->id;
                     $infoData['uid'] = $uid;
                     CardInfo::create($infoData);
+
+                    //todo 名片图册
+                    if (!empty($imageData)) {
+                        $cardAnnexes = new CardAnnex();
+                        $imgData = array();
+                        foreach ($imageData as $value) {
+                            $imgData[] = [
+                                'type' => 'img',
+                                'path' => $value['url'],
+                                'size' => $value['size'],
+                                'format' => $value['ext'],
+                                'aboutId' => $card->id,
+                                'aboutType' => 'card',
+                                'created_at' => date('Y-m-d H:i:s', time()),
+                                'updated_at' => date('Y-m-d H:i:s', time())
+                            ];
+                        }
+                        $cardAnnexes->addAll($imgData);
+                    }
+
                     $returnData['insertId'] = $card->id;
                     $returnData['msg'] = 'Successful inserting';
                     return response()->json($returnData);

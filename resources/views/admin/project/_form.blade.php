@@ -132,6 +132,12 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">关键词</label>
+    <div class="layui-input-block">
+        <input type="text" name="keyword" value="{{ $project->keyword ?? '' }}"  placeholder="请输入关键词" lay-verify="required" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
     <label for="" class="layui-form-label">项目图集</label>
     <div class="layui-input-block">
         <div class="layui-upload">

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Models\CardAnnex;
 use App\Models\CardCollection;
 use App\Models\Script;
 use Illuminate\Http\Request;
@@ -57,6 +58,10 @@ class ScriptController extends BaseController
             return response()->json($returnData);
         }
         $script = Script::findOrFail($id);
+        if ($script) {
+            $img = CardAnnex::select('path')->where(['aboutId' => $id,'aboutType' => 'script', 'type' => 'img'])->get()->toArray();
+            $script['img'] = $img;
+        }
         // todo 是否收藏过
         $where['rid'] = $id;
         $where['uid'] = $uid;

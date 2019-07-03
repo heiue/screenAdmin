@@ -49,7 +49,7 @@ class CardController extends BaseController
         $where = [];
         $model = CardCard::query();
         if (!empty($industryId)) {
-            $model->where('industry_id', $industryId);
+            $model->whereRaw('FIND_IN_SET('.$industryId.', industry_id)');
 //            $where['industry_id'] = $industryId;
         }
         if (!empty($uid)) {
