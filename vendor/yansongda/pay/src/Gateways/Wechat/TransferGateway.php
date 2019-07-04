@@ -3,8 +3,11 @@
 namespace Yansongda\Pay\Gateways\Wechat;
 
 use Symfony\Component\HttpFoundation\Request;
+use Yansongda\Pay\Events;
+use Yansongda\Pay\Exceptions\GatewayException;
+use Yansongda\Pay\Exceptions\InvalidArgumentException;
+use Yansongda\Pay\Exceptions\InvalidSignException;
 use Yansongda\Pay\Gateways\Wechat;
-use Yansongda\Pay\Log;
 use Yansongda\Supports\Collection;
 
 class TransferGateway extends Gateway
@@ -17,9 +20,9 @@ class TransferGateway extends Gateway
      * @param string $endpoint
      * @param array  $payload
      *
-     * @throws \Yansongda\Pay\Exceptions\GatewayException
-     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
-     * @throws \Yansongda\Pay\Exceptions\InvalidSignException
+     * @throws GatewayException
+     * @throws InvalidArgumentException
+     * @throws InvalidSignException
      *
      * @return Collection
      */
@@ -29,12 +32,12 @@ class TransferGateway extends Gateway
             unset($payload['sub_mch_id'], $payload['sub_appid']);
         }
 
-        $type = Support::getInstance()->getTypeName($payload['type']);
+        $type = Support::getTypeName($payload['type'] ?? '');
 
         $payload['mch_appid'] = Support::getInstance()->getConfig($type, '');
         $payload['mchid'] = $payload['mch_id'];
 
-        if (php_sapi_name() !== 'cli') {
+        if (php_sapi_name() !== 'cli' && !isset($payload['spbill_create_ip'])) {
             $payload['spbill_create_ip'] = Request::createFromGlobals()->server->get('SERVER_ADDR');
         }
 
@@ -43,13 +46,31 @@ class TransferGateway extends Gateway
 
         $payload['sign'] = Support::generateSign($payload);
 
-        Log::info('Starting To Pay A Wechat Transfer Order', [$endpoint, $payload]);
+        Events::dispatch(Events::PAY_STARTED, new Events\PayStarted('Wechat', 'Transfer', $endpoint, $payload));
 
         return Support::requestApi(
             'mmpaymkttransfers/promotion/transfers',
             $payload,
             true
         );
+    }
+
+    /**
+     * Find.
+     *
+     * @author yansongda <me@yansongda.cn>
+     *
+     * @param $order
+     *
+     * @return array
+     */
+    public function find($order): array
+    {
+        return [
+            'endpoint' => 'mmpaymkttransfers/gettransferinfo',
+            'order'    => is_array($order) ? $order : ['partner_trade_no' => $order],
+            'cert'     => true,
+        ];
     }
 
     /**

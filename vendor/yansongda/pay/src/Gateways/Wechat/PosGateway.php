@@ -2,7 +2,10 @@
 
 namespace Yansongda\Pay\Gateways\Wechat;
 
-use Yansongda\Pay\Log;
+use Yansongda\Pay\Events;
+use Yansongda\Pay\Exceptions\GatewayException;
+use Yansongda\Pay\Exceptions\InvalidArgumentException;
+use Yansongda\Pay\Exceptions\InvalidSignException;
 use Yansongda\Supports\Collection;
 
 class PosGateway extends Gateway
@@ -15,9 +18,9 @@ class PosGateway extends Gateway
      * @param string $endpoint
      * @param array  $payload
      *
-     * @throws \Yansongda\Pay\Exceptions\GatewayException
-     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
-     * @throws \Yansongda\Pay\Exceptions\InvalidSignException
+     * @throws GatewayException
+     * @throws InvalidArgumentException
+     * @throws InvalidSignException
      *
      * @return Collection
      */
@@ -27,7 +30,7 @@ class PosGateway extends Gateway
 
         $payload['sign'] = Support::generateSign($payload);
 
-        Log::info('Starting To Pay A Wechat Pos order', [$payload]);
+        Events::dispatch(Events::PAY_STARTED, new Events\PayStarted('Wechat', 'Pos', $endpoint, $payload));
 
         return Support::requestApi('pay/micropay', $payload);
     }

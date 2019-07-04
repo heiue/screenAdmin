@@ -13,6 +13,7 @@ use Stevenyangecho\UEditor\Uploader\Upload;
  */
 class UploadFile  extends Upload{
     use UploadQiniu;
+    use UploadAliOss;
     public function doUpload()
     {
 
@@ -70,13 +71,25 @@ class UploadFile  extends Upload{
             $content=file_get_contents($this->file->getPathname());
             return $this->uploadQiniu($this->filePath,$content);
 
+        }else if(config('UEditorUpload.core.mode')=='oss'){
+
+            $content=file_get_contents($this->file->getPathname());
+            return $this->uploadAliOss($this->filePath,$content);
+
+        }else if(config('UEditorUpload.core.mode')=='storage'){
+            //上传文件到oss
+            $folder = config('UEditorUpload.core.storage.folder');
+            if(config('UEditorUpload.core.storage.classifyByFileType')){
+                $folder .='/'. str_replace('.','',$this->fileType);
+            }
+            $path = \Storage::putFile($folder, $this->file);
+            $this->fullName = \Storage::url($path);
+            $this->stateInfo=$this->stateMap[0];
+
         }else{
             $this->stateInfo = $this->getStateInfo("ERROR_UNKNOWN_MODE");
             return false;
         }
-
-
-
 
         return true;
 

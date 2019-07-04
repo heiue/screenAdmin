@@ -2,8 +2,11 @@
 
 namespace Yansongda\Pay\Gateways\Wechat;
 
+use Yansongda\Pay\Events;
+use Yansongda\Pay\Exceptions\GatewayException;
+use Yansongda\Pay\Exceptions\InvalidArgumentException;
+use Yansongda\Pay\Exceptions\InvalidSignException;
 use Yansongda\Pay\Gateways\Wechat;
-use Yansongda\Pay\Log;
 use Yansongda\Supports\Collection;
 
 class GroupRedpackGateway extends Gateway
@@ -16,9 +19,9 @@ class GroupRedpackGateway extends Gateway
      * @param string $endpoint
      * @param array  $payload
      *
-     * @throws \Yansongda\Pay\Exceptions\GatewayException
-     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
-     * @throws \Yansongda\Pay\Exceptions\InvalidSignException
+     * @throws GatewayException
+     * @throws InvalidArgumentException
+     * @throws InvalidSignException
      *
      * @return Collection
      */
@@ -27,14 +30,16 @@ class GroupRedpackGateway extends Gateway
         $payload['wxappid'] = $payload['appid'];
         $payload['amt_type'] = 'ALL_RAND';
 
-        $this->mode !== Wechat::MODE_SERVICE ?: $payload['msgappid'] = $payload['appid'];
+        if ($this->mode === Wechat::MODE_SERVICE) {
+            $payload['msgappid'] = $payload['appid'];
+        }
 
         unset($payload['appid'], $payload['trade_type'],
               $payload['notify_url'], $payload['spbill_create_ip']);
 
         $payload['sign'] = Support::generateSign($payload);
 
-        Log::info('Starting To Pay A Wechat Group Redpack Order', [$endpoint, $payload]);
+        Events::dispatch(Events::PAY_STARTED, new Events\PayStarted('Wechat', 'Group Redpack', $endpoint, $payload));
 
         return Support::requestApi(
             'mmpaymkttransfers/sendgroupredpack',

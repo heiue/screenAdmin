@@ -5,6 +5,13 @@ namespace Yansongda\Supports\Traits;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Trait HasHttpRequest.
+ *
+ * @property string baseUri        base_uri
+ * @property string timeout        timeout
+ * @property string connectTimeout connect_timeout
+ */
 trait HasHttpRequest
 {
     /**
@@ -36,7 +43,7 @@ trait HasHttpRequest
     {
         return $this->request('get', $endpoint, [
             'headers' => $headers,
-            'query' => $query,
+            'query'   => $query,
         ]);
     }
 
@@ -101,11 +108,11 @@ trait HasHttpRequest
      *
      * @return array
      */
-    protected function getOptions()
+    public function getOptions()
     {
         return array_merge([
-            'base_uri' => property_exists($this, 'baseUri') ? $this->baseUri : '',
-            'timeout' => property_exists($this, 'timeout') ? $this->timeout : 5.0,
+            'base_uri'        => property_exists($this, 'baseUri') ? $this->baseUri : '',
+            'timeout'         => property_exists($this, 'timeout') ? $this->timeout : 5.0,
             'connect_timeout' => property_exists($this, 'connectTimeout') ? $this->connectTimeout : 5.0,
         ], $this->httpOptions);
     }
@@ -113,9 +120,9 @@ trait HasHttpRequest
     /**
      * Return http client.
      *
-     * @return \GuzzleHttp\Client
+     * @return Client
      */
-    protected function getHttpClient()
+    public function getHttpClient()
     {
         if (is_null($this->httpClient)) {
             $this->httpClient = $this->getDefaultHttpClient();
@@ -131,7 +138,7 @@ trait HasHttpRequest
      *
      * @return Client
      */
-    protected function getDefaultHttpClient()
+    public function getDefaultHttpClient()
     {
         return new Client($this->getOptions());
     }
@@ -145,7 +152,7 @@ trait HasHttpRequest
      *
      * @return array|string
      */
-    protected function unwrapResponse(ResponseInterface $response)
+    public function unwrapResponse(ResponseInterface $response)
     {
         $contentType = $response->getHeaderLine('Content-Type');
         $contents = $response->getBody()->getContents();

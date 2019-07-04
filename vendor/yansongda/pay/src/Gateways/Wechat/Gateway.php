@@ -3,7 +3,10 @@
 namespace Yansongda\Pay\Gateways\Wechat;
 
 use Yansongda\Pay\Contracts\GatewayInterface;
-use Yansongda\Pay\Log;
+use Yansongda\Pay\Events;
+use Yansongda\Pay\Exceptions\GatewayException;
+use Yansongda\Pay\Exceptions\InvalidArgumentException;
+use Yansongda\Pay\Exceptions\InvalidSignException;
 use Yansongda\Supports\Collection;
 
 abstract class Gateway implements GatewayInterface
@@ -20,7 +23,7 @@ abstract class Gateway implements GatewayInterface
      *
      * @author yansongda <me@yansongda.cn>
      *
-     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct()
     {
@@ -55,9 +58,9 @@ abstract class Gateway implements GatewayInterface
      *
      * @param array $payload
      *
-     * @throws \Yansongda\Pay\Exceptions\GatewayException
-     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
-     * @throws \Yansongda\Pay\Exceptions\InvalidSignException
+     * @throws GatewayException
+     * @throws InvalidArgumentException
+     * @throws InvalidSignException
      *
      * @return Collection
      */
@@ -65,8 +68,26 @@ abstract class Gateway implements GatewayInterface
     {
         $payload['sign'] = Support::generateSign($payload);
 
-        Log::debug('Schedule A Wechat order', [$payload]);
+        Events::dispatch(Events::METHOD_CALLED, new Events\MethodCalled('Wechat', 'PreOrder', '', $payload));
 
         return Support::requestApi('pay/unifiedorder', $payload);
+    }
+
+    /**
+     * Find.
+     *
+     * @author yansongda <me@yansongda.cn>
+     *
+     * @param string|array $order
+     *
+     * @return array
+     */
+    public function find($order): array
+    {
+        return [
+            'endpoint' => 'pay/orderquery',
+            'order'    => is_array($order) ? $order : ['out_trade_no' => $order],
+            'cert'     => false,
+        ];
     }
 }

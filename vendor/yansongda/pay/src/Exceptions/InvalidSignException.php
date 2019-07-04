@@ -11,10 +11,9 @@ class InvalidSignException extends Exception
      *
      * @param string       $message
      * @param array|string $raw
-     * @param int|string   $code
      */
-    public function __construct($message, $raw = [], $code = 5)
+    public function __construct($message, $raw = [])
     {
-        parent::__construct($message, $raw, $code);
+        parent::__construct('INVALID_SIGN: '.$message, $raw, self::INVALID_SIGN);
     }
 }

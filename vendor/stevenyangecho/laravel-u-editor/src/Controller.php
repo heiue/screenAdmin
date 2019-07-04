@@ -87,6 +87,12 @@ class Controller extends BaseController
                         $config['imageManagerListSize'],
                         $config['imageManagerListPath'],
                         $request))->getList();
+                }else {
+                    $result = with(new Lists(
+                        $config['imageManagerAllowFiles'],
+                        $config['imageManagerListSize'],
+                        $config['imageManagerListPath'],
+                        $request))->getList();
                 }
 
 
@@ -105,6 +111,12 @@ class Controller extends BaseController
                         $config['fileManagerListSize'],
                         $config['fileManagerListPath'],
                         $request))->getList();
+                }else {
+                    $result = with(new Lists(
+                        $config['imageManagerAllowFiles'],
+                        $config['imageManagerListSize'],
+                        $config['imageManagerListPath'],
+                        $request))->getList();
                 }
 
                 break;
@@ -120,7 +132,7 @@ class Controller extends BaseController
                     'fieldName' => $config['catcherFieldName'],
                 );
 
-                $sources = \Input::get($upConfig['fieldName']);
+                $sources = $request->get($upConfig['fieldName']);
                 $list = [];
                 foreach ($sources as $imgUrl) {
                     $upConfig['imgUrl'] = $imgUrl;
@@ -144,7 +156,12 @@ class Controller extends BaseController
                 break;
         }
 
-        return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
+        if (strpos($_SERVER['HTTP_USER_AGENT'],"Triden")) {
+            //如果是IE 特殊处理header
+            return response($result,200)->header('Content-Type', 'text/html;charset=utf-8');
+        } else{
+            return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
+        }
 
     }
 

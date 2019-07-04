@@ -10,6 +10,7 @@ use Stevenyangecho\UEditor\Uploader\Upload;
  */
 class UploadCatch  extends Upload{
     use UploadQiniu;
+    use UploadAliOss;
 
     public function doUpload()
     {
@@ -91,7 +92,14 @@ class UploadCatch  extends Upload{
 
             return $this->uploadQiniu($this->filePath,$img);
 
-        }else{
+        }else if(config('UEditorUpload.core.mode')=='oss'){
+
+            return $this->uploadAliOss($this->filePath,$img);
+        }
+        // else if(config('UEditorUpload.core.mode')=='upyun'){
+        //    return $this->uploadUpyun($this->filePath,$img);
+        // }
+        else{
             $this->stateInfo = $this->getStateInfo("ERROR_UNKNOWN_MODE");
             return false;
         }

@@ -2,6 +2,9 @@
 
 namespace Yansongda\Pay\Gateways\Wechat;
 
+use Yansongda\Pay\Exceptions\GatewayException;
+use Yansongda\Pay\Exceptions\InvalidArgumentException;
+use Yansongda\Pay\Exceptions\InvalidSignException;
 use Yansongda\Pay\Gateways\Wechat;
 use Yansongda\Supports\Collection;
 
@@ -15,9 +18,9 @@ class MiniappGateway extends MpGateway
      * @param string $endpoint
      * @param array  $payload
      *
-     * @throws \Yansongda\Pay\Exceptions\GatewayException
-     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
-     * @throws \Yansongda\Pay\Exceptions\InvalidSignException
+     * @throws GatewayException
+     * @throws InvalidArgumentException
+     * @throws InvalidSignException
      *
      * @return Collection
      */
@@ -25,8 +28,9 @@ class MiniappGateway extends MpGateway
     {
         $payload['appid'] = Support::getInstance()->miniapp_id;
 
-        if ($this->mode !== Wechat::MODE_SERVICE) {
+        if ($this->mode === Wechat::MODE_SERVICE) {
             $payload['sub_appid'] = Support::getInstance()->sub_miniapp_id;
+            $this->payRequestUseSubAppId = true;
         }
 
         return parent::pay($endpoint, $payload);

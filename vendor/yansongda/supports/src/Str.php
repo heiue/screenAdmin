@@ -2,6 +2,8 @@
 
 namespace Yansongda\Supports;
 
+use Exception;
+
 /**
  * modify from Illuminate\Support;.
  */
@@ -265,7 +267,7 @@ class Str
     }
 
     /**
-     * Parse a Class
+     * Parse a Class.
      *
      * @param string      $callback
      * @param string|null $default
@@ -282,7 +284,7 @@ class Str
      *
      * @param int $length
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */

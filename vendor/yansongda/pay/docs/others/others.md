@@ -1,26 +1,3 @@
-# 日志
-
-SDK 自带日志系统，如果需要指定日志文件或日志级别，请 config 中传入下列参数。如果不传入，默认为 `warning` 级别，日志路径在 `sys_get_temp_dir().'/logs/yansongda.pay.log' `
-
-```php
-'log' => [
-    'file' => './logs/pay.log', // 请注意权限
-    'level' => 'info', // 建议生产环境等级调整为 info，开发环境为 debug
-    'type' => 'single', // optional, 可选 daily， daily 时将按时间自动划分文件.
-    'max_file' => 30, // optional, 当 type 为 daily 时有效，默认 30 天
-],
-```
-
-## 使用日志功能
-
-> 使用日志功能前，请先确认已经使用过支付等功能进行了初始化！
-
-```php
-use Yansongda\Pay\Log;
-
-Log::debug('Paying...', $order->all());
-```
-
 # guzzle 自定义配置
 
 > v2.5.0-beta 及以上支持
@@ -65,9 +42,7 @@ SDK 依赖 guzzle 作 http 的请求客户端。所以如果有特殊配置需�
 
 ### 关于微信沙箱模式
 
-微信沙箱模式与支付宝沙箱模式不同，也没有支付宝沙箱模式那样简单，SDK 只对微信支付 API 进行了沙箱处理，所以，在测试微信时，推荐直接使用正式环境 *￥0.01* 进行测试，随后再进行退款，这样，两个功能都可以测试到。
-
-详细请参考 [https://github.com/yansongda/pay/issues/62](https://github.com/yansongda/pay/issues/62)
+微信沙箱模式已经全面支持，无需手动调用 `getsignkey` 方法，SDK 已经完全支持。关于测试用例，请参考 [官方文档](https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=23_1)
 
 ## 微信服务商模式
 
