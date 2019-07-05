@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common\Wechat;
 
+use App\Models\XcxConfig;
 use Illuminate\Support\Facades\Cache;
 
 
@@ -64,20 +65,22 @@ class WxUser
      * getAccessToken
      */
     public function getAccessToken() {
-        if ($accessToken = Cache::get('accessToken3')) {
-            if (Cache::get('expires_in') < time()) {
-                $api = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appId.'&secret='.$this->appSecret;
-                $accessToken = curl($api);
-                Cache::put('accessToken3', $accessToken, 7000);
-                Cache::put('expires_in', time()+7000, 7000);
-            }
-            return $accessToken;
+        $config = XcxConfig::findOrFail(1);
+        if (!empty($config['access_token']) && $config['expires'] > time()) {
+            return $config['access_token'];
         } else {
             $api = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appId.'&secret='.$this->appSecret;
-            $accessToken = curl($api);
-            Cache::put('accessToken3', $accessToken, 50);
-            Cache::put('expires_in', time()+7000, 7000);
-            return $accessToken;
+            $accessToken = json_decode(curl($api), true);
+            if (!empty($accessToken['access_token'])) {
+                $saveData = [
+                    'access_token' => $accessToken['access_token'],
+                    'expires' => time()+7000
+                ];
+                XcxConfig::where(['id' => 1])->update($saveData);
+                return $accessToken['access_token'];
+            } else {
+                return '';
+            }
         }
 
     }
@@ -143,11 +146,11 @@ class WxUser
 */
     public function newCustomerService($formId, $openId,$cardName) {
         //todo 获取access_token$accessToken
-        $accessToken = json_decode($this->getAccessToken(),true);
-        if (empty($accessToken['access_token'])) {
+        $accessToken = $this->getAccessToken();
+        if (empty($accessToken)) {
             throw new \Exception('access_token获取失败', 101);
         }
-        $api = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token='.$accessToken['access_token'];
+        $api = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token='.$accessToken;
         $postData = [
             'touser' => $openId,
             'weapp_template_msg' => [

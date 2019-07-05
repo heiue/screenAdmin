@@ -16,6 +16,7 @@ use App\Models\CardCollection;
 use App\Models\CardInfo;
 use App\Models\CardUser;
 use App\Models\Api\CardUser as UserModel;//小程序用户模型
+use App\Models\XcxForm;
 use Illuminate\Http\Request;
 
 /**
@@ -153,7 +154,6 @@ class UserController extends BaseController
             'msg' => 'success',
             'data' => []
         ];
-        $formId = $request->get('formId', '');
         $cardUeriId = $request->get('uid', 0); //todo 当前名片的uid
         $uid = $request->get('userId', 0);//todo 当前小程序用户的ID
         if (empty($cardUeriId) || $cardUeriId == 0) {
@@ -180,14 +180,18 @@ class UserController extends BaseController
         $returnData['data']['cardInfo'] = $cardInfo;
 
         //todo 服务通知--新客户访问提醒
-        if (!empty($formId)) {
-            if ($open = CardUser::where(['id' => $cardUeriId])->first(['openid'])) {
+        if ($open = CardUser::where(['id' => $cardUeriId])->first(['openid'])) {
+            $formId = XcxForm::where(['openid' => $open['openid']])->orderBy('created_at', 'asc')->first();
+            if (!empty($formId) && $formId['expires'] > time()) {
                 $cardName = CardUser::where(['id' => $uid])->first(['name']);
-                $newService = (new WxUser())->newCustomerService($formId, $open['openid'], $cardName['name']);
+                $newService = (new WxUser())->newCustomerService($formId['form_id'], $open['openid'], $cardName['name']);
                 // $newService = (new WxUser())->newCustomerService($formId, 'ojWn70Kqi-RRb70YCH5zd9elWMjw', $cardName['name']);
                 $returnData['data']['newService'] = $newService;
+            } else {
+                $returnData['data']['newService'] = '没有对应的formid已过期';
             }
         }
+
         return response()->json($returnData);
 
     }

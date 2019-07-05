@@ -109,4 +109,8 @@ Route::group(['namespace' => 'Api'], function () {
     //精英养成详情
     Route::match(['get'], '/knowledge/elite/detail', 'KnowledgeController@detail_elite');
 
+
+    //todo 服务通知
+    Route::match(['get'], '/wechat/setformid', 'WechatController@setFormId');
+
 });

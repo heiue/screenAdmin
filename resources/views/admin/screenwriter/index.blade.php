@@ -55,7 +55,7 @@
                         ,{field: 'residence', title: '常住地'}
                         ,{field: 'works', title: '代表作品'}
                         ,{field:'isPublic', title:'设置', width:100, templet: '#switchTpl', unresize: true}
-                        ,{field:'isTop', title:'热门', width:100, templet: '#switchTpl_Hot', unresize: true}
+                        ,{field:'isTop', title:'经纪人', width:100, templet: '#switchTpl_Hot', unresize: true}
                         ,{field: 'created_at', title: '创建时间'}
                         ,{field: 'updated_at', title: '更新时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}

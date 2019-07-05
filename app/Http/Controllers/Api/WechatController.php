@@ -8,6 +8,9 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Common\Wechat\WxUser;
+use App\Models\Api\CardUser;
+use App\Models\CardUser as CardUsers;
+use App\Models\XcxForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -57,7 +60,7 @@ class WechatController extends BaseController
      * getAccessToken
      */
     public function getAccessToken() {
-        return json_decode((new WxUser)->getAccessToken(),true)['access_token'];
+        return (new WxUser)->getAccessToken();
     }
 
     /**
@@ -87,23 +90,71 @@ class WechatController extends BaseController
     }
      */
     public function send() {
-        $sendData = array();
-        $data = array();
-        $data['keyword1'] = '1';
-        $data['keyword2'] = '2';
-        $data['keyword3'] = '3';
-        $data['keyword4'] = '4';
+        $result = (new WxUser())->newCustomerService('wed12','wef23', '31fd3');
+        dump($result);
+    }
 
-        $sendData['touser'] = 'o0xo65NU_Y_tUvRhTAKRZDXcIniQ';
-        $sendData['template_id'] = 'FYmZRjlisH64aLY5Jg7vW58Cg0m-EfQpVt7LRa9RR9o';
-        $sendData['page'] = 'index';
-        $sendData['form_id'] = '';
-        $sendData['emphasis_keyword'] = '';
-        $sendData['data'] = $data;
+    /**
+     * @remark 储存form_id
+     */
+    public function setFormId(Request $request) {
+        $returnData = [
+            'error' => 0,
+            'msg' => 'ok',
+            'data' => []
+        ];
+        $formId = $request->get('form_id');
+        $token = $request->get('token');
+        $uid = $request->get('uid');
 
-        $api = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$this->getAccessToken();
-        $res = curl_post($api, json_encode($sendData));
-        echo $res;
+        if (empty($formId)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'form_id为空';
+            return response()->json($returnData);
+        }
+
+        if (empty($uid)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'uid为空';
+            return response()->json($returnData);
+        }
+        if (!empty($token)) {
+            $openid = (new CardUser())->getUserOpenId($token);
+            if (empty($openid)) {
+                $user = CardUsers::find($uid);
+                if (!empty($user)) {
+                    $openid = $user['openid'];
+                } else {
+                    $returnData['error'] = 101;
+                    $returnData['msg'] = 'uid不正确';
+                    return response()->json($returnData);
+                }
+
+            }
+        } else {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'token为空';
+            return response()->json($returnData);
+        }
+
+        $saveData = [
+            'openid' => $openid,
+            'form_id' => $formId,
+            'expires' => time()+86400*6
+        ];
+        $xcxForm = XcxForm::where(['form_id' => $formId])->first();
+        if (!empty($xcxForm)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = 'form_id已存在';
+            return response()->json($returnData);
+        }
+        if (!XcxForm::create($saveData)) {
+            $returnData['error'] = 101;
+            $returnData['msg'] = '添加失败';
+            return response()->json($returnData);
+        }
+
+        return response()->json($returnData);
     }
 
 }
