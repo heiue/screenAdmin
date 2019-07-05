@@ -254,7 +254,7 @@ class UserController extends BaseController
                 CardInfo::where('card_id', $cardid)->update($infoData);
 
                 //todo 名片图册
-                if (!empty($imageData)) {
+                /*if (!empty($imageData)) {
                     $cardAnnexes = new CardAnnex();
                     $imgData = array();
                     foreach ($imageData as $value) {
@@ -270,7 +270,7 @@ class UserController extends BaseController
                         ];
                     }
                     $cardAnnexes->addAll($imgData);
-                }
+                }*/
 
                 return response()->json($returnData);
             } else {
@@ -285,7 +285,7 @@ class UserController extends BaseController
                     CardInfo::where('card_id', $cardCard['id'])->update($infoData);
 
                     //todo 名片图册
-                    if (!empty($imageData)) {
+                    /*if (!empty($imageData)) {
                         $cardAnnexes = new CardAnnex();
                         $imgData = array();
                         foreach ($imageData as $value) {
@@ -301,7 +301,7 @@ class UserController extends BaseController
                             ];
                         }
                         $cardAnnexes->addAll($imgData);
-                    }
+                    }*/
 
                     return response()->json($returnData);
                 } else {
@@ -318,7 +318,7 @@ class UserController extends BaseController
                     CardInfo::create($infoData);
 
                     //todo 名片图册
-                    if (!empty($imageData)) {
+                    /*if (!empty($imageData)) {
                         $cardAnnexes = new CardAnnex();
                         $imgData = array();
                         foreach ($imageData as $value) {
@@ -334,7 +334,7 @@ class UserController extends BaseController
                             ];
                         }
                         $cardAnnexes->addAll($imgData);
-                    }
+                    }*/
 
                     $returnData['insertId'] = $card->id;
                     $returnData['msg'] = 'Successful inserting';

@@ -73,9 +73,9 @@
             ,bindAction:'#begin_up'
             ,data:{"_token":"{{ csrf_token() }}"}
             ,before: function(obj){
-                if ($('#layui-upload-box li').length >= 3) {
-                    console.log('上传最多3张')
-                    layer.msg('上传最多3张')
+                if ($('#layui-upload-box li').length >= 20) {
+                    console.log('上传最多20张')
+                    layer.msg('上传最多20张')
                     return false
                 }
                 //预读本地文件示例，不支持ie8
