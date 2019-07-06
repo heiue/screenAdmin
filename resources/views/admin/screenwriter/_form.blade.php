@@ -21,12 +21,36 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">常驻地</label>
     <div class="layui-input-block">
-        <input type="text" name="residence" value="{{ $screenwriter->residence ?? '' }}" lay-verify="required" placeholder="请输入常驻地" class="layui-input" >
+        <input type="text" name="residence" value="{{ $screenwriter->residence ?? '' }}" placeholder="请输入常驻地" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">出生日期</label>
+    <div class="layui-input-block">
+        <input type="text" name="birthday" value="{{ $screenwriter->birthday ?? '' }}" placeholder="请输入出生日期" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">籍贯</label>
+    <div class="layui-input-block">
+        <input type="text" name="from" value="{{ $screenwriter->from ?? '' }}" placeholder="请输入籍贯" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">毕业院校</label>
+    <div class="layui-input-block">
+        <input type="text" name="school" value="{{ $screenwriter->school ?? '' }}" placeholder="请输入毕业院校" class="layui-input" >
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">专业</label>
+    <div class="layui-input-block">
+        <input type="text" name="profession" value="{{ $screenwriter->profession ?? '' }}" placeholder="请输入专业" class="layui-input" >
     </div>
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">代表作品</label>
+    <label for="" class="layui-form-label">主要作品</label>
     <div class="layui-input-block">
         <input type="text" name="works" value="{{ $screenwriter->works ?? '' }}" lay-verify="required" placeholder="请输入代表作品" class="layui-input" >
     </div>
@@ -34,7 +58,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">联系电话</label>
     <div class="layui-input-block">
-        <input type="number" name="phone" value="{{ $screenwriter->phone ?? '' }}"  placeholder="请输入联系电话" lay-verify="required" class="layui-input" >
+        <input type="number" name="phone" value="{{ $screenwriter->phone ?? '' }}"  placeholder="请输入联系电话" class="layui-input" >
     </div>
 </div>
 <div class="layui-form-item">
