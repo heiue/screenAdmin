@@ -107,7 +107,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">项目简介</label>
     <div class="layui-input-block">
-        <textarea name="description" placeholder="请输入简介" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>
+        <textarea name="introduction" placeholder="请输入简介" class="layui-textarea">{{$project->introduction??old('introduction')}}</textarea>
         {{--<script id="container" name="introduction" type="text/plain">
             {!! $project->introduction??old('introduction') !!}
         </script>--}}
