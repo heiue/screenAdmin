@@ -31,7 +31,7 @@ return [
         // 公众号 APPID
         'app_id' => 'wxf724f9d3bdbbb4b5',//正式的
 
-        'app_secret' => 'bdc2a06c3d660561d3136094ed4e2276',//正式的
+        'app_secret' => '2b4256c0d768b686bd5d70f357d90801',//正式的
 
         // 小程序 APPID
         'miniapp_id' => '',
